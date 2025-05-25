@@ -267,7 +267,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header
         remainingUsage={remainingUsage}
         usageLimit={usageLimit}
@@ -278,7 +278,7 @@ export default function Home() {
       />
 
       {/* 主內容區塊 */}
-      <main className="flex-1 flex flex-col md:flex-row gap-y-4 md:gap-x-[20px] px-[25px] py-[20px]">
+      <main className="flex-1 flex flex-col md:flex-row gap-y-4 md:gap-x-[20px] px-[25px] py-[20px] h-[calc(100vh-110px)]">
         {/* 左側：對話區卡片 */}
         <section className="w-full md:w-[40%] flex flex-col">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
