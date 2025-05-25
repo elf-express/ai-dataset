@@ -2,7 +2,7 @@
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { FileCode2, Github, Settings, Plus } from "lucide-react";
+import { FileCode2, Settings, Plus } from "lucide-react";
 
 export function Header({ 
   remainingUsage = 0, 
@@ -48,14 +48,6 @@ export function Header({
           >
             <Settings className="h-5 w-5" />
           </Button>
-          <a 
-            href="https://github.com/liujuntao123/smart-mermaid"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-80"
-          >
-            <Github className="h-5 w-5" />
-          </a>
           <ThemeToggle />
         </div>
       </div>
