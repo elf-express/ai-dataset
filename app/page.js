@@ -288,7 +288,7 @@ export default function Home() {
               <ChatHistory messages={messages} />
             </div>
             {/* 輸入區 */}
-            <div className="relative w-full mt-1">
+            <div className="relative w-full mt-1" style={{ marginBottom: 0 }}>
               <textarea
                 value={inputText}
                 onChange={e => setInputText(e.target.value)}
