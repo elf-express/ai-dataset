@@ -267,7 +267,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header
         remainingUsage={remainingUsage}
         usageLimit={usageLimit}
@@ -277,9 +277,8 @@ export default function Home() {
         hasCustomConfig={hasCustomConfig}
       />
 
-      {/* 主內容區塊，Header 高度不變，下方 30px footer，剩餘空間自動分配 */}
-      {/* 主內容區塊，左右有統一內間距，兩側皆為大卡片布局 */}
-      <main className="flex flex-col md:flex-row gap-y-0 md:gap-x-[20px] px-[25px] py-[20px] h-[calc(100vh-110px)]">
+      {/* 主內容區塊 */}
+      <main className="flex-1 flex flex-col md:flex-row gap-y-4 md:gap-x-[20px] px-[25px] py-[20px]">
         {/* 左側：對話區卡片 */}
         <section className="w-full md:w-[40%] flex flex-col">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
@@ -327,11 +326,12 @@ export default function Home() {
           </div>
         </section>
       </main>
-      {/* 底部 footer，高度固定 30px */}
-      <footer className="border-t px-6" style={{ height: 30, minHeight: 30 }}>
-        <div className="flex items-center justify-center h-full text-center text-sm text-muted-foreground leading-none">
-          AI 生成 圖表 2025
-        </div>
+      
+      {/* 底部 footer */}
+      <footer className="border-t h-[30px] flex items-center justify-center">
+        <span className="text-xs md:text-sm text-muted-foreground">
+          AI 技術輕易生成視覺化圖表 {new Date().getFullYear()}
+        </span>
       </footer>
 
     {/* Settings Dialog */}
@@ -365,6 +365,6 @@ export default function Home() {
           </DialogContent>
         </Dialog>
       )}
-    </>
+    </div>
   );
 }
