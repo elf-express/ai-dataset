@@ -4,15 +4,9 @@ Smart Mermaid 是一款利用人工智能技術，將您的文本描述智能轉
 
 ## 訪問體驗
 
-[https://AI-mermaid.aizhi.site](https://AI-mermaid.aizhi.site)
 
 **提示：** 應用已內置 API Key，您可以直接免費使用。為防止資源濫用，我們設置了每位用户每日 5 次的免費生成額度。
 
-## 效果預覽
-
-![PixPin_2025-05-23_11-25-46](https://github.com/user-attachments/assets/7ad74f73-68f3-499f-bcb4-f2b3e67336e8)
-
-*圖：Smart Mermaid 操作界面與生成的圖表*
 
 ## 核心優勢
 
@@ -185,6 +179,3 @@ Smart Mermaid 提供三種使用模式：
 
 ## 歡迎貢獻與反饋
 
-如果您在使用過程中遇到任何問題，或有功能建議，歡迎通過 GitHub Issues 提出。也歡迎您 Fork本項目並提交 Pull Requests 參與貢獻！
-
-如果這個項目對您有幫助，請給我們一個 ⭐️ Star！

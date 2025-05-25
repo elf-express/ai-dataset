@@ -94,7 +94,7 @@ export default function Home() {
   const [showContactDialog, setShowContactDialog] = useState(false);
   const [passwordVerified, setPasswordVerified] = useState(false);
   const [hasCustomConfig, setHasCustomConfig] = useState(false);
-  const maxChars = parseInt(process.env.NEXT_PUBLIC_MAX_CHARS || "20000");
+  const maxChars = parseInt(process.env.NEXT_PUBLIC_MAX_CHARS || "200000");
 
   useEffect(() => {
     // Update remaining usage count on component mount

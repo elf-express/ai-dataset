@@ -87,13 +87,14 @@ function ExcalidrawRenderer({ mermaidCode }) {
         
         { (
           <Excalidraw
-          initialData={{
-            appState: {
-              viewBackgroundColor: "#fafafa",
-              currentItemFontFamily: 1,
-            },
-          }}
-          excalidrawAPI={(api) => setExcalidrawAPI(api)}
+            initialData={{
+              appState: {
+                viewBackgroundColor: "#fafafa",
+                currentItemFontFamily: 1,
+              },
+            }}
+            excalidrawAPI={(api) => setExcalidrawAPI(api)}
+            langCode="zh-TW"
           />
         )}
       </div>
