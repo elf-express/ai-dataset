@@ -22,7 +22,7 @@ Smart Mermaid 是一款利用人工智能技術，將您的文本描述智能轉
 * **靈活的文本輸入**:
     * 直接在編輯器中手動輸入或粘貼文本。
     * 支持上傳文件（.txt, .md, .docx 格式）。
-    * 最大支持 20,000 字符的輸入長度。
+    * 最大支持 20,000 字數的輸入長度。
 
 * **智能 AI 轉換**:
     * 集成先進 AI 模型分析文本內容。
@@ -162,7 +162,7 @@ Smart Mermaid 提供三種使用模式：
     * `AI_API_URL`: AI 服務 API 的基礎地址（不包含 `/chat/completions`）
     * `AI_API_KEY`: 您的 AI 服務 API 密鑰
     * `AI_MODEL_NAME`: 指定使用的 AI 模型名稱
-    * `NEXT_PUBLIC_MAX_CHARS`: 允許用户輸入的最大字符數（默認 20,000）
+    * `NEXT_PUBLIC_MAX_CHARS`: 允許用户輸入的最大字數數（默認 20,000）
     * `NEXT_PUBLIC_DAILY_USAGE_LIMIT`: 每用户每日免費使用次數限制（默認 5）
     * `ACCESS_PASSWORD`: 可選，設置後用户可通過輸入此密碼獲得無限使用權限
 

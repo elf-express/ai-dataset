@@ -28,7 +28,7 @@ export function TextInput({ value, onChange, maxChars }) {
       />
       <div className="flex justify-end text-sm">
         <span className={`${isOverLimit ? "text-destructive font-medium" : "text-muted-foreground"}`}>
-          {charCount} {maxChars ? `/ ${maxChars} 字符` : "字符"}
+          {charCount} {maxChars ? `/ ${maxChars} 字數` : "字數"}
         </span>
       </div>
     </div>

@@ -113,6 +113,9 @@ export default function Home() {
     if (attempts >= 5) setLocked(true);
   };
 
+  const [messages, setMessages] = useState([
+    { role: "system", content: "你是一個 mermaid 流程圖專家，根據用戶描述，幫助生成正確且簡潔的 mermaid 語法。" }
+  ]);
   const [inputText, setInputText] = useState("");
   const [mermaidCode, setMermaidCode] = useState("");
   const [diagramType, setDiagramType] = useState("auto");
@@ -155,6 +158,14 @@ export default function Home() {
     setStreamingContent(prev => prev + chunk);
   };
 
+  // 將 messages 轉為對話歷史顯示（不含 system）
+  const getChatHistory = () => {
+    return messages
+      .filter(m => m.role !== "system")
+      .map((m, idx) => (m.role === "user" ? `🧑‍💻 ${m.content}` : `🤖 ${m.content}`))
+      .join("\n\n");
+  };
+
   const handleSettingsClick = () => {
     setShowSettingsDialog(true);
   };
@@ -162,8 +173,6 @@ export default function Home() {
   const handleContactClick = () => {
     setShowContactDialog(true);
   };
-
-
 
   const handleConfigUpdated = () => {
     // 重新檢查自定義配置狀態
@@ -177,7 +186,7 @@ export default function Home() {
     }
 
     if (!isWithinCharLimit(inputText, maxChars)) {
-      toast.error(`文本超過${maxChars}字符限制`);
+      toast.error(`文本超過${maxChars}字數限制`);
       return;
     }
 
@@ -196,9 +205,14 @@ export default function Home() {
     setIsStreaming(true);
     setStreamingContent("");
 
+    // 新增 user 訊息到 messages
+    const newMessages = [...messages, { role: "user", content: inputText }];
+    setMessages(newMessages);
+
     try {
-      const { mermaidCode: generatedCode, error } = await generateMermaidFromText(
-        inputText,
+      // 改為傳 messages
+      const { mermaidCode: generatedCode, error, aiReply } = await generateMermaidFromText(
+        newMessages,
         diagramType,
         handleStreamChunk
       );
@@ -211,6 +225,11 @@ export default function Home() {
       if (!generatedCode) {
         toast.error("生成圖表失敗，請重試");
         return;
+      }
+
+      // 將 AI 回覆加進 messages
+      if (aiReply) {
+        setMessages(msgs => [...msgs, { role: "assistant", content: aiReply }]);
       }
 
       // 只有在API調用成功後才增加使用量
@@ -278,7 +297,7 @@ export default function Home() {
           <MermaidEditor
             code={mermaidCode}
             onChange={handleMermaidCodeChange}
-            streamingContent={streamingContent}
+            streamingContent={getChatHistory() + (isStreaming ? ("\n\n" + streamingContent) : "")}
             isStreaming={isStreaming}
             disabled={locked || !passwordVerified}
           />
