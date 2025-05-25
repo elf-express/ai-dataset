@@ -12,6 +12,7 @@ import { TextInput } from "@/components/text-input";
 import { FileUpload } from "@/components/file-upload";
 import { DiagramTypeSelector } from "@/components/diagram-type-selector";
 import { MermaidEditor } from "@/components/mermaid-editor";
+import { ChatHistory } from "@/components/chat-history";
 // import { ExcalidrawRenderer } from "@/components/excalidraw-renderer";
 import { generateMermaidFromText } from "@/lib/ai-service";
 import { isWithinCharLimit } from "@/lib/utils";
@@ -205,12 +206,18 @@ export default function Home() {
     setIsStreaming(true);
     setStreamingContent("");
 
-    // 新增 user 訊息到 messages
-    const newMessages = [...messages, { role: "user", content: inputText }];
+    // 多輪對話：組裝正確 messages 陣列
+    let newMessages = [...messages];
+    // 清除舊的 mermaidCode 記錄，避免混淆
+    setMermaidCode("");
+    // 2. 新增本次 user 輸入（只放用戶自然語言）
+    newMessages = [...newMessages, { role: "user", content: inputText }];
     setMessages(newMessages);
+    // 3. 清空輸入框
+    setInputText("");
 
     try {
-      // 改為傳 messages
+      // 呼叫 AI，傳完整 messages
       const { mermaidCode: generatedCode, error, aiReply } = await generateMermaidFromText(
         newMessages,
         diagramType,
@@ -227,9 +234,16 @@ export default function Home() {
         return;
       }
 
-      // 將 AI 回覆加進 messages
+      // AI 生成內容（AI生成區塊）作為 assistant message
+      // 確保即使 aiReply 為空，也會將生成的 mermaid 代碼添加到對話歷史中
       if (aiReply) {
         setMessages(msgs => [...msgs, { role: "assistant", content: aiReply }]);
+      } else if (generatedCode) {
+        // 如果沒有 aiReply 但有生成 mermaid 代碼，則創建一個更精簡的回覆格式
+        const now = new Date();
+        const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        const formattedReply = "我已根據您的請求生成了流程圖：```mermaid\n" + generatedCode + "\n```\n如果需要修改，請告訴我。 [" + timeString + "]";
+        setMessages(msgs => [...msgs, { role: "assistant", content: formattedReply }]);
       }
 
       // 只有在API調用成功後才增加使用量
@@ -238,8 +252,9 @@ export default function Home() {
         setRemainingUsage(getRemainingUsage());
       }
 
-      // 預處理生成的mermaidCode
-      const processedCode = preprocessMermaidCode(generatedCode);
+      // Mermaid 語法區塊
+      const safeMermaidCode = typeof generatedCode === "string" ? generatedCode : "";
+      const processedCode = preprocessMermaidCode(safeMermaidCode);
       setMermaidCode(processedCode);
       toast.success("圖表生成成功");
     } catch (error) {
@@ -262,64 +277,70 @@ export default function Home() {
         hasCustomConfig={hasCustomConfig}
       />
 
-      <main className="w-full py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-12 gap-6">
-        <section className="space-y-4 col-span-12 md:col-span-4">
-          <Tabs defaultValue="text" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="text">手動輸入</TabsTrigger>
-              <TabsTrigger value="file">文件上傳</TabsTrigger>
-            </TabsList>
-            <TabsContent value="text">
-              <TextInput
+      {/* 主內容區塊，Header 高度不變，下方 30px footer，剩餘空間自動分配 */}
+      {/* 主內容區塊，左右有統一內間距，兩側皆為大卡片布局 */}
+      <main className="flex flex-col md:flex-row gap-y-0 md:gap-x-[20px] px-[25px] py-[20px] h-[calc(100vh-110px)]">
+        {/* 左側：對話區卡片 */}
+        <section className="w-full md:w-[40%] flex flex-col">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
+            {/* 對話紀錄區 */}
+            <div className="flex-1 overflow-y-auto mb-2">
+              <ChatHistory messages={messages} />
+            </div>
+            {/* 輸入區 */}
+            <div className="relative w-full mt-1">
+              <textarea
                 value={inputText}
-                onChange={handleTextChange}
+                onChange={e => setInputText(e.target.value)}
                 maxLength={maxChars}
                 disabled={isGenerating || locked || !passwordVerified}
+                onKeyDown={e => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleGenerateClick();
+                  }
+                }}
+                className="w-full min-h-[40px] h-auto py-2 pl-4 pr-[60px] rounded-2xl border border-gray-300 shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
+                placeholder="請在此輸入或貼上文字內容 ..."
+                rows={2}
+                style={{lineHeight: '1.5'}}
               />
-            </TabsContent>
-            <TabsContent value="file">
-              <FileUpload onTextExtracted={handleFileTextExtracted} />
-            </TabsContent>
-          </Tabs>
-
-          <div className="flex items-center justify-between">
-            <DiagramTypeSelector value={diagramType} onChange={handleDiagramTypeChange} />
-            <Button
-              onClick={handleGenerateClick}
-              disabled={isGenerating || locked || !passwordVerified}
-              className="ml-2"
-            >
-              <Wand2 className="h-4 w-4 mr-1" />
-              生成圖表
-            </Button>
+              <Button
+                onClick={handleGenerateClick}
+                disabled={isGenerating || locked || !passwordVerified}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-lg text-xs"
+                size="sm"
+              >
+                <Wand2 className="h-3 w-3 mr-[2px]" />
+                送出
+              </Button>
+            </div>
           </div>
-
-          <MermaidEditor
-            code={mermaidCode}
-            onChange={handleMermaidCodeChange}
-            streamingContent={getChatHistory() + (isStreaming ? ("\n\n" + streamingContent) : "")}
-            isStreaming={isStreaming}
-            disabled={locked || !passwordVerified}
-          />
         </section>
-        <section className="h-full min-h-[600px] col-span-12 md:col-span-8">
-          <ExcalidrawRenderer mermaidCode={mermaidCode} />
+        {/* 右側：畫布卡片 */}
+        <section className="w-full md:w-[60%] flex flex-col">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
+            <ExcalidrawRenderer 
+              mermaidCode={mermaidCode || ''} 
+              showToolbar={false}
+            />
+          </div>
         </section>
       </main>
-      
-      <footer className="border-t py-4 px-6">
-        <div className=" text-center text-sm text-muted-foreground">
-          AI 生成 圖表 &copy; {new Date().getFullYear()}
+      {/* 底部 footer，高度固定 30px */}
+      <footer className="border-t px-6" style={{ height: 30, minHeight: 30 }}>
+        <div className="flex items-center justify-center h-full text-center text-sm text-muted-foreground leading-none">
+          AI 生成 圖表 2025
         </div>
       </footer>
 
-      {/* Settings Dialog */}
-      <SettingsDialog 
-        open={showSettingsDialog} 
-        onOpenChange={setShowSettingsDialog}
-        onPasswordVerified={handlePasswordVerified}
-        onConfigUpdated={handleConfigUpdated}
-      />
+    {/* Settings Dialog */}
+    <SettingsDialog 
+      open={showSettingsDialog} 
+      onOpenChange={setShowSettingsDialog}
+      onPasswordVerified={handlePasswordVerified}
+      onConfigUpdated={handleConfigUpdated}
+    />
 
       {/* 密碼驗證 Dialog，未通過或鎖定時強制顯示 */}
       {(!passwordVerified || locked) && (
