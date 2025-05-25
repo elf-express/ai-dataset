@@ -24,19 +24,19 @@ export function Header({
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {hasUnlimitedAccess ? (
-              <span className="text-green-600 font-semibold">无限量</span>
+              <span className="text-green-600 font-semibold">無限量</span>
             ) : (
               <>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={onContactClick}
-                  title="联系作者获取更多使用次数"
+                  title="聯繫作者獲取更多使用次數"
                   className="h-6 w-6 p-0 text-muted-foreground hover:text-primary"
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
-                剩余: <span className={remainingUsage <= 1 ? "text-red-500 font-bold" : "text-green-600 font-semibold"}>{remainingUsage}</span>/{usageLimit}
+                剩餘: <span className={remainingUsage <= 1 ? "text-red-500 font-bold" : "text-green-600 font-semibold"}>{remainingUsage}</span>/{usageLimit}
               </>
             )}
           </div>
@@ -44,7 +44,7 @@ export function Header({
             variant="ghost" 
             size="icon" 
             onClick={onSettingsClick}
-            title="设置"
+            title="設置"
           >
             <Settings className="h-5 w-5" />
           </Button>

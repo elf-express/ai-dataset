@@ -20,13 +20,13 @@ export function FileUpload({ onTextExtracted }) {
       // Check file type
       const fileExt = file.name.split('.').pop().toLowerCase();
       if (!['txt', 'md', 'docx'].includes(fileExt)) {
-        toast.error("不支持的文件类型。请上传 .txt, .md 或 .docx 文件。");
+        toast.error("不支持的文件類型。請上傳 .txt, .md 或 .docx 文件。");
         return;
       }
 
       // Check file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
-        toast.error("文件太大。请上传小于 10MB 的文件。");
+        toast.error("文件太大。請上傳小於 10MB 的文件。");
         return;
       }
 
@@ -41,15 +41,15 @@ export function FileUpload({ onTextExtracted }) {
         }
         
         if (!text || text.trim() === "") {
-          toast.error("无法从文件中提取文本内容。");
+          toast.error("無法從文件中提取文本內容。");
           return;
         }
         
-        toast.success(`已成功从 ${file.name} 提取文本`);
+        toast.success(`已成功從 ${file.name} 提取文本`);
         onTextExtracted(text);
       } catch (error) {
         console.error("File processing error:", error);
-        toast.error("处理文件时出错：" + error.message);
+        toast.error("處理文件時出錯：" + error.message);
       } finally {
         setIsProcessing(false);
       }
@@ -81,7 +81,7 @@ export function FileUpload({ onTextExtracted }) {
         {isProcessing ? (
           <>
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            <p>正在处理文件...</p>
+            <p>正在處理文件...</p>
           </>
         ) : (
           <>
@@ -94,10 +94,10 @@ export function FileUpload({ onTextExtracted }) {
             </div>
             <div>
               {isDragActive ? (
-                <p className="font-medium">放下文件以上传</p>
+                <p className="font-medium">放下文件以上傳</p>
               ) : (
                 <>
-                  <p className="font-medium">点击或拖放文件到此处上传</p>
+                  <p className="font-medium">點擊或拖放文件到此處上傳</p>
                   <p className="text-sm text-muted-foreground mt-1">
                     支持 .txt, .md, .docx 格式（最大 10MB）
                   </p>
@@ -106,7 +106,7 @@ export function FileUpload({ onTextExtracted }) {
             </div>
             <Button type="button" variant="outline" size="sm" className="mt-2">
               <File className="mr-2 h-4 w-4" />
-              选择文件
+              選擇文件
             </Button>
           </>
         )}

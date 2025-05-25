@@ -23,18 +23,18 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
     apiKey: false
   });
   
-  // 表单状态
+  // 表單狀態
   const [accessPassword, setAccessPassword] = useState("");
   const [apiUrl, setApiUrl] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [modelName, setModelName] = useState("");
   
-  // 访问密码验证状态
+  // 訪問密碼驗證狀態
   const [passwordVerified, setPasswordVerified] = useState(false);
   const [enteredPassword, setEnteredPassword] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // 从localStorage加载配置
+  // 從localStorage加載配置
   useEffect(() => {
     if (open) {
       const savedConfig = localStorage.getItem('aiConfig');
@@ -48,13 +48,13 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
           console.error('Failed to load AI config:', error);
         }
       } else {
-        // 如果没有保存的配置，清空表单
+        // 如果沒有保存的配置，清空表單
         setApiUrl("");
         setApiKey("");
         setModelName("");
       }
       
-      // 检查访问密码验证状态
+      // 檢查訪問密碼驗證狀態
       const verified = isPasswordVerified();
       setPasswordVerified(verified);
     }
@@ -69,7 +69,7 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
 
   const handlePasswordSubmit = async () => {
     if (!enteredPassword.trim()) {
-      toast.error("请输入密码");
+      toast.error("請輸入密碼");
       return;
     }
 
@@ -81,18 +81,18 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
       if (result.success) {
         setPasswordVerified(true);
         savePasswordState(enteredPassword);
-        toast.success("密码验证成功");
+        toast.success("密碼驗證成功");
         
-        // 通知父组件密码验证状态改变
+        // 通知父組件密碼驗證狀態改變
         if (onPasswordVerified) {
           onPasswordVerified(true);
         }
       } else {
-        toast.error(result.error || "密码错误");
+        toast.error(result.error || "密碼錯誤");
       }
     } catch (error) {
       console.error("Password verification error:", error);
-      toast.error("密码验证失败");
+      toast.error("密碼驗證失敗");
     } finally {
       setIsVerifying(false);
     }
@@ -105,16 +105,16 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
       modelName: modelName.trim()
     };
     
-    // 检查配置是否完整
+    // 檢查配置是否完整
     if (!config.apiUrl || !config.apiKey || !config.modelName) {
-      toast.error("请填写完整的AI配置信息");
+      toast.error("請填寫完整的AI配置信息");
       return;
     }
     
     localStorage.setItem('aiConfig', JSON.stringify(config));
     toast.success("AI配置已保存");
     
-    // 通知父组件配置已更新
+    // 通知父組件配置已更新
     if (onConfigUpdated) {
       onConfigUpdated();
     }
@@ -124,14 +124,14 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
     // 清除localStorage中的AI配置
     clearAIConfig();
     
-    // 清空表单
+    // 清空表單
     setApiUrl("");
     setApiKey("");
     setModelName("");
     
     toast.success("AI配置已重置");
     
-    // 通知父组件配置已更新
+    // 通知父組件配置已更新
     if (onConfigUpdated) {
       onConfigUpdated();
     }
@@ -141,15 +141,15 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
     setPasswordVerified(false);
     setEnteredPassword("");
     clearPasswordState();
-    toast.success("密码验证已重置");
+    toast.success("密碼驗證已重置");
     
-    // 通知父组件密码验证状态改变
+    // 通知父組件密碼驗證狀態改變
     if (onPasswordVerified) {
       onPasswordVerified(false);
     }
   };
 
-  // 检查是否有AI配置
+  // 檢查是否有AI配置
   const hasAIConfig = apiUrl.trim() || apiKey.trim() || modelName.trim();
 
   return (
@@ -158,10 +158,10 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Key className="h-5 w-5" />
-            系统设置
+            系統設置
           </DialogTitle>
           <DialogDescription>
-            配置系统访问权限和AI服务参数
+            配置系統訪問權限和AI服務參數
           </DialogDescription>
         </DialogHeader>
 
@@ -169,7 +169,7 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="password" className="flex items-center gap-2">
               <Key className="h-4 w-4" />
-              访问密码
+              訪問密碼
             </TabsTrigger>
             <TabsTrigger value="ai-config" className="flex items-center gap-2">
               <Bot className="h-4 w-4" />
@@ -180,20 +180,20 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
           <TabsContent value="password" className="mt-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">访问密码验证</CardTitle>
+                <CardTitle className="text-lg">訪問密碼驗證</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {!passwordVerified ? (
                   <>
                     <div className="space-y-2">
-                      <Label htmlFor="access-password">请输入访问密码</Label>
+                      <Label htmlFor="access-password">請輸入訪問密碼</Label>
                       <div className="relative">
                         <Input
                           id="access-password"
                           type={showPasswords.accessPassword ? "text" : "password"}
                           value={enteredPassword}
                           onChange={(e) => setEnteredPassword(e.target.value)}
-                          placeholder="输入访问密码"
+                          placeholder="輸入訪問密碼"
                           disabled={isVerifying}
                         />
                         <Button
@@ -220,10 +220,10 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
                       {isVerifying ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-background mr-2"></div>
-                          验证中...
+                          驗證中...
                         </>
                       ) : (
-                        "验证密码"
+                        "驗證密碼"
                       )}
                     </Button>
                   </>
@@ -233,11 +233,11 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
                       <Key className="h-8 w-8 text-green-600" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-green-600">验证成功</h3>
-                      <p className="text-sm text-muted-foreground">您已通过密码验证，享有无限使用权限</p>
+                      <h3 className="text-lg font-medium text-green-600">驗證成功</h3>
+                      <p className="text-sm text-muted-foreground">您已通過密碼驗證，享有無限使用權限</p>
                     </div>
                     <Button variant="outline" onClick={resetPasswordVerification}>
-                      重置验证
+                      重置驗證
                     </Button>
                   </div>
                 )}
@@ -248,8 +248,8 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
           <TabsContent value="ai-config" className="mt-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">AI服务配置</CardTitle>
-                <p className="text-sm text-muted-foreground">配置您自己的AI服务，保存后即可享有无限使用权限</p>
+                <CardTitle className="text-lg">AI服務配置</CardTitle>
+                <p className="text-sm text-muted-foreground">配置您自己的AI服務，保存後即可享有無限使用權限</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -289,7 +289,7 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="model-name">模型名称</Label>
+                  <Label htmlFor="model-name">模型名稱</Label>
                   <Input
                     id="model-name"
                     value={modelName}
@@ -316,7 +316,7 @@ export function SettingsDialog({ open, onOpenChange, onPasswordVerified, onConfi
                 
                 {hasAIConfig && (
                   <p className="text-xs text-muted-foreground">
-                    点击重置按钮将清除所有AI配置，恢复使用默认服务
+                    點擊重置按鈕將清除所有AI配置，恢復使用默認服務
                   </p>
                 )}
               </CardContent>

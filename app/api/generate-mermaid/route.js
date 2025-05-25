@@ -5,14 +5,14 @@ export async function POST(request) {
     const { text, diagramType, aiConfig, accessPassword } = await request.json();
 
     if (!text) {
-      return Response.json({ error: "请提供文本内容" }, { status: 400 });
+      return Response.json({ error: "請提供文本內容" }, { status: 400 });
     }
 
     const cleanedText = cleanText(text);
     
     let finalConfig;
     
-    // 步骤1: 检查是否有完整的aiConfig
+    // 步驟1: 檢查是否有完整的aiConfig
     const hasCompleteAiConfig = aiConfig?.apiUrl && aiConfig?.apiKey && aiConfig?.modelName;
     
     if (hasCompleteAiConfig) {
@@ -23,21 +23,21 @@ export async function POST(request) {
         modelName: aiConfig.modelName
       };
     } else {
-      // 步骤2: 如果没有完整的aiConfig，则检验accessPassword
+      // 步驟2: 如果沒有完整的aiConfig，則檢驗accessPassword
       if (accessPassword) {
-        // 步骤3: 如果传入了accessPassword，验证是否有效
+        // 步驟3: 如果傳入了accessPassword，驗證是否有效
         const correctPassword = process.env.ACCESS_PASSWORD;
         const isPasswordValid = correctPassword && accessPassword === correctPassword;
         
         if (!isPasswordValid) {
-          // 如果密码无效，直接报错
+          // 如果密碼無效，直接報錯
           return Response.json({ 
-            error: "访问密码无效" 
+            error: "訪問密碼無效" 
           }, { status: 401 });
         }
       }
       
-      // 如果没有传入accessPassword或者accessPassword有效，使用环境变量配置
+      // 如果沒有傳入accessPassword或者accessPassword有效，使用環境變量配置
       finalConfig = {
         apiUrl: process.env.AI_API_URL,
         apiKey: process.env.AI_API_KEY,
@@ -45,59 +45,59 @@ export async function POST(request) {
       };
     }
 
-    // 检查最终配置是否完整
+    // 檢查最終配置是否完整
     if (!finalConfig.apiUrl || !finalConfig.apiKey || !finalConfig.modelName) {
       return Response.json({ 
-        error: "AI配置不完整，请在设置中配置API URL、API Key和模型名称" 
+        error: "AI配置不完整，請在設置中配置API URL、API Key和模型名稱" 
       }, { status: 400 });
     }
 
-    // 构建 prompt 根据图表类型
+    // 構建 prompt 根據圖表類型
     let systemPrompt = `
-    目的和目标：
-* 理解用户提供的文档的结构和逻辑关系。
-* 准确地将文档内容和关系转化为符合mermaid语法的图表代码。
-* 确保图表中包含文档的所有关键元素和它们之间的联系。
+    目的和目標：
+* 理解用户提供的文檔的結構和邏輯關係。
+* 準確地將文檔內容和關係轉化為符合mermaid語法的圖表代碼。
+* 確保圖表中包含文檔的所有關鍵元素和它們之間的聯繫。
 
-行为和规则：
-1. 分析文档：
-a) 仔细阅读和分析用户提供的文档内容。
-b) 识别文档中的不同元素（如概念、实体、步骤、流程等）。
-c) 理解这些元素之间的各种关系（如从属、包含、流程、因果等）。
-d) 识别文档中蕴含的逻辑结构和流程。
-2. 图表生成：
+行為和規則：
+1. 分析文檔：
+a) 仔細閲讀和分析用户提供的文檔內容。
+b) 識別文檔中的不同元素（如概念、實體、步驟、流程等）。
+c) 理解這些元素之間的各種關係（如從屬、包含、流程、因果等）。
+d) 識別文檔中藴含的邏輯結構和流程。
+2. 圖表生成：
     `
     
     if (diagramType && diagramType !== "auto") {
-      systemPrompt += `a) 请特别生成 ${diagramType} 类型的图表。`;
+      systemPrompt += `a) 請特別生成 ${diagramType} 類型的圖表。`;
     } else {
-      systemPrompt += `a) 根据分析结果，选择最适合表达文档结构的mermaid图表类型（流程图、时序图、类图中的一种）。`;
+      systemPrompt += `a) 根據分析結果，選擇最適合表達文檔結構的mermaid圖表類型（流程圖、時序圖、類圖中的一種）。`;
     }
 
     systemPrompt += `
-    b) 使用正确的mermaid语法创建图表代码，充分参考下面的Mermaid 语法特殊字符说明："""
-* Mermaid 的核心特殊字符主要用于**定义图表结构和关系**。
-* 要在节点 ID 或标签中**显示**特殊字符(如括号，引号）或包含**空格**，最常用方法是用**双引号 \`""\`** 包裹。
-* 在标签文本（引号内）中显示 HTML 特殊字符 (\`<\`, \`>\`, \`&\`) 或 \`#\` 等，应使用 **HTML 实体编码**。
-* 使用 \`%%\` 进行**注释**。
-* 序号之后不要跟进空格，比如\`1. xxx\`应该改成\`1.xxx\`
-* 用不同的背景色以区分不同层级或是从属的元素\`
+    b) 使用正確的mermaid語法創建圖表代碼，充分參考下面的Mermaid 語法特殊字符説明："""
+* Mermaid 的核心特殊字符主要用於**定義圖表結構和關係**。
+* 要在節點 ID 或標籤中**顯示**特殊字符(如括號，引號）或包含**空格**，最常用方法是用**雙引號 \`""\`** 包裹。
+* 在標籤文本（引號內）中顯示 HTML 特殊字符 (\`<\`, \`>\`, \`&\`) 或 \`#\` 等，應使用 **HTML 實體編碼**。
+* 使用 \`%%\` 進行**註釋**。
+* 序號之後不要跟進空格，比如\`1. xxx\`應該改成\`1.xxx\`
+* 用不同的背景色以區分不同層級或是從屬的元素\`
 `
 
 systemPrompt+=`
-c) 确保图表清晰、易于理解，准确反映文档的内容和逻辑。
+c) 確保圖表清晰、易於理解，準確反映文檔的內容和邏輯。
 
-d) 不要使用<artifact>标签包裹代码，而是直接以markdown格式返回代码。
+d) 不要使用<artifact>標籤包裹代碼，而是直接以markdown格式返回代碼。
 `
 
 systemPrompt += `
-3. 细节处理：
-a) 避免遗漏文档中的任何重要细节或关系。
-b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的工具或平台中使用。
-整体语气：
-* 保持专业和严谨的态度。
-* 清晰、准确地表达图表的内容。
-* 在需要时，可以提供简短的解释或建议。
+3. 細節處理：
+a) 避免遺漏文檔中的任何重要細節或關係。
+b) 生成的圖表代碼應可以直接複製並粘貼到支持mermaid語法的工具或平台中使用。
+整體語氣：
+* 保持專業和嚴謹的態度。
+* 清晰、準確地表達圖表的內容。
+* 在需要時，可以提供簡短的解釋或建議。
 `
 
     const messages = [
@@ -111,7 +111,7 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
       },
     ];
 
-    // 构建API URL
+    // 構建API URL
     const url = finalConfig.apiUrl.includes("v1") || finalConfig.apiUrl.includes("v3") 
       ? `${finalConfig.apiUrl}/chat/completions` 
       : `${finalConfig.apiUrl}/v1/chat/completions`;
@@ -122,12 +122,12 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
       hasApiKey: !!finalConfig.apiKey,
     });
 
-    // 创建一个流式响应
+    // 創建一個流式響應
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          // 发送请求到 AI API (开启流式模式)
+          // 發送請求到 AI API (開啓流式模式)
           const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -137,7 +137,7 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
             body: JSON.stringify({
               model: finalConfig.modelName,
               messages,
-              stream: true, // 开启流式输出
+              stream: true, // 開啓流式輸出
             }),
           });
 
@@ -145,13 +145,13 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
             const errorText = await response.text();
             console.error("AI API Error:", response.status, errorText);
             controller.enqueue(encoder.encode(JSON.stringify({ 
-              error: `AI服务返回错误 (${response.status}): ${errorText || 'Unknown error'}` 
+              error: `AI服務返回錯誤 (${response.status}): ${errorText || 'Unknown error'}` 
             })));
             controller.close();
             return;
           }
 
-          // 读取流式响应
+          // 讀取流式響應
           const reader = response.body.getReader();
           const decoder = new TextDecoder();
           let mermaidCode = "";
@@ -160,10 +160,10 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
             const { done, value } = await reader.read();
             if (done) break;
             
-            // 解析返回的数据块
+            // 解析返回的數據塊
             const chunk = decoder.decode(value, { stream: true });
             
-            // 处理数据行
+            // 處理數據行
             const lines = chunk.split('\n').filter(line => line.trim() !== '');
             
             for (const line of lines) {
@@ -176,7 +176,7 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
                   const content = parsed.choices[0]?.delta?.content || '';
                   if (content) {
                     mermaidCode += content;
-                    // 发送给客户端
+                    // 發送給客户端
                     controller.enqueue(encoder.encode(JSON.stringify({ 
                       chunk: content,
                       done: false 
@@ -189,11 +189,11 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
             }
           }
           
-          // 提取代码块中的内容（如果有代码块标记）
+          // 提取代碼塊中的內容（如果有代碼塊標記）
           const codeBlockMatch = mermaidCode.match(/```(?:mermaid)?\s*([\s\S]*?)```/);
           const finalCode = codeBlockMatch ? codeBlockMatch[1].trim() : mermaidCode;
           
-          // 发送完成信号
+          // 發送完成信號
           controller.enqueue(encoder.encode(JSON.stringify({ 
             mermaidCode: finalCode,
             done: true 
@@ -202,7 +202,7 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
         } catch (error) {
           console.error("Streaming Error:", error);
           controller.enqueue(encoder.encode(JSON.stringify({ 
-            error: `处理请求时发生错误: ${error.message}`, 
+            error: `處理請求時發生錯誤: ${error.message}`, 
             done: true 
           })));
         } finally {
@@ -211,7 +211,7 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
       }
     });
 
-    // 返回流式响应
+    // 返回流式響應
     return new Response(stream, {
       headers: {
         'Content-Type': 'application/json',
@@ -222,7 +222,7 @@ b) 生成的图表代码应可以直接复制并粘贴到支持mermaid语法的�
   } catch (error) {
     console.error("API Route Error:", error);
     return Response.json(
-      { error: `处理请求时发生错误: ${error.message}` }, 
+      { error: `處理請求時發生錯誤: ${error.message}` }, 
       { status: 500 }
     );
   }

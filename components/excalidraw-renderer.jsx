@@ -54,8 +54,8 @@ function ExcalidrawRenderer({ mermaidCode }) {
         });
       } catch (error) {
         console.error("Mermaid rendering error:", error);
-        setRenderError("无法渲染 Mermaid 代码。请检查语法是否正确。");
-        toast.error("图表渲染失败，请检查 Mermaid 代码语法");
+        setRenderError("無法渲染 Mermaid 代碼。請檢查語法是否正確。");
+        toast.error("圖表渲染失敗，請檢查 Mermaid 代碼語法");
       } finally {
         setIsRendering(false);
       }

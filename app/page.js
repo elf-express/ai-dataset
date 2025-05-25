@@ -138,25 +138,25 @@ export default function Home() {
   };
 
   const handleConfigUpdated = () => {
-    // 重新检查自定义配置状态
+    // 重新檢查自定義配置狀態
     setHasCustomConfig(hasCustomAIConfig());
   };
 
   const handleGenerateClick = async () => {
     if (!inputText.trim()) {
-      toast.error("请输入文本内容");
+      toast.error("請輸入文本內容");
       return;
     }
 
     if (!isWithinCharLimit(inputText, maxChars)) {
-      toast.error(`文本超过${maxChars}字符限制`);
+      toast.error(`文本超過${maxChars}字符限制`);
       return;
     }
 
-    // 检查是否有无限量权限（密码验证通过或有自定义AI配置）
+    // 檢查是否有無限量權限（密碼驗證通過或有自定義AI配置）
     const hasUnlimited = hasUnlimitedAccess();
     
-    // 如果没有无限量权限，则检查使用限制（但不增加使用量）
+    // 如果沒有無限量權限，則檢查使用限制（但不增加使用量）
     if (!hasUnlimited) {
       if (!checkUsageLimit()) {
         setShowLimitDialog(true);
@@ -181,23 +181,23 @@ export default function Home() {
       }
 
       if (!generatedCode) {
-        toast.error("生成图表失败，请重试");
+        toast.error("生成圖表失敗，請重試");
         return;
       }
 
-      // 只有在API调用成功后才增加使用量
+      // 只有在API調用成功後才增加使用量
       if (!hasUnlimited) {
         incrementUsage();
         setRemainingUsage(getRemainingUsage());
       }
 
-      // 预处理生成的mermaidCode
+      // 預處理生成的mermaidCode
       const processedCode = preprocessMermaidCode(generatedCode);
       setMermaidCode(processedCode);
-      toast.success("图表生成成功");
+      toast.success("圖表生成成功");
     } catch (error) {
       console.error("Generation error:", error);
-      toast.error("生成图表时发生错误");
+      toast.error("生成圖表時發生錯誤");
     } finally {
       setIsGenerating(false);
       setIsStreaming(false);
@@ -218,13 +218,13 @@ export default function Home() {
       <main className="flex-1  py-6 px-4 md:px-6">
         <div className="grid gap-6 md:grid-cols-3">
           <div className="space-y-6 md:col-span-1 flex flex-col">
-            {/* <h2 className="text-2xl font-bold">文本输入</h2> */}
+            {/* <h2 className="text-2xl font-bold">文本輸入</h2> */}
             
             <Tabs defaultValue="manual">
               <div className="flex justify-between items-center">
                 <TabsList>
-                  <TabsTrigger value="manual">手动输入</TabsTrigger>
-                  <TabsTrigger value="file">文件上传</TabsTrigger>
+                  <TabsTrigger value="manual">手動輸入</TabsTrigger>
+                  <TabsTrigger value="file">文件上傳</TabsTrigger>
                 </TabsList>
                 <div className="w-40">
                   <DiagramTypeSelector 
@@ -259,7 +259,7 @@ export default function Home() {
                 ) : (
                   <>
                     <Wand2 className="mr-2 h-4 w-4" />
-                    生成图表
+                    生成圖表
                   </>
                 )}
               </Button>
@@ -290,7 +290,7 @@ export default function Home() {
       
       <footer className="border-t py-4 px-6">
         <div className=" text-center text-sm text-muted-foreground">
-          AI 驱动的文本转 Mermaid 图表 Web 应用 &copy; {new Date().getFullYear()}
+          AI 驅動的文本轉 Mermaid 圖表 Web 應用 &copy; {new Date().getFullYear()}
         </div>
       </footer>
 
@@ -306,22 +306,22 @@ export default function Home() {
       <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>联系作者</DialogTitle>
+            <DialogTitle>聯繫作者</DialogTitle>
             <DialogDescription>
               <div className="py-4">
-                <p className="mb-2">如需更多使用次数或技术支持，请扫描下方二维码联系作者</p>
+                <p className="mb-2">如需更多使用次數或技術支持，請掃描下方二維碼聯繫作者</p>
                 <div className="flex justify-center my-4">
-                  <img src="/qrcode.png" alt="联系二维码" className="w-48" />
+                  <img src="/qrcode.png" alt="聯繫二維碼" className="w-48" />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  提示：您也可以在设置中配置自己的AI服务密钥，即可享有无限使用权限
+                  提示：您也可以在設置中配置自己的AI服務密鑰，即可享有無限使用權限
                 </p>
               </div>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-center">
             <Button variant="secondary" onClick={() => setShowContactDialog(false)}>
-              关闭
+              關閉
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -331,24 +331,24 @@ export default function Home() {
       <Dialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>使用次数已达上限</DialogTitle>
+            <DialogTitle>使用次數已達上限</DialogTitle>
             <DialogDescription>
               <div className="py-4">
-                <p className="mb-2">您今日的使用次数已达上限 ({usageLimit}次/天)</p>
-                <p className="mb-4">如需更多使用次数，您可以：</p>
+                <p className="mb-2">您今日的使用次數已達上限 ({usageLimit}次/天)</p>
+                <p className="mb-4">如需更多使用次數，您可以：</p>
                 <ul className="list-disc list-inside space-y-2 text-sm mb-4">
-                  <li>扫描下方二维码联系作者</li>
-                  <li>在设置中配置您自己的AI服务密钥</li>
+                  <li>掃描下方二維碼聯繫作者</li>
+                  <li>在設置中配置您自己的AI服務密鑰</li>
                 </ul>
                 <div className="flex justify-center my-4">
-                  <img src="/qrcode.png" alt="联系二维码" className="w-48" />
+                  <img src="/qrcode.png" alt="聯繫二維碼" className="w-48" />
                 </div>
               </div>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-center">
             <Button variant="secondary" onClick={() => setShowLimitDialog(false)}>
-              关闭
+              關閉
             </Button>
           </DialogFooter>
         </DialogContent>

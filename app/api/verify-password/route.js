@@ -3,34 +3,34 @@ export async function POST(request) {
     const { password } = await request.json();
 
     if (!password) {
-      return Response.json({ error: "请提供密码" }, { status: 400 });
+      return Response.json({ error: "請提供密碼" }, { status: 400 });
     }
 
-    // 从环境变量获取正确的密码
+    // 從環境變量獲取正確的密碼
     const correctPassword = process.env.ACCESS_PASSWORD;
     
     if (!correctPassword) {
-      return Response.json({ error: "服务器未配置访问密码" }, { status: 500 });
+      return Response.json({ error: "服務器未配置訪問密碼" }, { status: 500 });
     }
 
-    // 验证密码
+    // 驗證密碼
     const isValid = password === correctPassword;
     
     if (isValid) {
       return Response.json({ 
         success: true, 
-        message: "密码验证成功" 
+        message: "密碼驗證成功" 
       });
     } else {
       return Response.json({ 
         success: false, 
-        error: "密码错误" 
+        error: "密碼錯誤" 
       }, { status: 401 });
     }
   } catch (error) {
     console.error("Password verification error:", error);
     return Response.json(
-      { error: "密码验证时发生错误" }, 
+      { error: "密碼驗證時發生錯誤" }, 
       { status: 500 }
     );
   }
