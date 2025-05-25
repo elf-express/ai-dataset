@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import "@excalidraw/excalidraw/index.css";
+import styles from "./excalidraw-renderer.module.css";
 import { convertToExcalidrawElements } from "@excalidraw/excalidraw";
 
 // Dynamically import Excalidraw to avoid SSR issues
@@ -66,7 +67,7 @@ function ExcalidrawRenderer({ mermaidCode }) {
 
 
   return (
-    <div className="space-y-2 h-full min-h-[600px]">
+    <div className={styles["excalidraw-wrapper"] + " relative h-full w-full"}>
       <div 
         className="border rounded-md h-full relative bg-card"
         style={{ touchAction: "none" }}

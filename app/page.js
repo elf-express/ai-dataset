@@ -82,6 +82,37 @@ const preprocessMermaidCode = (code) => {
 };
 
 export default function Home() {
+  // 密碼驗證與鎖定狀態
+  const [passwordVerified, setPasswordVerified] = useState(false);
+  const [passwordAttempts, setPasswordAttempts] = useState(0);
+  const [locked, setLocked] = useState(false);
+
+  // 進站時檢查密碼狀態與錯誤次數
+  useEffect(() => {
+    const verified = isPasswordVerified();
+    setPasswordVerified(verified);
+
+    const attempts = parseInt(localStorage.getItem('passwordAttempts') || '0', 10);
+    setPasswordAttempts(attempts);
+    if (attempts >= 5) setLocked(true);
+  }, []);
+
+  // 密碼驗證回調
+  const handlePasswordVerified = (verified) => {
+    setPasswordVerified(verified);
+    if (verified) {
+      setPasswordAttempts(0);
+      localStorage.setItem('passwordAttempts', '0');
+    }
+  };
+  // 密碼錯誤時計數
+  const handlePasswordFailed = () => {
+    let attempts = parseInt(localStorage.getItem('passwordAttempts') || '0', 10) + 1;
+    setPasswordAttempts(attempts);
+    localStorage.setItem('passwordAttempts', attempts);
+    if (attempts >= 5) setLocked(true);
+  };
+
   const [inputText, setInputText] = useState("");
   const [mermaidCode, setMermaidCode] = useState("");
   const [diagramType, setDiagramType] = useState("auto");
@@ -92,7 +123,6 @@ export default function Home() {
   const [showLimitDialog, setShowLimitDialog] = useState(false);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
-  const [passwordVerified, setPasswordVerified] = useState(false);
   const [hasCustomConfig, setHasCustomConfig] = useState(false);
   const maxChars = parseInt(process.env.NEXT_PUBLIC_MAX_CHARS || "200000");
 
@@ -133,9 +163,7 @@ export default function Home() {
     setShowContactDialog(true);
   };
 
-  const handlePasswordVerified = (verified) => {
-    setPasswordVerified(verified);
-  };
+
 
   const handleConfigUpdated = () => {
     // 重新檢查自定義配置狀態
@@ -205,8 +233,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header 
+    <>
+      <Header
         remainingUsage={remainingUsage}
         usageLimit={usageLimit}
         onSettingsClick={handleSettingsClick}
@@ -214,78 +242,50 @@ export default function Home() {
         isPasswordVerified={passwordVerified}
         hasCustomConfig={hasCustomConfig}
       />
-      
-      <main className="flex-1  py-6 px-4 md:px-6">
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="space-y-6 md:col-span-1 flex flex-col">
-            {/* <h2 className="text-2xl font-bold">文本輸入</h2> */}
-            
-            <Tabs defaultValue="manual">
-              <div className="flex justify-between items-center">
-                <TabsList>
-                  <TabsTrigger value="manual">手動輸入</TabsTrigger>
-                  <TabsTrigger value="file">文件上傳</TabsTrigger>
-                </TabsList>
-                <div className="w-40">
-                  <DiagramTypeSelector 
-                    value={diagramType} 
-                    onChange={handleDiagramTypeChange} 
-                  />
-                </div>
-              </div>
-              <TabsContent value="manual" className="mt-4">
-                <TextInput 
-                  value={inputText} 
-                  onChange={handleTextChange} 
-                  maxChars={maxChars}
-                />
-              </TabsContent>
-              <TabsContent value="file" className="mt-4">
-                <FileUpload onTextExtracted={handleFileTextExtracted} />
-              </TabsContent>
-            </Tabs>
 
-            <div className="space-y-4 flex-1">
-              <Button 
-                onClick={handleGenerateClick} 
-                disabled={isGenerating || !inputText.trim() || !isWithinCharLimit(inputText, maxChars)}
-                className="w-full"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-background mr-2"></div>
-                    生成中...
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="mr-2 h-4 w-4" />
-                    生成圖表
-                  </>
-                )}
-              </Button>
-            </div>
-            
-            {/* <Card className=" p-0"> */}
-              {/* <CardContent className="p-4"> */}
-                <MermaidEditor 
-                  code={mermaidCode} 
-                  onChange={handleMermaidCodeChange}
-                  streamingContent={streamingContent}
-                  isStreaming={isStreaming}
-                />
-              {/* </CardContent> */}
-            {/* </Card> */}
+      <main className="w-full py-6 px-4 md:px-8 grid grid-cols-1 md:grid-cols-12 gap-6">
+        <section className="space-y-4 col-span-12 md:col-span-4">
+          <Tabs defaultValue="text" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="text">手動輸入</TabsTrigger>
+              <TabsTrigger value="file">文件上傳</TabsTrigger>
+            </TabsList>
+            <TabsContent value="text">
+              <TextInput
+                value={inputText}
+                onChange={handleTextChange}
+                maxLength={maxChars}
+                disabled={isGenerating || locked || !passwordVerified}
+              />
+            </TabsContent>
+            <TabsContent value="file">
+              <FileUpload onTextExtracted={handleFileTextExtracted} />
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex items-center justify-between">
+            <DiagramTypeSelector value={diagramType} onChange={handleDiagramTypeChange} />
+            <Button
+              onClick={handleGenerateClick}
+              disabled={isGenerating || locked || !passwordVerified}
+              className="ml-2"
+            >
+              <Wand2 className="h-4 w-4 mr-1" />
+              生成圖表
+            </Button>
           </div>
-          
-          <div className="space-y-6 md:col-span-2">
-            
-            {/* <Card className="h-full p-0"> */}
-              {/* <CardContent className="p-4 h-full"> */}
-                <ExcalidrawRenderer mermaidCode={mermaidCode} />
-              {/* </CardContent> */}
-            {/* </Card> */}
-          </div>
-        </div>
+
+          <MermaidEditor
+            code={mermaidCode}
+            onChange={handleMermaidCodeChange}
+            streamingContent={streamingContent}
+            isStreaming={isStreaming}
+            disabled={locked || !passwordVerified}
+          />
+        </section>
+        <section className="h-full min-h-[600px] col-span-12 md:col-span-8">
+          <ExcalidrawRenderer mermaidCode={mermaidCode} />
+        </section>
       </main>
       
       <footer className="border-t py-4 px-6">
@@ -302,6 +302,29 @@ export default function Home() {
         onConfigUpdated={handleConfigUpdated}
       />
 
-    </div>
+      {/* 密碼驗證 Dialog，未通過或鎖定時強制顯示 */}
+      {(!passwordVerified || locked) && (
+        <Dialog open>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>訪問密碼驗證</DialogTitle>
+              <DialogDescription>
+                {locked
+                  ? "密碼錯誤次數過多，已被鎖定，請稍後再試。"
+                  : "請先輸入訪問密碼以使用本系統。"}
+              </DialogDescription>
+            </DialogHeader>
+            {!locked ? (
+              <SettingsDialog
+                open={true}
+                onOpenChange={() => {}}
+                onPasswordVerified={handlePasswordVerified}
+                onConfigUpdated={handleConfigUpdated}
+              />
+            ) : null}
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 }

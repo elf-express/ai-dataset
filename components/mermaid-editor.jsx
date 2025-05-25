@@ -20,7 +20,7 @@ function StreamingDisplay({ content, isStreaming }) {
   if (!isStreaming && !content) return null;
   
   return (
-    <div className="mb-4 space-y-2">
+    <div className="mb-2 space-y-2">
       <div className="flex justify-between items-center">
         <h3 className="text-sm font-medium">AI生成</h3>
         {isStreaming && (
@@ -63,7 +63,7 @@ export function MermaidEditor({ code, onChange, streamingContent, isStreaming })
   };
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col h-[320px] md:h-[480px]">
       {/* 流式內容顯示區域 */}
       <StreamingDisplay 
         content={streamingContent}
@@ -96,7 +96,7 @@ export function MermaidEditor({ code, onChange, streamingContent, isStreaming })
         value={code}
         onChange={handleChange}
         placeholder="生成的 Mermaid 語法將顯示在這裏..."
-        className="h-[400px] font-mono text-sm mermaid-editor overflow-y-auto resize-none"
+        className="flex-1 min-h-0 font-mono text-sm mermaid-editor overflow-y-auto resize-none"
       />
     </div>
   );
