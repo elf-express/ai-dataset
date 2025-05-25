@@ -4,7 +4,7 @@ Smart Mermaid 是一款利用人工智能技術，將您的文本描述智能轉
 
 ## 訪問體驗
 
-[https://smart-mermaid.aizhi.site](https://smart-mermaid.aizhi.site)
+[https://AI-mermaid.aizhi.site](https://AI-mermaid.aizhi.site)
 
 **提示：** 應用已內置 API Key，您可以直接免費使用。為防止資源濫用，我們設置了每位用户每日 5 次的免費生成額度。
 
@@ -136,8 +136,8 @@ Smart Mermaid 提供三種使用模式：
 
 1.  **克隆代碼倉庫**:
     ```bash
-    git clone [https://github.com/yourusername/smart-mermaid.git](https://github.com/yourusername/smart-mermaid.git)
-    cd smart-mermaid
+    git clone [https://github.com/yourusername/AI-mermaid.git](https://github.com/yourusername/AI-mermaid.git)
+    cd AI-mermaid
     ```
     *(請將 `yourusername` 替換為實際的倉庫路徑)*
 

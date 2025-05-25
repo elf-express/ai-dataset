@@ -21,7 +21,7 @@ export function TextInput({ value, onChange, maxChars }) {
   return (
     <div className="space-y-2">
       <Textarea
-        placeholder="請在此輸入或粘貼文本內容..."
+        placeholder="請在此輸入或貼上文字內容..."
         className="h-[200px] font-mono text-sm overflow-y-auto resize-none"
         value={value}
         onChange={handleChange}

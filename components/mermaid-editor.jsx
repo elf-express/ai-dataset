@@ -22,7 +22,7 @@ function StreamingDisplay({ content, isStreaming }) {
   return (
     <div className="mb-4 space-y-2">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium">實時生成</h3>
+        <h3 className="text-sm font-medium">AI生成</h3>
         {isStreaming && (
           <div className="flex items-center text-xs text-muted-foreground">
             <div className="animate-pulse mr-1 h-2 w-2 rounded-full bg-green-500"></div>
@@ -71,7 +71,7 @@ export function MermaidEditor({ code, onChange, streamingContent, isStreaming })
       />
       
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium">Mermaid 代碼</h3>
+        <h3 className="text-sm font-medium">Mermaid 語法</h3>
         <Button
           variant="outline"
           size="sm"
@@ -87,7 +87,7 @@ export function MermaidEditor({ code, onChange, streamingContent, isStreaming })
           ) : (
             <>
               <Copy className="h-4 w-4" />
-              複製代碼
+              複製語法
             </>
           )}
         </Button>
@@ -95,7 +95,7 @@ export function MermaidEditor({ code, onChange, streamingContent, isStreaming })
       <Textarea
         value={code}
         onChange={handleChange}
-        placeholder="生成的 Mermaid 代碼將顯示在這裏..."
+        placeholder="生成的 Mermaid 語法將顯示在這裏..."
         className="h-[400px] font-mono text-sm mermaid-editor overflow-y-auto resize-none"
       />
     </div>

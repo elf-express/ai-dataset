@@ -290,7 +290,7 @@ export default function Home() {
       
       <footer className="border-t py-4 px-6">
         <div className=" text-center text-sm text-muted-foreground">
-          AI 驅動的文本轉 Mermaid 圖表 Web 應用 &copy; {new Date().getFullYear()}
+          AI 生成 圖表 &copy; {new Date().getFullYear()}
         </div>
       </footer>
 
@@ -302,57 +302,6 @@ export default function Home() {
         onConfigUpdated={handleConfigUpdated}
       />
 
-      {/* Contact Dialog */}
-      <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>聯繫作者</DialogTitle>
-            <DialogDescription>
-              <div className="py-4">
-                <p className="mb-2">如需更多使用次數或技術支持，請掃描下方二維碼聯繫作者</p>
-                <div className="flex justify-center my-4">
-                  <img src="/qrcode.png" alt="聯繫二維碼" className="w-48" />
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  提示：您也可以在設置中配置自己的AI服務密鑰，即可享有無限使用權限
-                </p>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="sm:justify-center">
-            <Button variant="secondary" onClick={() => setShowContactDialog(false)}>
-              關閉
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Usage Limit Dialog */}
-      <Dialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>使用次數已達上限</DialogTitle>
-            <DialogDescription>
-              <div className="py-4">
-                <p className="mb-2">您今日的使用次數已達上限 ({usageLimit}次/天)</p>
-                <p className="mb-4">如需更多使用次數，您可以：</p>
-                <ul className="list-disc list-inside space-y-2 text-sm mb-4">
-                  <li>掃描下方二維碼聯繫作者</li>
-                  <li>在設置中配置您自己的AI服務密鑰</li>
-                </ul>
-                <div className="flex justify-center my-4">
-                  <img src="/qrcode.png" alt="聯繫二維碼" className="w-48" />
-                </div>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="sm:justify-center">
-            <Button variant="secondary" onClick={() => setShowLimitDialog(false)}>
-              關閉
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

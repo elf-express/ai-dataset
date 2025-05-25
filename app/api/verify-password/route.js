@@ -10,7 +10,7 @@ export async function POST(request) {
     const correctPassword = process.env.ACCESS_PASSWORD;
     
     if (!correctPassword) {
-      return Response.json({ error: "服務器未配置訪問密碼" }, { status: 500 });
+      return Response.json({ error: "伺服器未配置訪問密碼" }, { status: 500 });
     }
 
     // 驗證密碼

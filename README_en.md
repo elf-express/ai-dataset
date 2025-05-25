@@ -4,7 +4,7 @@ Smart Mermaid is a web application that leverages artificial intelligence to int
 
 ## Try it Out
 
-[https://smart-mermaid.aizhi.site](https://smart-mermaid.aizhi.site)
+[https://AI-mermaid.aizhi.site](https://AI-mermaid.aizhi.site)
 
 **Note:** The application has a built-in API Key, allowing you to use it for free directly. To prevent resource abuse, we have set a daily limit of 5 free generations per user.
 
@@ -151,8 +151,8 @@ Smart Mermaid offers three usage modes:
 1.  **Clone the repository**:
 
     ```bash
-    git clone [https://github.com/yourusername/smart-mermaid.git](https://github.com/yourusername/smart-mermaid.git)
-    cd smart-mermaid
+    git clone [https://github.com/yourusername/AI-mermaid.git](https://github.com/yourusername/AI-mermaid.git)
+    cd AI-mermaid
     ```
 
     *(Please replace `yourusername` with the actual repository path)*
