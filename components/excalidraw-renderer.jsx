@@ -1,5 +1,19 @@
 "use client";
 
+/**
+ * @file excalidraw-renderer.jsx
+ * @description Excalidraw渲染器組件，負責將Mermaid代碼轉換並渲染為Excalidraw圖表
+ * 
+ * 主要功能：
+ * 1. 自動識別和轉換不同類型的Mermaid圖表(流程圖、時序圖、類圖、ER圖等)
+ * 2. 將不支持的圖表類型自動轉換為流程圖或時序圖格式以確保兼容性
+ * 3. 提供交互式的Excalidraw畫布，支持導出和分享
+ * 4. 適配不同屏幕尺寸的響應式設計
+ * 
+ * 本組件實現了用戶的偏好：自動選擇圖表類型，優先使用流程圖和時序圖，
+ * 因為這些類型在Excalidraw中的渲染效果最佳
+ */
+
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { parseMermaidToExcalidraw } from "@excalidraw/mermaid-to-excalidraw";
@@ -9,6 +23,7 @@ import { Download } from "lucide-react";
 import "@excalidraw/excalidraw/index.css";
 import styles from "./excalidraw-renderer.module.css";
 import { convertToExcalidrawElements } from "@excalidraw/excalidraw";
+import { detectIfIsERDiagram, formatEntityName, makeSafeNodeId } from "@/lib/utils";
 
 // Dynamically import Excalidraw to avoid SSR issues
 const Excalidraw = dynamic(
