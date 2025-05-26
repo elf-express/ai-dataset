@@ -106,8 +106,33 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
         });
       } catch (error) {
         console.error("Mermaid rendering error:", error);
-        setRenderError("無法渲染 Mermaid 代碼。請檢查語法是否正確。");
-        toast.error("圖表渲染失敗，請檢查 Mermaid 代碼語法");
+        
+        // 提供更詳細的錯誤信息，特別是關於支持的圖表類型
+        const errorMessage = error.toString();
+        let userFriendlyMessage = "圖表渲染失敗。";
+        let isUnsupportedType = false;
+        
+        // 檢查是否為語法錯誤
+        if (errorMessage.includes("Parse error")) {
+          userFriendlyMessage = "Mermaid語法錯誤。請確保圖表語法正確。";
+        }
+        
+        // 檢查是否為不支持的圖表類型
+        if (code.includes("gantt") || code.includes("pie") || 
+            code.includes("stateDiagram") || code.includes("classDiagram") ||
+            code.includes("erDiagram")) {
+          isUnsupportedType = true;
+          userFriendlyMessage = "已生成圖表代碼，但目前僅支持渲染流程圖(flowchart)和時序圖(sequenceDiagram)。";
+        }
+        
+        setRenderError(userFriendlyMessage);
+        
+        // 如果是不支持的圖表類型，使用信息提示而非錯誤提示
+        if (isUnsupportedType) {
+          toast.info(userFriendlyMessage);
+        } else {
+          toast.error("圖表渲染失敗：" + userFriendlyMessage);
+        }
       } finally {
         setIsRendering(false);
       }
@@ -147,9 +172,15 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
               viewModeEnabled: viewModeEnabled,
               showStats: false,
               showHelpDialog: false,
+              pendingImageElementId: null,
+              gridSize: null,
+              hideInterface: true,
             },
             scrollToContent: true,
           }}
+          height="100%"
+          width="100%"
+          theme="light"
           excalidrawAPI={(api) => setExcalidrawAPI(api)}
           langCode="zh-TW"
           UIOptions={{
@@ -160,8 +191,13 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
               loadScene: false,
               clearCanvas: false,
             },
-            tools: showToolbar,
+            tools: false,
+            menu: false,
             personalSpace: false,
+            dockedSidebarBreakpoint: null,
+            elements: false,
+            welcomeScreen: false,
+            defaultSidebarDockedPreference: false,
           }}
           autoFocus={false}
         />

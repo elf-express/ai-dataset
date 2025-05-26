@@ -88,3 +88,28 @@
 .mermaid-editor {
   font-family: var(--font-mono);
 }
+
+/* Excalidraw移動設備樣式覆蓋 */
+@media (max-width: 768px) {
+  /* 徹底隱藏Excalidraw菜單按鈕 */
+  .excalidraw .Island,
+  .excalidraw .layer-ui__wrapper__footer-center,
+  .excalidraw .layer-ui__wrapper__footer-left,
+  .excalidraw .layer-ui__wrapper__footer-right {
+    display: none !important;
+  }
+  
+  /* 確保圖表充滿整個容器 */
+  .excalidraw-wrapper,
+  .excalidraw,
+  .excalidraw-container {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+  }
+  
+  /* 移除不必要的邊框和陰影 */
+  .excalidraw .App-menu_top .buttonList {
+    display: none !important;
+  }
+}

@@ -241,7 +241,12 @@ export default function Home() {
       } else if (generatedCode) {
         // 如果沒有 aiReply 但有生成 mermaid 代碼，則創建一個更精簡的回覆格式
         const now = new Date();
-        const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        const year = now.getFullYear(); // 西元年份
+        const month = now.getMonth() + 1; // 月份從0開始，所以要+1
+        const day = now.getDate();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const timeString = `${year}/${month}/${day} ${hours}:${minutes}`;
         const formattedReply = "我已根據您的請求生成了流程圖：```mermaid\n" + generatedCode + "\n```\n如果需要修改，請告訴我。 [" + timeString + "]";
         setMessages(msgs => [...msgs, { role: "assistant", content: formattedReply }]);
       }
@@ -278,9 +283,9 @@ export default function Home() {
       />
 
       {/* 主內容區塊 */}
-      <main className="flex-1 flex flex-col md:flex-row gap-y-4 md:gap-x-[20px] px-[25px] py-[20px] h-[calc(100vh-110px)]">
+      <main className="flex-1 flex flex-col md:flex-row gap-y-4 md:gap-x-[20px] px-[25px] py-[20px] md:h-[calc(100vh-110px)] h-auto min-h-[calc(100vh-110px)]">
         {/* 左側：對話區卡片 */}
-        <section className="w-full md:w-[40%] flex flex-col">
+        <section className="w-full md:w-[40%] flex flex-col md:h-full h-[45vh]">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
             {/* 對話紀錄區 */}
             <div className="flex-1 overflow-y-auto mb-2">
@@ -299,7 +304,7 @@ export default function Home() {
                     handleGenerateClick();
                   }
                 }}
-                className="w-full min-h-[40px] h-auto py-2 pl-4 pr-[60px] rounded-2xl border border-gray-300 shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="w-full min-h-[40px] h-auto py-2 pl-4 pr-[70px] rounded-2xl border border-gray-300 shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
                 placeholder="請在此輸入或貼上文字內容 ..."
                 rows={2}
                 style={{lineHeight: '1.5'}}
@@ -307,8 +312,9 @@ export default function Home() {
               <Button
                 onClick={handleGenerateClick}
                 disabled={isGenerating || locked || !passwordVerified}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-lg text-xs"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2"
                 size="sm"
+                variant="default"
               >
                 <Wand2 className="h-3 w-3 mr-[2px]" />
                 送出
@@ -317,7 +323,7 @@ export default function Home() {
           </div>
         </section>
         {/* 右側：畫布卡片 */}
-        <section className="w-full md:w-[60%] flex flex-col">
+        <section className="w-full md:w-[60%] flex flex-col md:h-full h-[45vh]">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
             <ExcalidrawRenderer 
               mermaidCode={mermaidCode || ''} 
