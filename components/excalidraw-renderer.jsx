@@ -94,6 +94,9 @@ function ExcalidrawRenderer({ mermaidCode }) {
             },
           }}
           excalidrawAPI={(api) => setExcalidrawAPI(api)}
+          langCode="zh-TW"
+          viewModeEnabled="disabled"
+          zoomingEnabled="disabled"
           />
         )}
       </div>
