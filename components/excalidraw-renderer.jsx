@@ -216,19 +216,7 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
     
     console.log("Final code to render:", code);
     
-    // 檢查是否發生了轉換
-    if (code !== originalCode) {
-      // 根據原始圖表類型顯示不同的提示
-      if (originalCode.startsWith("erDiagram")) {
-        toast.info("已自動將 ER 圖轉換為流程圖以協助渲染");
-      } else if (originalCode.startsWith("stateDiagram") || originalCode.startsWith("stateDiagram-v2")) {
-        toast.info("已自動將狀態圖轉換為流程圖以協助渲染");
-      } else if (originalCode.startsWith("classDiagram")) {
-        toast.info("已自動將類圖轉換為流程圖以協助渲染");
-      }
-      console.log("Original code type:", originalCode.split('\n')[0]);
-      console.log("Converted diagram code:", code);
-    }
+    // 注意：已在每種圖表類型的轉換中顯示相應提示，此處不需要再檢查
 
     const renderMermaid = async () => {
       setIsRendering(true);
