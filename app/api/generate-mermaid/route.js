@@ -165,8 +165,38 @@ b) 生成的圖表代碼應可以直接複製並粘貼到支持mermaid語法的�
                 if (data === '[DONE]') continue;
                 
                 try {
-                  const parsed = JSON.parse(data);
-                  const content = parsed.choices[0]?.delta?.content || '';
+                  // 確保 data 是有效的 JSON 字符串
+                  if (!data || data.trim() === '') {
+                    console.warn('Received empty data chunk, skipping');
+                    continue;
+                  }
+
+                  // 安全地嘗試解析 JSON
+                  let parsed;
+                  try {
+                    parsed = JSON.parse(data);
+                  } catch (parseError) {
+                    console.warn('Invalid JSON received, attempting to repair:', data);
+                    
+                    // 嘗試修復不完整的 JSON
+                    if (data.includes('"choices":[{"index":') && !data.endsWith('}]}')) {
+                      // 如果 JSON 被截斷，嘗試修復它
+                      const repairedData = data + '"}]}]}';
+                      try {
+                        parsed = JSON.parse(repairedData);
+                        console.log('Successfully repaired truncated JSON');
+                      } catch (repairError) {
+                        console.error('Failed to repair JSON:', repairError);
+                        continue; // 繼續處理下一個數據塊
+                      }
+                    } else {
+                      // 如果無法修復，跳過這個數據塊
+                      console.error('Cannot repair malformed JSON:', data);
+                      continue;
+                    }
+                  }
+                  
+                  const content = parsed?.choices?.[0]?.delta?.content || '';
                   if (content) {
                     mermaidCode += content;
                     // 發送給客户端
@@ -176,7 +206,8 @@ b) 生成的圖表代碼應可以直接複製並粘貼到支持mermaid語法的�
                     })));
                   }
                 } catch (e) {
-                  console.error('Error parsing chunk:', e);
+                  console.error('Error processing chunk:', e, '\nData:', data);
+                  // 繼續處理下一個數據塊而不中斷流程
                 }
               }
             }

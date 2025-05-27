@@ -23,7 +23,7 @@ import { Download } from "lucide-react";
 import "@excalidraw/excalidraw/index.css";
 import styles from "./excalidraw-renderer.module.css";
 import { convertToExcalidrawElements } from "@excalidraw/excalidraw";
-import { detectIfIsERDiagram, formatEntityName, makeSafeNodeId } from "@/lib/utils";
+import { detectIfIsERDiagram, formatEntityName, makeSafeNodeId, convertToSupportedType } from "@/lib/utils";
 
 // Dynamically import Excalidraw to avoid SSR issues
 const Excalidraw = dynamic(
@@ -74,6 +74,8 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
     }
   };
 
+  // 注意：convertERToFlow 和 convertStateToFlow 函數已移至 utils.js
+
   useEffect(() => {
     if (!excalidrawAPI) return;
     
@@ -89,7 +91,15 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
     }
 
     // 檢查是否為 mermaid 代碼
-    const code = mermaidCode.trim();
+    let code = mermaidCode.trim();
+    
+    // 如果以 mermaid 開頭，移除它
+    if (code.startsWith("mermaid")) {
+      code = code.replace(/^mermaid\s*\n?/, "").trim();
+      console.log("Removed mermaid prefix from diagram code");
+    }
+
+    // 簡單檢查是否為支持的圖表類型
     const isMermaid =
       code.startsWith("graph") ||
       code.startsWith("flowchart") ||
@@ -104,21 +114,143 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
       setRenderError(code); // 直接顯示 AI 提示
       return;
     }
+    
+    // 將狀態圖轉換為流程圖
+    if (code.startsWith("stateDiagram") || code.startsWith("stateDiagram-v2")) {
+      const originalCode = code;
+      
+      // 分析狀態圖代碼
+      const lines = code.split('\n');
+      
+      // 移除開頭的stateDiagram標識
+      const processedLines = lines.filter(line => {
+        const trimmed = line.trim();
+        return !trimmed.startsWith('stateDiagram') && !trimmed.startsWith('stateDiagram-v2') && trimmed !== '';
+      });
+      
+      // 加入簡單的流程圖頭
+      let flowchart = "flowchart LR\n";
+      
+      // 收集所有的狀態和轉換
+      const states = new Set();
+      
+      // 第一遍：收集所有狀態
+      for (const line of processedLines) {
+        const parts = line.split('-->');
+        if (parts.length >= 2) {
+          states.add(parts[0].trim());
+          // 取得目標狀態(可能包含標籤和其他文本)
+          const targetWithLabel = parts[1].trim();
+          const targetState = targetWithLabel.split(':')[0].trim();
+          states.add(targetState);
+        }
+      }
+      
+      // 第二遍：為每個狀態創建節點
+      for (const state of states) {
+        if (state === '[*]') {
+          flowchart += `    start_end(("\u958b\u59cb/\u7d50\u675f"))\n`;
+        } else {
+          const safeId = state.replace(/[\s*\[\]]/g, '_');
+          flowchart += `    ${safeId}["${state}"]\n`;
+        }
+      }
+      
+      // 第三遍：添加轉換
+      for (const line of processedLines) {
+        const parts = line.split('-->');
+        if (parts.length >= 2) {
+          const fromState = parts[0].trim();
+          const targetWithLabel = parts[1].trim();
+          
+          // 分離目標狀態和標籤
+          const labelParts = targetWithLabel.split(':');
+          const toState = labelParts[0].trim();
+          const label = labelParts.length > 1 ? labelParts[1].trim() : "";
+          
+          // 安全的 ID
+          const fromId = fromState === '[*]' ? 'start_end' : fromState.replace(/[\s*\[\]]/g, '_');
+          const toId = toState === '[*]' ? 'start_end' : toState.replace(/[\s*\[\]]/g, '_');
+          
+          // 添加轉換行
+          if (label) {
+            flowchart += `    ${fromId} --"${label}"--> ${toId}\n`;
+          } else {
+            flowchart += `    ${fromId} --> ${toId}\n`;
+          }
+        }
+      }
+      
+      code = flowchart;
+      console.log("Converted state diagram to flowchart");
+      toast.info("已自動將狀態圖轉換為流程圖以協助渲染");
+    }
+    
+    // 將 ER 圖轉換為流程圖
+    else if (code.startsWith("erDiagram")) {
+      const originalCode = code;
+      let flowchart = "flowchart LR\n";
+      
+      // 簡單處理：將每個非空行轉換為節點
+      const entities = [];
+      
+      code.split('\n')
+        .filter(line => line.trim() && !line.trim().startsWith('erDiagram'))
+        .forEach((line, index) => {
+          const entityId = `entity${index}`;
+          entities.push(entityId);
+          flowchart += `    ${entityId}["${line.trim()}"]\n`;
+        });
+      
+      // 添加簡單連接
+      if (entities.length > 1) {
+        for (let i = 0; i < entities.length - 1; i++) {
+          flowchart += `    ${entities[i]} --> ${entities[i+1]}\n`;
+        }
+      }
+      
+      code = flowchart;
+      console.log("Converted ER diagram to simplified flowchart");
+      toast.info("已自動將 ER 圖轉換為流程圖以協助渲染");
+    }
+    
+    console.log("Final code to render:", code);
+    
+    // 檢查是否發生了轉換
+    if (code !== originalCode) {
+      // 根據原始圖表類型顯示不同的提示
+      if (originalCode.startsWith("erDiagram")) {
+        toast.info("已自動將 ER 圖轉換為流程圖以協助渲染");
+      } else if (originalCode.startsWith("stateDiagram") || originalCode.startsWith("stateDiagram-v2")) {
+        toast.info("已自動將狀態圖轉換為流程圖以協助渲染");
+      } else if (originalCode.startsWith("classDiagram")) {
+        toast.info("已自動將類圖轉換為流程圖以協助渲染");
+      }
+      console.log("Original code type:", originalCode.split('\n')[0]);
+      console.log("Converted diagram code:", code);
+    }
 
     const renderMermaid = async () => {
       setIsRendering(true);
       setRenderError(null);
 
       try {
+        console.log("Attempting to parse mermaid code:", code);
         const { elements, files } = await parseMermaidToExcalidraw(code);
+        console.log("Parsed elements:", elements ? elements.length : 0);
 
-        setExcalidrawElements(convertToExcalidrawElements(elements));
-        excalidrawAPI.updateScene({
-          elements: convertToExcalidrawElements(elements),
-        });
-        excalidrawAPI.scrollToContent(excalidrawAPI.getSceneElements(), {
-          fitToContent: true,
-        });
+        if (elements && elements.length > 0) {
+          setExcalidrawElements(convertToExcalidrawElements(elements));
+          excalidrawAPI.updateScene({
+            elements: convertToExcalidrawElements(elements),
+          });
+          excalidrawAPI.scrollToContent(excalidrawAPI.getSceneElements(), {
+            fitToContent: true,
+          });
+        } else {
+          console.error("No elements returned from parseMermaidToExcalidraw");
+          setRenderError("渲染失敗：圖表沒有產生任何元素");
+        }
       } catch (error) {
         console.error("Mermaid rendering error:", error);
         
@@ -128,16 +260,11 @@ function ExcalidrawRenderer({ mermaidCode, showToolbar = false, viewModeEnabled 
         let isUnsupportedType = false;
         
         // 檢查是否為語法錯誤
-        if (errorMessage.includes("Parse error")) {
+        if (errorMessage.includes("Parse error") || errorMessage.includes("Syntax error")) {
           userFriendlyMessage = "Mermaid語法錯誤。請確保圖表語法正確。";
-        }
-        
-        // 檢查是否為不支持的圖表類型
-        if (code.includes("gantt") || code.includes("pie") || 
-            code.includes("stateDiagram") || code.includes("classDiagram") ||
-            code.includes("erDiagram")) {
+        } else if (code.includes("gantt") || code.includes("pie")) {
           isUnsupportedType = true;
-          userFriendlyMessage = "已生成圖表代碼，但目前僅支持渲染流程圖(flowchart)和時序圖(sequenceDiagram)。";
+          userFriendlyMessage = "已生成圖表代碼，但目前僅支持渲染流程圖(flowchart)、時序圖(sequenceDiagram)、ER 圖(erDiagram)、狀態圖(stateDiagram)和類圖(classDiagram)。";
         }
         
         setRenderError(userFriendlyMessage);
