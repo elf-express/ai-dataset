@@ -29,23 +29,23 @@ export function ChatBubble({ msg }) {
       >
         {textContent}
         {mermaidCode && (
-          <pre className="relative bg-white border border-gray-300 rounded-md p-2 mt-2 overflow-x-auto text-[13px] leading-relaxed">
-            <code>{`mermaid\n${mermaidCode}`}</code>
+          <pre className="relative bg-white border border-gray-300 rounded-md p-2 pr-10 mt-2 overflow-x-auto text-[13px] leading-relaxed">
+            <code className="block pr-2">{`mermaid\n${mermaidCode}`}</code>
             
             {msg.role === "assistant" && (
               <button 
                 ref={copyBtnRef}
                 aria-label="複製代碼"
-                className="absolute top-2 right-2 p-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+                className="absolute top-2 right-2 p-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors z-10 shadow-sm"
                 onClick={() => {
                   const fullCode = `mermaid\n${mermaidCode}`;
                   navigator.clipboard.writeText(fullCode)
                     .then(() => {
-                      // 顯示複製成功的視覺反饋
+                      // 顯示複製成功的視覺反饰
                       if (copyBtnRef.current) {
                         // 切換按鈕樣式為成功狀態
-                        copyBtnRef.current.classList.add('bg-green-100', 'text-green-600');
-                        copyBtnRef.current.classList.remove('bg-gray-100', 'text-gray-600');
+                        copyBtnRef.current.classList.add('bg-green-600');
+                        copyBtnRef.current.classList.remove('bg-primary');
                         
                         // 更新按鈕內容
                         const originalContent = copyBtnRef.current.innerHTML;
@@ -54,8 +54,8 @@ export function ChatBubble({ msg }) {
                         setTimeout(() => {
                           if (copyBtnRef.current) {
                             copyBtnRef.current.innerHTML = originalContent;
-                            copyBtnRef.current.classList.remove('bg-green-100', 'text-green-600');
-                            copyBtnRef.current.classList.add('bg-gray-100', 'text-gray-600');
+                            copyBtnRef.current.classList.remove('bg-green-600');
+                            copyBtnRef.current.classList.add('bg-primary');
                           }
                         }, 2000);
                       }

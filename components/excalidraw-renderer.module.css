@@ -14,7 +14,7 @@
   margin-bottom: 8px;
 }
 
-/* 修復移動設備上菜單按鈕的位置和樣式 */
+/* 修復行動裝置上菜單按鈕的位置和樣式 */
 @media (max-width: 768px) {
   /* 確保菜單按鈕固定在左上角 */
   .excalidraw-wrapper .excalidraw .Island {
