@@ -54,51 +54,68 @@ export async function POST(request) {
 
     // 構建 prompt 根據圖表類型
     let systemPrompt = `
-    目的和目標：
-* 理解用户提供的文檔的結構和邏輯關係。
-* 準確地將文檔內容和關係轉化為符合mermaid語法的圖表代碼。
-* 確保圖表中包含文檔的所有關鍵元素和它們之間的聯繫。
+目的與任務：
+* 理解使用者提供的文檔結構與邏輯。
+* 將文檔內容轉化為正確且可視化的 Mermaid 圖表代碼。
+* 圖表需包含文檔所有關鍵元素與其間邏輯或流程關係。
 
-行為和規則：
+行為與規則：
+
 1. 分析文檔：
-a) 仔細閲讀和分析用户提供的文檔內容。
-b) 識別文檔中的不同元素（如概念、實體、步驟、流程等）。
-c) 理解這些元素之間的各種關係（如從屬、包含、流程、因果等）。
-d) 識別文檔中藴含的邏輯結構和流程。
+a) 仔細閱讀並分析使用者提供的內容。
+b) 識別文中不同元素（如概念、流程、實體、條件、分支等）。
+c) 明確這些元素間的關係（從屬、包含、流程順序、因果等）。
+d) 判斷並提取文檔的邏輯結構與層次。
+
 2. 圖表生成：
-    `
-    
-    if (diagramType && diagramType !== "auto") {
-      systemPrompt += `a) 請特別生成 ${diagramType} 類型的圖表。`;
-    } else {
-      systemPrompt += `a) 根據分析結果，選擇最適合表達文檔結構的mermaid圖表類型（流程圖、時序圖、類圖中的一種）。`;
-    }
+a) ${diagramType === 'auto' ? '根據內容自動選擇最合適的 Mermaid 圖表形式' : `使用 ${diagramType} 類型的 Mermaid 圖表`}。
 
-    systemPrompt += `
-    b) 使用正確的mermaid語法創建圖表代碼，充分參考下面的Mermaid 語法特殊字符説明："""
-* Mermaid 的核心特殊字符主要用於**定義圖表結構和關係**。
-* 要在節點 ID 或標籤中**顯示**特殊字符(如括號，引號）或包含**空格**，最常用方法是用**雙引號 \`""\`** 包裹。
-* 在標籤文本（引號內）中顯示 HTML 特殊字符 (\`<\`, \`>\`, \`&\`) 或 \`#\` 等，應使用 **HTML 實體編碼**。
-* 使用 \`%%\` 進行**註釋**。
-* 序號之後不要跟進空格，比如\`1. xxx\`應該改成\`1.xxx\`
-* 用不同的背景色以區分不同層級或是從屬的元素\`
-`
+b) 使用正確的 Mermaid 語法生成圖表，請特別注意以下規則與範例：
 
-systemPrompt+=`
-c) 確保圖表清晰、易於理解，準確反映文檔的內容和邏輯。
+  1. 節點與標籤格式：
+     - 節點 ID 僅允許使用英文大小寫字母、數字、底線（_）與連字符（-），不允許使用點（.）或其他符號。
+       ✔ 合法：F1_1、node-A  ✘ 非法：F1.1、node@1
+     - 節點標籤請用中括號 [ ] 包裹，如：\`A[開始]\`
+     - 若標籤包含空格、括號、引號等特殊字元，請使用雙引號包裹：\`A["提交申請表 (PDF)"]\`
+     - 若標籤中包含 HTML 特殊字符（如 <、>、&、#），請改用 HTML 實體編碼，如 \`&lt;\`、\`&gt;\`、\`&amp;\`、\`&#35;\`
 
-d) 不要使用<artifact>標籤包裹代碼，而是直接以markdown格式返回代碼。
-`
+  2. Mermaid 基本語法：
+     - 使用箭頭表示流程關係：\`A --> B\`
+     - 使用 \`%%\` 可註解內容，不顯示在圖表中
+     - 序號項目（如 1.定義）後請勿空格，避免誤解析為 markdown 列表
 
-systemPrompt += `
+  3. 樣式與樣式類：
+     - 樣式類應該在圖表定義之後單獨應用，而不是在節點定義時直接使用 :::
+     - 正確用法：\n       \`\`\`mermaid\n       graph TD\n         A[節點1]\n         B[節點2]\n         class A style1;\n         class B style2;\n       \`\`\`
+     - 錯誤用法：\`A[節點1]:::style1\`（這種寫法在某些版本中可能導致錯誤）
+     - 樣式類需使用 \`classDef\` 事先定義，範例如下：\n       \`\`\`mermaid\n       classDef style1 fill:#E6F3FF,stroke:#B0C4DE,color:#333;\n       classDef style2 fill:#E8FFE8,stroke:#32CD32,color:#333;\n       classDef style3 fill:#FFF5EE,stroke:#FF6347,color:#333;\n       \`\`\`
+     - 可以一次為多個節點應用相同樣式：\`class A,B,C style1;\`
+     - 樣式是可選的，如果不需要可以不使用
+     - 不支援在節點標籤中使用 HTML 標籤（如 <font>）來設置樣式
+
+  4. 子圖 subgraph 語法規範：
+     - 基本範例如下：\n       \`\`\`mermaid\n       graph TD\n         subgraph 子圖標題\n           direction LR\n           A --> B\n         end\n         class A,B style1;  % 在子圖外部應用樣式\n       \`\`\`
+     - 子圖必須以 \`subgraph 標題\` 開始，並以 \`end\` 結束
+     - 子圖內必須有 \`direction LR\` 或 \`direction TB\` 作為第一行
+     - 子圖內可以包含完整的節點和連接線
+     - 樣式類應該在子圖外部應用
+     - 確保子圖內的方向聲明（direction）是第一個語句
+
+  5. 完整範例：\n     \`\`\`mermaid\n     graph TD\n       %% 1. 定義節點\n       A["開始"]\n       B{"條件判斷"}\n       C[步驟一]\n       D[步驟二]\n       E[結束]\n\n       %% 2. 定義連接\n       A --> B\n       B -->|是| C\n       B -->|否| D\n       C --> E\n       D --> E\n\n       %% 3. 定義樣式\n       classDef startEnd fill:#f9f,stroke:#333,stroke-width:2px;\n       classDef decision fill:#f96,stroke:#333,stroke-width:2px;\n       classDef process fill:#bbf,stroke:#333,stroke-width:2px;\n\n       %% 4. 應用樣式\n       class A,E startEnd;\n       class B decision;\n       class C,D process;\n     \`\`\`
+
+c) 圖表應結構清晰、易於理解，能準確反映文檔的內容與邏輯流程。
+
+d) 不可使用 <artifact> 標籤或 HTML tag 包裹圖表，請直接以 markdown 的三個反引號 (\`\`\`) 標示代碼區塊。
+
 3. 細節處理：
-a) 避免遺漏文檔中的任何重要細節或關係。
-b) 生成的圖表代碼應可以直接複製並粘貼到支持mermaid語法的工具或平台中使用。
-整體語氣：
-* 保持專業和嚴謹的態度。
-* 清晰、準確地表達圖表的內容。
-* 在需要時，可以提供簡短的解釋或建議。
-`
+a) 請勿遺漏任何重要的元素與關聯。
+b) 請確保圖表代碼可直接複製貼上至支援 Mermaid 的平台中運行與渲染。
+
+整體語氣與風格：
+* 保持專業與嚴謹，輸出結構標準且工整的 Mermaid 語法。
+* 僅在需要時提供簡要說明，不贅述。
+* 不應生成解釋性文字，只需輸出符合格式的 Mermaid 代碼區塊。
+`;
 
     const messages = [
       {

@@ -36,13 +36,51 @@ function ExcalidrawRenderer({ mermaidCode }) {
     }
     
 
+    // 清理 Mermaid 代碼的輔助函數
+    const cleanMermaidCode = (code) => {
+      if (!code) return '';
+      
+      // 1. 修復轉義的引號和方括號
+      let cleaned = code.replace(/\\"/g, '"').replace(/\\\[/g, '[').replace(/\\\]/g, ']');
+      
+      // 2. 移除可能的代碼塊標記
+      cleaned = cleaned.replace(/^```(mermaid)?\s*\n|\s*```$/g, '');
+      
+      // 3. 確保 direction 聲明是子圖內的第一個語句
+      cleaned = cleaned.replace(/(subgraph\s+[^\n{]*\s*{)([^\n]*)(\s*direction\s+[LR|TB|RL|BT]+)/g, 
+        (match, p1, p2, p3) => {
+          // 如果 direction 不是子圖的第一個語句，則將其移動到最前面
+          const content = p2.replace(/^\s*\n?|\s*$/g, '');
+          return `${p1}\n    ${p3}${content ? '\n    ' + content : ''}`;
+        }
+      );
+      
+      // 4. 確保每個節點定義後都有換行
+      cleaned = cleaned.replace(/([;}\]])/g, '$1\n');
+      
+      // 5. 確保節點之間有適當的空格
+      cleaned = cleaned.replace(/(\w\s*\[.*?\])(?=\w)/g, '$1\n');
+      
+      // 6. 修復節點 ID 中的點號
+      cleaned = cleaned.replace(/(\w+)\.(\d+)/g, '$1_$2');
+      
+      // 7. 移除多餘的空行
+      cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+      
+      return cleaned.trim();
+    };
+
     const renderMermaid = async () => {
       setIsRendering(true);
       setRenderError(null);
 
       try {
+        // 在渲染前清理 Mermaid 代碼
+        const cleanedMermaidCode = cleanMermaidCode(mermaidCode);
+        console.log('Cleaned Mermaid code:', cleanedMermaidCode);
+        
         const { elements, files } = await parseMermaidToExcalidraw(
-          mermaidCode,
+          cleanedMermaidCode,
         );
 
         setExcalidrawElements(convertToExcalidrawElements(elements));
@@ -95,8 +133,8 @@ function ExcalidrawRenderer({ mermaidCode }) {
           }}
           excalidrawAPI={(api) => setExcalidrawAPI(api)}
           langCode="zh-TW"
-          viewModeEnabled="disabled"
-          zoomingEnabled="disabled"
+          viewModeEnabled={false}
+          zoomingEnabled={false}
           />
         )}
       </div>
