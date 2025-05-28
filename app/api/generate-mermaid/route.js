@@ -194,10 +194,16 @@ b) 請確保圖表代碼可直接複製貼上至支援 Mermaid 的平台中運�
                   if (content) {
                     mermaidCode += content;
                     // 發送給客户端
-                    controller.enqueue(encoder.encode(JSON.stringify({ 
-                      chunk: content,
-                      done: false 
-                    })));
+                    try {
+                      if (controller) {
+                        controller.enqueue(encoder.encode(JSON.stringify({ 
+                          chunk: content,
+                          done: false 
+                        })));
+                      }
+                    } catch (e) {
+                      console.error('Error enqueuing chunk:', e);
+                    }
                   }
                 } catch (e) {
                   console.error('Error parsing chunk:', e);
@@ -211,21 +217,37 @@ b) 請確保圖表代碼可直接複製貼上至支援 Mermaid 的平台中運�
           const finalCode = codeBlockMatch ? codeBlockMatch[1].trim() : mermaidCode;
           
           // 發送完成信號
-          controller.enqueue(encoder.encode(JSON.stringify({ 
-            mermaidCode: finalCode,
-            done: true 
-          })));
+          try {
+            if (controller) {
+              controller.enqueue(encoder.encode(JSON.stringify({ 
+                mermaidCode: finalCode,
+                done: true 
+              })));
+              controller.close();
+            }
+          } catch (e) {
+            console.error('Error sending final chunk:', e);
+          }
           
         } catch (error) {
           console.error("Streaming Error:", error);
-          controller.enqueue(encoder.encode(JSON.stringify({ 
-            error: `處理請求時發生錯誤: ${error.message}`, 
-            done: true 
-          })));
-        } finally {
-          controller.close();
+          try {
+            if (controller) {
+              controller.enqueue(encoder.encode(JSON.stringify({ 
+                error: `處理請求時發生錯誤: ${error.message}`, 
+                done: true 
+              })));
+            }
+          } catch (e) {
+            console.error('Error sending error response:', e);
+          } finally {
+            try {
+              if (controller) controller.close();
+            } catch (e) {
+              console.error('Error closing controller:', e);
+            }
+          }
         }
-      }
     });
 
     // 返回流式響應
