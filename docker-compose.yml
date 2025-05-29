@@ -3,17 +3,17 @@ version: '3.8'
 services:
   ai-mermaid:
     build: .
+    image: tw199501/ai-mermaid:1.0.4
     container_name: ai-mermaid
     ports:
       - "3000:3000"
+    env_file:  # 使用 env_file 來載入 .env 文件
+      - .env  
     environment:
       - NODE_ENV=production
-      # 在這裡添加其他環境變數，例如 OpenAI API 金鑰
-      # - OPENAI_API_KEY=your_api_key_here
     restart: unless-stopped
     volumes:
       - .:/app
       - /app/node_modules
       - /app/.next
-    # 在開發模式下運行時取消註釋以下行
-    # command: npm run dev
+

@@ -155,44 +155,11 @@ AI Mermaid 提供二種使用模式：
    - **模型名稱**: 使用的模型（如：`gpt-3.5-turbo`, `gpt-4`等）
 3. 保存配置後即可無限使用
 
-## 技術選型
+## 🚀 快速開始
 
-* **前端框架**: Next.js 15 (採用 App Router)
-* **UI 組件庫**: shadcn/ui
-* **CSS 框架**: Tailwind CSS
-* **圖表渲染與處理**:
-    * Excalidraw (`@excalidraw/excalidraw`)
-    * Mermaid 到 Excalidraw 轉換 (`@excalidraw/mermaid-to-excalidraw`)
-* **文件解析**: mammoth (用於處理 `.docx` 文件)
-* **AI 服務**: 兼容 OpenAI API 模式
+### 使用 Docker 部署（推薦）
 
-## 本地部署指南
-
-### 環境要求
-
-* Node.js 18.x 或更高版本
-* npm 或 yarn 包管理工具
-
-### 安裝步驟
-
-1.  **克隆代碼倉庫**:
-    ```bash
-    git clone [https://github.com/yourusername/AI-mermaid.git](https://github.com/yourusername/AI-mermaid.git)
-    cd AI-mermaid
-    ```
-    *(請將 `yourusername` 替換為實際的倉庫路徑)*
-
-2.  **安裝項目依賴**:
-    ```bash
-    npm install
-    # 或者
-    yarn install
-    ```
-
-3.  **配置環境變量**:
-    在項目根目錄下創建 `.env.local` 文件，並填入以下配置：
-    ```plaintext
-    # AI 服務配置（必需）
+1. **複製環境變數範例**：
     AI_API_URL=https://api.openai.com/v1
     AI_API_KEY=在此處填入您的API密鑰
     AI_MODEL_NAME=gpt-3.5-turbo
@@ -203,6 +170,11 @@ AI Mermaid 提供二種使用模式：
     
     # 訪問密碼（可選）
     ACCESS_PASSWORD=設置您的訪問密碼
+    ## 環境變數設置
+
+1. 複製 `.env.example` 為 `.env`：
+   ```bash
+   cp .env.example .env
     ```
 
     **環境變量説明**:

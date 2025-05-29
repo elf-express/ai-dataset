@@ -39,9 +39,9 @@ export async function POST(request) {
       
       // 如果沒有傳入accessPassword或者accessPassword有效，使用環境變數配置
       finalConfig = {
-        apiUrl: process.env.AI_API_URL,
-        apiKey: process.env.AI_API_KEY,
-        modelName: process.env.AI_MODEL_NAME
+        apiUrl: process.env.AI_API_URL || process.env.NEXT_PUBLIC_AI_API_URL,
+        apiKey: process.env.AI_API_KEY || process.env.NEXT_PUBLIC_AI_API_KEY,
+        modelName: process.env.AI_MODEL_NAME || process.env.NEXT_PUBLIC_AI_MODEL_NAME
       };
     }
 
