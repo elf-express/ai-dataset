@@ -16,6 +16,15 @@ const Excalidraw = dynamic(
     ssr: false,
   }
 );
+  // 固定 initialData 物件，避免每次渲染都產生新物件導致 Excalidraw 重設
+const excalidrawInitialData = {
+  appState: {
+    viewBackgroundColor: "#fafafa",
+    currentItemFontFamily: 1,
+    zenModeEnabled: false,
+    viewModeEnabled: false,
+  },
+};
 
 function ExcalidrawRenderer({ mermaidCode }) {
   const [excalidrawElements, setExcalidrawElements] = useState([]);
@@ -24,6 +33,7 @@ function ExcalidrawRenderer({ mermaidCode }) {
   const [isRendering, setIsRendering] = useState(false);
   const [renderError, setRenderError] = useState(null);
 
+  // 只要 mermaidCode 有變動（包含手動編輯），畫布就會自動同步更新
   useEffect(() => {
     if(!excalidrawAPI) return;
     
@@ -141,14 +151,9 @@ function ExcalidrawRenderer({ mermaidCode }) {
         
         { (
           <Excalidraw
-          initialData={{
-            appState: {
-              viewBackgroundColor: "#fafafa",
-              currentItemFontFamily: 1,
-            },
-          }}
-          excalidrawAPI={(api) => setExcalidrawAPI(api)}
-          langCode="zh-TW"
+            initialData={excalidrawInitialData}
+            excalidrawAPI={(api) => setExcalidrawAPI(api)}
+            langCode="zh-TW"
           />
         )}
       </div>

@@ -88,21 +88,21 @@ export function ChatBubble({ msg }) {
                   <button 
                     ref={copyBtnRef}
                     aria-label="複製代碼"
-                    className="p-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
+                    className="p-1.5 rounded-md bg-white text-black border border-gray-300 hover:bg-gray-200 transition-colors shadow-sm"
                     onClick={() => {
                       const fullCode = isEditing ? editValue : mermaidCodeState;
                       navigator.clipboard.writeText(fullCode)
                         .then(() => {
                           if (copyBtnRef.current) {
-                            copyBtnRef.current.classList.add('bg-green-600');
-                            copyBtnRef.current.classList.remove('bg-primary');
+                            copyBtnRef.current.classList.add('bg-green-600', 'text-white');
+                            copyBtnRef.current.classList.remove('bg-white', 'text-black');
                             const originalContent = copyBtnRef.current.innerHTML;
-                            copyBtnRef.current.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                            copyBtnRef.current.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                             setTimeout(() => {
                               if (copyBtnRef.current) {
                                 copyBtnRef.current.innerHTML = originalContent;
-                                copyBtnRef.current.classList.remove('bg-green-600');
-                                copyBtnRef.current.classList.add('bg-primary');
+                                copyBtnRef.current.classList.remove('bg-green-600', 'text-white');
+                                copyBtnRef.current.classList.add('bg-white', 'text-black');
                               }
                             }, 2000);
                           }
@@ -112,6 +112,7 @@ export function ChatBubble({ msg }) {
                         });
                     }}
                   >
+                    {/* 黑白 icon */}
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                   </button>
                   <button
