@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-export function ChatBubble({ msg }) {
+export function ChatBubble({ msg, onMermaidCodeUpdate }) {
   // 檢查是否有 mermaid code
   // 先檢查是否是 ```mermaid 格式
   const mermaidBlockMatch = msg.role === "assistant" && msg.content.match(/```mermaid([\s\S]*?)```/);
@@ -124,8 +124,13 @@ export function ChatBubble({ msg }) {
                     }`}
                     onClick={() => {
                       if (isEditing) {
-                        setMermaidCodeState(editValue);
+                        const newCode = editValue;
+                        setMermaidCodeState(newCode);
                         setIsEditing(false);
+                        // 通知父組件代碼已更新
+                        if (onMermaidCodeUpdate) {
+                          onMermaidCodeUpdate(newCode);
+                        }
                       } else {
                         setEditValue(mermaidCodeState);
                         setIsEditing(true);

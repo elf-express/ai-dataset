@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { ChatBubble } from "./chat-bubble";
 
-export function ChatHistory({ messages }) {
+export function ChatHistory({ messages, onMermaidCodeUpdate }) {
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -19,7 +19,11 @@ export function ChatHistory({ messages }) {
         <div className="text-muted-foreground text-sm text-center">尚無對話紀錄</div>
       )}
       {visibleMessages.map((msg, i) => (
-        <ChatBubble key={i} msg={msg} />
+        <ChatBubble 
+          key={i} 
+          msg={msg} 
+          onMermaidCodeUpdate={onMermaidCodeUpdate}
+        />
       ))}
       <div ref={bottomRef} />
     </div>

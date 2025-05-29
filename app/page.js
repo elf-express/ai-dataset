@@ -32,46 +32,53 @@ const ExcalidrawRenderer = dynamic(() => import("@/components/excalidraw-rendere
 const usageLimit = parseInt(process.env.NEXT_PUBLIC_DAILY_USAGE_LIMIT || "5");
 
 // Usage tracking functions
+// 獲取當天的使用數據
+const getDailyUsage = () => {
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  const usageData = JSON.parse(localStorage.getItem('usageData') || '{}');
+  const todayUsage = usageData[today] || 0;
+  return { today, usageData, todayUsage };
+};
+
+// 保存使用數據
+const saveUsageData = (today, usageData) => {
+  localStorage.setItem('usageData', JSON.stringify(usageData));
+};
+
+// 檢查是否超過使用限制
 const checkUsageLimit = () => {
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-  const usageData = JSON.parse(localStorage.getItem('usageData') || '{}');
-  const todayUsage = usageData[today] || 0;
-  return todayUsage < usageLimit; // Return true if within limit
+  const { todayUsage } = getDailyUsage();
+  return todayUsage < usageLimit;
 };
 
+// 增加使用次數
 const incrementUsage = () => {
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-  const usageData = JSON.parse(localStorage.getItem('usageData') || '{}');
+  const { today, usageData } = getDailyUsage();
   
   if (!usageData[today]) {
     usageData[today] = 0;
   }
   
   usageData[today] += 1;
-  localStorage.setItem('usageData', JSON.stringify(usageData));
+  saveUsageData(today, usageData);
 };
 
+// 檢查並增加使用次數
 const checkAndIncrementUsage = () => {
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-  const usageData = JSON.parse(localStorage.getItem('usageData') || '{}');
+  const { today, usageData, todayUsage } = getDailyUsage();
   
-  if (!usageData[today]) {
-    usageData[today] = 0;
+  if (todayUsage >= usageLimit) {
+    return false; // 超過限制
   }
   
-  if (usageData[today] >= usageLimit) {
-    return false; // Limit exceeded
-  }
-  
-  usageData[today] += 1;
-  localStorage.setItem('usageData', JSON.stringify(usageData));
-  return true; // Within limit
+  usageData[today] = (usageData[today] || 0) + 1;
+  saveUsageData(today, usageData);
+  return true; // 在限制內
 };
 
+// 獲取剩餘使用次數
 const getRemainingUsage = () => {
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-  const usageData = JSON.parse(localStorage.getItem('usageData') || '{}');
-  const todayUsage = usageData[today] || 0;
+  const { todayUsage } = getDailyUsage();
   return Math.max(0, usageLimit - todayUsage);
 };
 
@@ -289,7 +296,13 @@ export default function Home() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full p-3">
             {/* 對話紀錄區 */}
             <div className="flex-1 overflow-y-auto mb-2">
-              <ChatHistory messages={messages} />
+              <ChatHistory 
+                messages={messages} 
+                onMermaidCodeUpdate={(newCode) => {
+                  // 當聊天氣泡中的 Mermaid 代碼更新時，更新 mermaidCode 狀態
+                  setMermaidCode(newCode);
+                }}
+              />
             </div>
             {/* 輸入區 */}
             <div className="relative w-full mt-1" style={{ marginBottom: 0 }}>
