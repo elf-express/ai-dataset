@@ -57,28 +57,24 @@ export function ChatBubble({ msg }) {
       }
     >
       <div
-        className={`chat-bubble px-4 py-2 rounded-2xl shadow-sm max-w-[80%] break-words whitespace-pre-line mb-1 ${
+        className={`chat-bubble px-4 py-2 rounded-2xl shadow-sm ${
           msg.role === "user"
-            ? "bg-primary text-primary-foreground self-end text-sm"
-            : "bg-gray-200 text-gray-800 self-start text-sm"
-        }`}
+            ? "inline-block max-w-full bg-primary text-primary-foreground self-end text-[14px]"
+            : "w-[85%] bg-gray-200 text-gray-800 self-start text-[14px]"
+        } break-words whitespace-pre-line mb-1`}
       >
         {textContent}
         {mermaidCodeState && (
           <div className="mermaid-code-container mt-2 rounded-md border border-gray-300 overflow-hidden">
-            <pre className={`relative p-2 pr-10 overflow-x-auto text-[13px] leading-relaxed ${
+            <pre className={`relative p-2 pr-10 overflow-x-auto text-[14px] leading-relaxed ${
               msg.role === "user" 
                 ? "bg-blue-50" 
                 : "bg-white"
             }`}>
-              {/* 建議提示行 */}
-              <div className="mb-2 text-xs text-gray-500">
-                右側按鈕提供複製語法與編輯語法<span className="font-mono"></span>
-              </div>
               <code className="block pr-2">
                 {isEditing ? (
                   <textarea
-                    className="min-w-[400px] w-full min-h-[200px] border rounded p-1 text-sm font-mono"
+                    className="min-w-[300px] w-[90%] h-full min-h-[400px] border rounded p-1 text-sm font-mono"
                     value={editValue}
                     onChange={e => setEditValue(e.target.value)}
                     autoFocus

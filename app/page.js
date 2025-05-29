@@ -247,7 +247,7 @@ export default function Home() {
         const hours = now.getHours().toString().padStart(2, '0');
         const minutes = now.getMinutes().toString().padStart(2, '0');
         const timeString = `${year}/${month}/${day} ${hours}:${minutes}`;
-        const formattedReply = "我已根據您的請求生成了流程圖：```mermaid\n" + generatedCode + "\n```\n如果需要修改，請告訴我。 [" + timeString + "]";
+        const formattedReply = "```mermaid\n" + generatedCode + "\n```\n如果需要修改，請告訴我。 [" + timeString + "]";
         setMessages(msgs => [...msgs, { role: "assistant", content: formattedReply }]);
       }
 
