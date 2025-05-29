@@ -81,11 +81,13 @@ function ExcalidrawRenderer({ mermaidCode }) {
       setRenderError(null);
 
       try {
-        // 處理 Mermaid 代碼，將 [] 內含有中文或空格的標籤自動加上雙引號
-        const cleanedMermaidCode = mermaidCode.replace(
+        // 先做完整清理
+        let cleanedMermaidCode = cleanMermaidCode(mermaidCode);
+
+        // 再將 [] 內含有中文或空格的標籤自動加上雙引號
+        cleanedMermaidCode = cleanedMermaidCode.replace(
           /(\[[^\]"']*[\u4e00-\u9fa5\s][^\]"']*\])/g,
           (match) => {
-            // 如果已經有雙引號就不處理
             if (/^\[".*"\]$/.test(match)) return match;
             return '["' + match.slice(1, -1) + '"]';
           }
@@ -106,8 +108,8 @@ function ExcalidrawRenderer({ mermaidCode }) {
         });
       } catch (error) {
         console.error("Mermaid rendering error:", error);
-        setRenderError("无法渲染 Mermaid 代码。请检查语法是否正确。");
-        toast.error("图表渲染失败，请检查 Mermaid 代码语法");
+        setRenderError("無法渲染 Mermaid 代碼。請檢查語法是否正確。");
+        toast.error("圖表渲染失敗，請檢查 Mermaid 代碼語法");
       } finally {
         setIsRendering(false);
       }
@@ -147,8 +149,6 @@ function ExcalidrawRenderer({ mermaidCode }) {
           }}
           excalidrawAPI={(api) => setExcalidrawAPI(api)}
           langCode="zh-TW"
-          viewModeEnabled={false}
-          zoomingEnabled={false}
           />
         )}
       </div>
