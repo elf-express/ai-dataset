@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "version": "node scripts/update-docker-compose-version.js && git add docker-compose.yml"
+    "version": "node lib/docker-version-utils.js && git add docker-compose.yml"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.0",
