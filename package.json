@@ -1,12 +1,13 @@
 {
   "name": "AI-mermaid",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "version": "node scripts/update-docker-compose-version.js && git add docker-compose.yml"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.0",
@@ -40,6 +41,7 @@
     "@tailwindcss/postcss": "^4.1.8",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "js-yaml": "^4.1.0",
     "tailwindcss": "^4.1.8",
     "tw-animate-css": "^1.3.0"
   }
