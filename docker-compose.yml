@@ -1,14 +1,13 @@
 version: '3.8'
-
 services:
   ai-mermaid:
     build: .
-    image: tw199501/ai-mermaid:1.0.4
+    image: ai-mermaid:1.0.6
     container_name: ai-mermaid
     ports:
-      - "3000:3000"
-    env_file:  # 使用 env_file 來載入 .env 文件
-      - .env  
+      - '3000:3000'
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -16,4 +15,3 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
-
