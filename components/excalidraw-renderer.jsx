@@ -33,19 +33,41 @@ function ExcalidrawRenderer({ mermaidCode }) {
   const [isRendering, setIsRendering] = useState(false);
   const [renderError, setRenderError] = useState(null);
 
-  // 並在 Excalidraw API 初始化時強制設定 appState
+  // 在 Excalidraw 元件掛載時和 API 初始化時強制設定 appState
   useEffect(() => {
     if (excalidrawAPI) {
-      excalidrawAPI.updateScene({
-        appState: {
-          viewBackgroundColor: "#fafafa",
-          currentItemFontFamily: 1,
-          zenModeEnabled: false,
-          viewModeEnabled: false,
-        },
-      });
+      // 確保設置初始狀態
+      const updateAppState = () => {
+        excalidrawAPI.updateScene({
+          appState: {
+            viewBackgroundColor: "#fafafa",
+            currentItemFontFamily: 1,
+            zenModeEnabled: true,  // 確保專注模式關閉
+            viewModeEnabled: true,  // 確保檢視模式關閉
+            theme: "light",        // 明確設置主題
+            scrollX: 0,            // 重置滾動位置
+            scrollY: 0,
+          },
+        });
+        // 使用 refresh 方法更新視圖
+        excalidrawAPI.refresh();
+      };
+      
+      // 立即更新
+      updateAppState();
+      
+      // 添加短暫延遲後再次確認，確保設置生效
+      const timer = setTimeout(() => {
+        updateAppState();
+        // 確保視圖正確更新
+        excalidrawAPI.scrollToContent(excalidrawAPI.getSceneElements(), {
+          fitToContent: true,
+        });
+      }, 300);
+      
+      return () => clearTimeout(timer);
     }
-  }, [excalidrawAPI]);
+  }, [excalidrawAPI, mermaidCode]);
 
   // 只要 mermaidCode 有變動（包含手動編輯），畫布就會自動同步更新
   useEffect(() => {
