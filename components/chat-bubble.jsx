@@ -117,10 +117,13 @@ export function ChatBubble({ msg }) {
                   </button>
                   <button
                     aria-label={isEditing ? "儲存" : "編輯"}
-                    className={`p-1.5 rounded-md ${isEditing ? "bg-green-600 text-white" : "bg-gray-300 text-gray-700 hover:bg-gray-400"} transition-colors shadow-sm`}
+                    className={`p-1.5 rounded-md border border-gray-300 transition-colors shadow-sm ${
+                      isEditing
+                        ? "bg-green-600 text-white"
+                        : "bg-white text-black hover:bg-gray-200"
+                    }`}
                     onClick={() => {
                       if (isEditing) {
-                        // 儲存後退出編輯模式，並更新 mermaidCodeState
                         setMermaidCodeState(editValue);
                         setIsEditing(false);
                       } else {
