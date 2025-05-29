@@ -65,7 +65,7 @@ export function ChatBubble({ msg }) {
                 ? "bg-blue-50" 
                 : "bg-white"
             }`}>
-              <code className="block pr-2">{`mermaid\n${mermaidCode}`}</code>
+              <code className="block pr-2">{mermaidCode}</code>
               
               {msg.role === "assistant" && (
                 <button 
@@ -73,7 +73,7 @@ export function ChatBubble({ msg }) {
                   aria-label="複製代碼"
                   className="absolute top-2 right-2 p-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors z-10 shadow-sm"
                   onClick={() => {
-                    const fullCode = `mermaid\n${mermaidCode}`;
+                    const fullCode = mermaidCode;
                     navigator.clipboard.writeText(fullCode)
                       .then(() => {
                         // 顯示複製成功的視覺反饰

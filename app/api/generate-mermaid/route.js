@@ -1,4 +1,3 @@
-
 import { cleanText } from "@/lib/utils";
 
 export async function POST(request) {
@@ -193,10 +192,16 @@ b) 生成的圖表代碼應可以直接複製並黏貼到支持mermaid語法的�
           // 提取代碼塊中的內容（如果有代碼塊標記）
           const codeBlockMatch = mermaidCode.match(/```(?:mermaid)?\s*([\s\S]*?)```/);
           const finalCode = codeBlockMatch ? codeBlockMatch[1].trim() : mermaidCode;
-          
+
+          // 這裡插入 parseMermaidToExcalidraw 呼叫
+          // 假設 parseMermaidToExcalidraw 是 async 並已正確引入
+          // const { elements, files } = await parseMermaidToExcalidraw(finalCode);
+
           // 發送完成信號
           controller.enqueue(encoder.encode(JSON.stringify({ 
             mermaidCode: finalCode,
+            // elements, // 若要回傳可加上
+            // files,    // 若要回傳可加上
             done: true 
           })));
           
@@ -227,4 +232,4 @@ b) 生成的圖表代碼應可以直接複製並黏貼到支持mermaid語法的�
       { status: 500 }
     );
   }
-} 
+}

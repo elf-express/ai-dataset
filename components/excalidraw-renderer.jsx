@@ -66,8 +66,14 @@ function ExcalidrawRenderer({ mermaidCode }) {
       
       // 7. 移除多餘的空行
       cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
-      
-      return cleaned.trim();
+      cleaned = cleaned.trim();
+
+      // 新增：去除首尾多餘的引號
+      if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+        cleaned = cleaned.slice(1, -1);
+      }
+
+      return cleaned;
     };
 
     const renderMermaid = async () => {
@@ -75,8 +81,16 @@ function ExcalidrawRenderer({ mermaidCode }) {
       setRenderError(null);
 
       try {
-        // 在渲染前清理 Mermaid 代碼
-        const cleanedMermaidCode = cleanMermaidCode(mermaidCode);
+        // 處理 Mermaid 代碼，將 [] 內含有中文或空格的標籤自動加上雙引號
+        const cleanedMermaidCode = mermaidCode.replace(
+          /(\[[^\]"']*[\u4e00-\u9fa5\s][^\]"']*\])/g,
+          (match) => {
+            // 如果已經有雙引號就不處理
+            if (/^\[".*"\]$/.test(match)) return match;
+            return '["' + match.slice(1, -1) + '"]';
+          }
+        );
+
         console.log('Cleaned Mermaid code:', cleanedMermaidCode);
         
         const { elements, files } = await parseMermaidToExcalidraw(
@@ -142,4 +156,4 @@ function ExcalidrawRenderer({ mermaidCode }) {
   );
 }
 
-export default ExcalidrawRenderer; 
+export default ExcalidrawRenderer;
