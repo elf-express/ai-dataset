@@ -2,14 +2,10 @@ version: '3.8'
 services:
   ai-mermaid:
     build: .
-    image: tw199501/ai-mermaid:1.0.7
+    image: tw199501/ai-mermaid:1.0.8
     container_name: ai-mermaid
     ports:
       - '3000:3000'
     env_file:
       - .env
     restart: unless-stopped
-    # volumes:
-    #   - .:/app
-    #   - /app/node_modules
-    #   - /app/.next
