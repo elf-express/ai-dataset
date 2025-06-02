@@ -196,3 +196,69 @@ AI Mermaid 提供二種使用模式：
     在瀏覽器中打開 `http://localhost:3000` 即可訪問本地部署的應用。
 
 
+### 本地佈署
+
+1. **複製環境變數範例**：
+    AI_API_URL=https://api.openai.com/v1
+    AI_API_KEY=在此處填入您的API密鑰
+    AI_MODEL_NAME=gpt-3.5-turbo
+    
+    # 應用配置
+    NEXT_PUBLIC_MAX_CHARS=20000
+    NEXT_PUBLIC_DAILY_USAGE_LIMIT=5
+    
+    # 訪問密碼（可選）
+    ACCESS_PASSWORD=設置您的訪問密碼
+    ## 環境變數設置
+
+2. 複製 `.env.example` 為 `.env`：
+   ```bash
+   cp .env.example .env
+    ```
+
+    **環境變量説明**:
+    * `AI_API_URL`: AI 服務 API 的基礎地址（不包含 `/chat/completions`）
+    * `AI_API_KEY`: 您的 AI 服務 API 密鑰
+    * `AI_MODEL_NAME`: 指定使用的 AI 模型名稱
+    * `NEXT_PUBLIC_MAX_CHARS`: 允許用户輸入的最大字數數（默認 20,000）
+    * `NEXT_PUBLIC_DAILY_USAGE_LIMIT`: 每用户每日免費使用次數限制（默認 5）
+    * `ACCESS_PASSWORD`: 可選，設置後用户可通過輸入此密碼獲得無限使用權限
+
+3.  **啓動開發服務器**:
+    ```bash
+    npm run dev
+    # 或者
+    yarn dev
+    ```
+
+4.  **訪問應用**:
+    在瀏覽器中打開 `http://localhost:3000` 即可訪問本地部署的應用。
+
+5. **佈署到生產環境**:
+
+5.1 **清除快取並重新安裝依賴**:
+    ```bash
+    rm -rf .next
+    rm -rf node_modules
+    npm cache clean --force
+    npm install
+    npm run build
+    ```
+
+ 5.2 **增加 Node.js 記憶體限制**:
+    ```bash
+    set NODE_OPTIONS=--max-old-space-size=4096
+    npm run build
+    ```
+
+5.3 **使用 --debug 參數查看詳細日誌**:
+    ```bash
+    npm run build -- --debug
+    ``` 
+
+5.4 **佈署到生產環境**:
+    ```bash
+    npm run start
+    ```
+
+    

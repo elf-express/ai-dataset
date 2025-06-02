@@ -17,14 +17,14 @@ const Excalidraw = dynamic(
   }
 );
 // 固定 initialData 物件，避免每次渲染都產生新物件導致 Excalidraw 重設
-const excalidrawInitialData = {
-  appState: {
-    viewBackgroundColor: "#fafafa",
-    currentItemFontFamily: 1,
-    zenModeEnabled: false,
-    viewModeEnabled: false,
-  },
-};
+//const excalidrawInitialData = {
+//  appState: {
+//    viewBackgroundColor: "#fafafa",
+//    currentItemFontFamily: 1,
+//    zenModeEnabled: false,
+//    viewModeEnabled: false,
+//  },
+//};
 
 function ExcalidrawRenderer({ mermaidCode }) {
   const [excalidrawElements, setExcalidrawElements] = useState([]);
@@ -144,7 +144,7 @@ function ExcalidrawRenderer({ mermaidCode }) {
 
         console.log("Cleaned Mermaid code:", cleanedMermaidCode);
 
-        const { elements, files } = await parseMermaidToExcalidraw(
+        const { elements } = await parseMermaidToExcalidraw(
           cleanedMermaidCode
         );
 
@@ -170,18 +170,18 @@ function ExcalidrawRenderer({ mermaidCode }) {
   return (
     <div className="space-y-2 h-full min-h-[600px]">
       <div
-        className="border rounded-md h-full relative bg-card"
+        className="relative h-full border rounded-md bg-card"
         style={{ touchAction: "none" }}
       >
         {isRendering && (
-          <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/80">
+            <div className="w-8 h-8 border-b-2 rounded-full animate-spin border-primary"></div>
           </div>
         )}
 
         {renderError && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-destructive text-center p-4">
+            <div className="p-4 text-center text-destructive">
               {renderError}
             </div>
           </div>
@@ -189,7 +189,7 @@ function ExcalidrawRenderer({ mermaidCode }) {
 
         {
           <Excalidraw
-            initialData={excalidrawInitialData}
+            //initialData={excalidrawInitialData}
             excalidrawAPI={(api) => setExcalidrawAPI(api)}
             langCode="zh-TW"
           />

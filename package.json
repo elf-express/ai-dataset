@@ -1,5 +1,5 @@
 {
-  "name": "AI-mermaid",
+  "name": "ai-mermaid",
   "version": "1.0.8",
   "private": true,
   "scripts": {
@@ -19,7 +19,7 @@
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
-    "AI-mermaid": "file:",
+    "ai-mermaid": "file:",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "docx": "^9.5.0",
