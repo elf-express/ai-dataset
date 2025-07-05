@@ -28,12 +28,12 @@ import { useGenerateDataset } from '@/hooks/useGenerateDataset';
 import axios from 'axios';
 
 /**
- * 问题树视图组件
+ * 問題樹視圖組件
  * @param {Object} props
- * @param {Array} props.tags - 标签树
- * @param {Array} props.selectedQuestions - 已选择的问题ID列表
- * @param {Function} props.onSelectQuestion - 选择问题的回调函数
- * @param {Function} props.onDeleteQuestion - 删除问题的回调函数
+ * @param {Array} props.tags - 標籤樹
+ * @param {Array} props.selectedQuestions - 已選擇的問題ID列表
+ * @param {Function} props.onSelectQuestion - 選擇問題的回調函數
+ * @param {Function} props.onDeleteQuestion - 刪除問題的回調函數
  */
 export default function QuestionTreeView({
   tags = [],
@@ -51,25 +51,25 @@ export default function QuestionTreeView({
   const { generateSingleDataset } = useGenerateDataset();
   const [questions, setQuestions] = useState([]);
   const [loadedTags, setLoadedTags] = useState({});
-  // 初始化时，将所有标签设置为收起状态（而不是展开状态）
+  // 初始化時，將所有標籤設置為收起狀態（而不是展開狀態）
   useEffect(() => {
     async function fetchTagsInfo() {
       try {
-        // 获取标签信息，仅用于标签统计
+        // 獲取標籤資訊，僅用於標籤統計
         const response = await axios.get(`/api/projects/${projectId}/questions/tree?tagsOnly=true&input=${searchTerm}`);
-        setQuestions(response.data); // 设置数据仅用于标签统计
+        setQuestions(response.data); // 設置數據僅用於標籤統計
 
-        // 当搜索条件变化时，重新加载已展开标签的问题数据
+        // 當搜索條件變化時，重新載入已展開標籤的問題數據
         const expandedTagLabels = Object.entries(expandedTags)
           .filter(([_, isExpanded]) => isExpanded)
           .map(([label]) => label);
 
-        // 重新加载已展开标签的数据
+        // 重新載入已展開標籤的數據
         for (const label of expandedTagLabels) {
           fetchTagQuestions(label);
         }
       } catch (error) {
-        console.error('获取标签信息失败:', error);
+        console.error('獲取標籤資訊失敗:', error);
       }
     }
 
@@ -79,7 +79,7 @@ export default function QuestionTreeView({
 
     const initialExpandedState = {};
     const processTag = tag => {
-      // 将默认状态改为 false（收起）而不是 true（展开）
+      // 將默認狀態改為 false（收起）而不是 true（展開）
       initialExpandedState[tag.label] = false;
       if (tag.child && tag.child.length > 0) {
         tag.child.forEach(processTag);
@@ -87,16 +87,16 @@ export default function QuestionTreeView({
     };
 
     tags.forEach(processTag);
-    // 未分类问题也默认收起
+    // 未分類問題也默認收起
     initialExpandedState['uncategorized'] = false;
     setExpandedTags(initialExpandedState);
   }, [tags]);
 
-  // 根据标签对问题进行分类
+  // 根據標籤對問題進行分類
   useEffect(() => {
     const taggedQuestions = {};
 
-    // 初始化标签映射
+    // 初始化標籤映射
     const initTagMap = tag => {
       taggedQuestions[tag.label] = [];
       if (tag.child && tag.child.length > 0) {
@@ -106,9 +106,9 @@ export default function QuestionTreeView({
 
     tags.forEach(initTagMap);
 
-    // 将问题分配到对应的标签下
+    // 將問題分配到對應的標籤下
     questions.forEach(question => {
-      // 如果问题没有标签，添加到"未分类"
+      // 如果問題沒有標籤，添加到"未分類"
       if (!question.label) {
         if (!taggedQuestions['uncategorized']) {
           taggedQuestions['uncategorized'] = [];
@@ -117,23 +117,23 @@ export default function QuestionTreeView({
         return;
       }
 
-      // 将问题添加到匹配的标签下
+      // 將問題添加到匹配的標籤下
       const questionLabel = question.label;
 
-      // 查找最精确匹配的标签
-      // 使用一个数组来存储所有匹配的标签路径，以便找到最精确的匹配
+      // 尋找最精確匹配的標籤
+      // 使用一個數組來儲存所有匹配的標籤路徑，以便找到最精確的匹配
       const findAllMatchingTags = (tag, path = []) => {
         const currentPath = [...path, tag.label];
 
-        // 存储所有匹配结果
+        // 儲存所有匹配結果
         const matches = [];
 
-        // 精确匹配当前标签
+        // 精確匹配當前標籤
         if (tag.label === questionLabel) {
           matches.push({ label: tag.label, depth: currentPath.length });
         }
 
-        // 检查子标签
+        // 檢查子標籤
         if (tag.child && tag.child.length > 0) {
           for (const childTag of tag.child) {
             const childMatches = findAllMatchingTags(childTag, currentPath);
@@ -144,29 +144,29 @@ export default function QuestionTreeView({
         return matches;
       };
 
-      // 在所有根标签中查找所有匹配
+      // 在所有根標籤中尋找所有匹配
       let allMatches = [];
       for (const rootTag of tags) {
         const matches = findAllMatchingTags(rootTag);
         allMatches.push(...matches);
       }
 
-      // 找到深度最大的匹配（最精确的匹配）
+      // 找到深度最大的匹配（最精確的匹配）
       let matchedTagLabel = null;
       if (allMatches.length > 0) {
-        // 按深度排序，深度最大的是最精确的匹配
+        // 按深度排序，深度最大的是最精確的匹配
         allMatches.sort((a, b) => b.depth - a.depth);
         matchedTagLabel = allMatches[0].label;
       }
 
       if (matchedTagLabel) {
-        // 如果找到匹配的标签，将问题添加到该标签下
+        // 如果找到匹配的標籤，將問題添加到該標籤下
         if (!taggedQuestions[matchedTagLabel]) {
           taggedQuestions[matchedTagLabel] = [];
         }
         taggedQuestions[matchedTagLabel].push(question);
       } else {
-        // 如果找不到匹配的标签，添加到"未分类"
+        // 如果找不到匹配的標籤，添加到"未分類"
         if (!taggedQuestions['uncategorized']) {
           taggedQuestions['uncategorized'] = [];
         }
@@ -177,14 +177,14 @@ export default function QuestionTreeView({
     setQuestionsByTag(taggedQuestions);
   }, [questions, tags]);
 
-  // 处理展开/折叠标签 - 使用 useCallback 优化
+  // 處理展開/摺疊標籤 - 使用 useCallback 最佳化
   const handleToggleExpand = useCallback(
     tagLabel => {
-      // 检查是否需要加载此标签的问题数据
+      // 檢查是否需要載入此標籤的問題數據
       const shouldExpand = !expandedTags[tagLabel];
 
       if (shouldExpand && !loadedTags[tagLabel]) {
-        // 如果要展开且尚未加载数据，则加载数据
+        // 如果要展開且尚未載入數據，則載入數據
         fetchTagQuestions(tagLabel);
       }
 
@@ -196,7 +196,7 @@ export default function QuestionTreeView({
     [expandedTags, loadedTags, projectId]
   );
 
-  // 获取特定标签的问题数据
+  // 獲取特定標籤的問題數據
   const fetchTagQuestions = useCallback(
     async tagLabel => {
       try {
@@ -204,20 +204,20 @@ export default function QuestionTreeView({
           `/api/projects/${projectId}/questions/tree?tag=${encodeURIComponent(tagLabel)}${searchTerm ? `&input=${searchTerm}` : ''}`
         );
 
-        // 更新问题数据，合并新获取的数据
+        // 更新問題數據，合併新獲取的數據
         setQuestions(prev => {
-          // 创建一个新数组，包含现有数据
+          // 創建一個新數組，包含現有數據
           const updatedQuestions = [...prev];
 
-          // 添加新获取的问题数据
+          // 添加新獲取的問題數據
           response.data.forEach(newQuestion => {
-            // 检查是否已存在相同 ID 的问题
+            // 檢查是否已存在相同 ID 的問題
             const existingIndex = updatedQuestions.findIndex(q => q.id === newQuestion.id);
             if (existingIndex === -1) {
-              // 如果不存在，添加到数组
+              // 如果不存在，添加到數組
               updatedQuestions.push(newQuestion);
             } else {
-              // 如果已存在，更新数据
+              // 如果已存在，更新數據
               updatedQuestions[existingIndex] = newQuestion;
             }
           });
@@ -225,19 +225,19 @@ export default function QuestionTreeView({
           return updatedQuestions;
         });
 
-        // 标记该标签已加载数据
+        // 標記該標籤已載入數據
         setLoadedTags(prev => ({
           ...prev,
           [tagLabel]: true
         }));
       } catch (error) {
-        console.error(`获取标签 "${tagLabel}" 的问题失败:`, error);
+        console.error(`獲取標籤 "${tagLabel}" 的問題失敗:`, error);
       }
     },
     [projectId, searchTerm, expandedTags]
   );
 
-  // 检查问题是否被选中 - 使用 useCallback 优化
+  // 檢查問題是否被選中 - 使用 useCallback 最佳化
   const isQuestionSelected = useCallback(
     questionKey => {
       return selectedQuestions.includes(questionKey);
@@ -245,22 +245,22 @@ export default function QuestionTreeView({
     [selectedQuestions]
   );
 
-  // 处理生成数据集 - 使用 useCallback 优化
+  // 處理生成數據集 - 使用 useCallback 最佳化
   const handleGenerateDataset = async (questionId, questionInfo) => {
-    // 设置处理状态
+    // 設置處理狀態
     setProcessingQuestions(prev => ({
       ...prev,
       [questionId]: true
     }));
     await generateSingleDataset({ projectId, questionId, questionInfo });
-    // 重置处理状态
+    // 重設處理狀態
     setProcessingQuestions(prev => ({
       ...prev,
       [questionId]: false
     }));
   };
 
-  // 渲染单个问题项 - 使用 useCallback 优化
+  // 渲染單個問題項 - 使用 useCallback 最佳化
   const renderQuestionItem = useCallback(
     (question, index, total) => {
       const questionKey = question.id;
@@ -283,7 +283,7 @@ export default function QuestionTreeView({
     [isQuestionSelected, onSelectQuestion, onDeleteQuestion, handleGenerateDataset, processingQuestions, t]
   );
 
-  // 计算标签及其子标签下的所有问题数量 - 使用 useMemo 缓存计算结果
+  // 計算標籤及其子標籤下的所有問題數量 - 使用 useMemo 快取計算結果
   const tagQuestionCounts = useMemo(() => {
     const counts = {};
 
@@ -305,7 +305,7 @@ export default function QuestionTreeView({
     return counts;
   }, [questionsByTag, tags]);
 
-  // 递归渲染标签树 - 使用 useCallback 优化
+  // 遞迴渲染標籤樹 - 使用 useCallback 最佳化
   const renderTagTree = useCallback(
     (tag, level = 0) => {
       const questions = questionsByTag[tag.label] || [];
@@ -325,7 +325,7 @@ export default function QuestionTreeView({
             t={t}
           />
 
-          {/* 只有当标签展开时才渲染子内容，减少不必要的渲染 */}
+          {/* 只有當標籤展開時才渲染子內容，減少不必要的渲染 */}
           {isExpanded && (
             <Collapse in={true}>
               {hasChildren && (
@@ -345,7 +345,7 @@ export default function QuestionTreeView({
     [questionsByTag, expandedTags, tagQuestionCounts, handleToggleExpand, renderQuestionItem, t]
   );
 
-  // 渲染未分类问题
+  // 渲染未分類問題
   const renderUncategorizedQuestions = () => {
     const uncategorizedQuestions = questionsByTag['uncategorized'] || [];
     if (uncategorizedQuestions.length === 0) return null;
@@ -398,7 +398,7 @@ export default function QuestionTreeView({
     );
   };
 
-  // 如果没有标签和问题，显示空状态
+  // 如果沒有標籤和問題，顯示空狀態
   if (tags.length === 0 && Object.keys(questionsByTag).length === 0) {
     return (
       <Box sx={{ p: 4, textAlign: 'center' }}>
@@ -429,7 +429,7 @@ export default function QuestionTreeView({
   );
 }
 
-// 使用 memo 优化问题项渲染
+// 使用 memo 最佳化問題項渲染
 const QuestionItem = memo(
   ({ question, index, total, isSelected, onSelect, onDelete, onGenerate, onEdit, isProcessing, t }) => {
     const questionKey = question.id;
@@ -512,7 +512,7 @@ const QuestionItem = memo(
   }
 );
 
-// 使用 memo 优化标签项渲染
+// 使用 memo 最佳化標籤項渲染
 const TagItem = memo(({ tag, level, isExpanded, totalQuestions, onToggle, t }) => {
   return (
     <ListItem
@@ -531,7 +531,7 @@ const TagItem = memo(({ tag, level, isExpanded, totalQuestions, onToggle, t }) =
         pr: 1
       }}
     >
-      {/* 内部内容保持不变 */}
+      {/* 內部內容保持不變 */}
       <FolderIcon fontSize="small" sx={{ mr: 1, color: level === 0 ? 'inherit' : 'primary.main' }} />
       <ListItemText
         primary={

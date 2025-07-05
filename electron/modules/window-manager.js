@@ -6,10 +6,10 @@ const { getAppVersion } = require('../util');
 let mainWindow;
 
 /**
- * 创建主窗口
- * @param {boolean} isDev 是否为开发环境
- * @param {number} port 服务端口
- * @returns {BrowserWindow} 创建的主窗口
+ * 創建主窗口
+ * @param {boolean} isDev 是否為開發環境
+ * @param {number} port 服務埠
+ * @returns {BrowserWindow} 創建的主窗口
  */
 function createWindow(isDev, port) {
   mainWindow = new BrowserWindow({
@@ -25,7 +25,7 @@ function createWindow(isDev, port) {
     icon: path.join(__dirname, '../../public/imgs/logo.ico')
   });
 
-  // 设置窗口标题
+  // 設置窗口標題
   mainWindow.setTitle(`Easy Dataset v${getAppVersion()}`);
   const loadingPath = url.format({
     pathname: path.join(__dirname, '..', 'loading.html'),
@@ -33,35 +33,35 @@ function createWindow(isDev, port) {
     slashes: true
   });
 
-  // 加载 loading 页面时使用专门的 preload 脚本
+  // 載入 loading 頁面時使用專門的 preload 腳本
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
   });
 
   mainWindow.loadURL(loadingPath);
 
-  // 处理窗口导航事件，将外部链接在浏览器中打开
+  // 處理窗口導航事件，將外部連結在瀏覽器中打開
   mainWindow.webContents.on('will-navigate', (event, navigationUrl) => {
-    // 解析当前 URL 和导航 URL
+    // 解析當前 URL 和導航 URL
     const parsedUrl = new URL(navigationUrl);
     const currentHostname = isDev ? 'localhost' : 'localhost';
     const currentPort = port.toString();
 
-    // 检查是否是外部链接
+    // 檢查是否是外部連結
     if (parsedUrl.hostname !== currentHostname || (parsedUrl.port !== currentPort && parsedUrl.port !== '')) {
       event.preventDefault();
       shell.openExternal(navigationUrl);
     }
   });
 
-  // 处理新窗口打开请求，将外部链接在浏览器中打开
+  // 處理新窗口打開請求，將外部連結在瀏覽器中打開
   mainWindow.webContents.setWindowOpenHandler(({ url: navigationUrl }) => {
-    // 解析导航 URL
+    // 解析導航 URL
     const parsedUrl = new URL(navigationUrl);
     const currentHostname = isDev ? 'localhost' : 'localhost';
     const currentPort = port.toString();
 
-    // 检查是否是外部链接
+    // 檢查是否是外部連結
     if (parsedUrl.hostname !== currentHostname || (parsedUrl.port !== currentPort && parsedUrl.port !== '')) {
       shell.openExternal(navigationUrl);
       return { action: 'deny' };
@@ -79,8 +79,8 @@ function createWindow(isDev, port) {
 }
 
 /**
- * 加载应用URL
- * @param {string} appUrl 应用URL
+ * 載入應用URL
+ * @param {string} appUrl 應用URL
  */
 function loadAppUrl(appUrl) {
   if (mainWindow) {
@@ -89,7 +89,7 @@ function loadAppUrl(appUrl) {
 }
 
 /**
- * 在开发环境中打开开发者工具
+ * 在開發環境中打開開發者工具
  */
 function openDevTools() {
   if (mainWindow) {
@@ -98,7 +98,7 @@ function openDevTools() {
 }
 
 /**
- * 获取主窗口
+ * 獲取主窗口
  * @returns {BrowserWindow} 主窗口
  */
 function getMainWindow() {

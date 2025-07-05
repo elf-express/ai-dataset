@@ -1,52 +1,44 @@
 <div align="center">
 
-![](./public//imgs/bg2.png)
 
-<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/ConardLi/easy-dataset">
-<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/ConardLi/easy-dataset/total">
-<img alt="GitHub Release" src="https://img.shields.io/github/v/release/ConardLi/easy-dataset">
-<img src="https://img.shields.io/badge/license-AGPL--3.0-green.svg" alt="AGPL 3.0 License"/>
-<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/ConardLi/easy-dataset">
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ConardLi/easy-dataset">
+**一個強大的大型語言模型微調數據集創建工具**
 
-**一个强大的大型语言模型微调数据集创建工具**
+[簡體中文](./README.zh-CN.md) | [English](./README.md)
 
-[简体中文](./README.zh-CN.md) | [English](./README.md)
+[功能特點](#功能特點) • [快速開始](#本地運行) • [使用文件](https://docs.ai-dataset.com/) • [貢獻](#貢獻) • [許可證](#許可證)
 
-[功能特点](#功能特点) • [快速开始](#本地运行) • [使用文档](https://docs.easy-dataset.com/) • [贡献](#贡献) • [许可证](#许可证)
-
-如果喜欢本项目，请给本项目留下 Star⭐️，或者请作者喝杯咖啡呀 => [打赏作者](./public/imgs/aw.jpg) ❤️！
+如果喜歡本項目，請給本項目留下 Star⭐️，或者請作者喝杯咖啡呀 => [打賞作者](./public/imgs/aw.jpg) ❤️！
 
 </div>
 
 ## 概述
 
-Easy Dataset 是一个专为创建大型语言模型（LLM）微调数据集而设计的应用程序。它提供了直观的界面，用于上传特定领域的文件，智能分割内容，生成问题，并为模型微调生成高质量的训练数据。
+Easy Dataset 是一個專為創建大型語言模型（LLM）微調數據集而設計的應用程式。它提供了直觀的界面，用於上傳特定領域的文件，智慧分割內容，生成問題，並為模型微調生成高品質的訓練數據。
 
-通过 Easy Dataset，您可以将领域知识转化为结构化数据集，兼容所有遵循 OpenAI 格式的 LLM API，使微调过程变得简单高效。
+通過 Easy Dataset，您可以將領域知識轉化為結構化數據集，相容所有遵循 OpenAI 格式的 LLM API，使微調過程變得簡單高效。
 
 ![](./public/imgs/cn-arc.png)
 
-## 功能特点
+## 功能特點
 
-- **智能文档处理**：支持 PDF、Markdown、DOCX 等多种格式智能识别和处理
-- **智能文本分割**：支持多种智能文本分割算法、支持自定义可视化分段
-- **智能问题生成**：从每个文本片段中提取相关问题
-- **领域标签**：为数据集智能构建全局领域标签，具备全局理解能力
-- **答案生成**：使用 LLM API 为每个问题生成全面的答案、思维链（COT）
-- **灵活编辑**：在流程的任何阶段编辑问题、答案和数据集
-- **多种导出格式**：以各种格式（Alpaca、ShareGPT）和文件类型（JSON、JSONL）导出数据集
-- **广泛的模型支持**：兼容所有遵循 OpenAI 格式的 LLM API
-- **用户友好界面**：为技术和非技术用户设计的直观 UI
-- **自定义系统提示**：添加自定义系统提示以引导模型响应
+- **智慧文件處理**：支持 PDF、Markdown、DOCX 等多種格式智慧識別和處理
+- **智慧文本分割**：支持多種智慧文本分割算法、支持自訂可視化分段
+- **智慧問題生成**：從每個文本片段中提取相關問題
+- **領域標籤**：為數據集智慧構建全局領域標籤，具備全局理解能力
+- **答案生成**：使用 LLM API 為每個問題生成全面的答案、思維鏈（COT）
+- **靈活編輯**：在流程的任何階段編輯問題、答案和數據集
+- **多種導出格式**：以各種格式（Alpaca、ShareGPT）和文件類型（JSON、JSONL）導出數據集
+- **廣泛的模型支持**：相容所有遵循 OpenAI 格式的 LLM API
+- **用戶友好界面**：為技術和非技術用戶設計的直觀 UI
+- **自訂系統提示**：添加自訂系統提示以引導模型響應
 
-## 快速演示
+## 快速示範
 
 https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
 
-## 本地运行
+## 本地運行
 
-### 下载客户端
+### 下載用戶端
 
 <table style="width: 100%">
   <tr>
@@ -62,28 +54,28 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
   </tr>
   <tr style="text-align: center">
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/windows.png' style="height:24px; width: 24px" />
         <br />
         <b>Setup.exe</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/mac.png' style="height:24px; width: 24px" />
         <br />
         <b>Intel</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/mac.png' style="height:24px; width: 24px" />
         <br />
         <b>M</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/linux.png' style="height:24px; width: 24px" />
         <br />
         <b>AppImage</b>
@@ -92,22 +84,22 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
   </tr>
 </table>
 
-### 使用 NPM 安装
+### 使用 NPM 安裝
 
-1. 克隆仓库：
+1. 複製倉庫：
 
 ```bash
-   git clone https://github.com/ConardLi/easy-dataset.git
-   cd easy-dataset
+   git clone https://github.com/ConardLi/ai-dataset.git
+   cd ai-dataset
 ```
 
-2. 安装依赖：
+2. 安裝依賴：
 
 ```bash
    npm install
 ```
 
-3. 启动开发服务器：
+3. 啟動開發伺服器：
 
 ```bash
    npm run build
@@ -115,34 +107,34 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
    npm run start
 ```
 
-4. 打开浏览器并访问 `http://localhost:1717`
+4. 打開瀏覽器並訪問 `http://localhost:1717`
 
-### 使用本地 Dockerfile 构建
+### 使用本地 Dockerfile 構建
 
-如果你想自行构建镜像，可以使用项目根目录中的 Dockerfile：
+如果你想自行構建鏡像，可以使用項目根目錄中的 Dockerfile：
 
-1. 克隆仓库：
+1. 複製倉庫：
    ```bash
-   git clone https://github.com/ConardLi/easy-dataset.git
-   cd easy-dataset
+   git clone https://github.com/ConardLi/ai-dataset.git
+   cd ai-dataset
    ```
-2. 构建 Docker 镜像：
+2. 構建 Docker 鏡像：
    ```bash
-   docker build -t easy-dataset .
+   docker build -t ai-dataset .
    ```
-3. 运行容器：
+3. 運行容器：
 
    ```bash
-   docker run -d -p 1717:1717 -v {YOUR_LOCAL_DB_PATH}:/app/local-db --name easy-dataset easy-dataset
+   docker run -d -p 1717:1717 -v {YOUR_LOCAL_DB_PATH}:/app/local-db --name ai-dataset ai-dataset
    ```
 
-   **注意：** 请将 `{YOUR_LOCAL_DB_PATH}` 替换为你希望存储本地数据库的实际路径。
+   **注意：** 請將 `{YOUR_LOCAL_DB_PATH}` 替換為你希望儲存本地資料庫的實際路徑。
 
-4. 打开浏览器，访问 `http://localhost:1717`
+4. 打開瀏覽器，訪問 `http://localhost:1717`
 
 ## 使用方法
 
-### 创建项目
+### 創建項目
 
 <table>
     <tr>
@@ -151,11 +143,11 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
     </tr>
 </table>
 
-1. 在首页点击"创建项目"按钮；
-2. 输入项目名称和描述；
-3. 配置您首选的 LLM API 设置
+1. 在首頁點擊"創建項目"按鈕；
+2. 輸入項目名稱和描述；
+3. 配置您首選的 LLM API 設置
 
-### 处理文档
+### 處理文件
 
 <table>
     <tr>
@@ -164,11 +156,11 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
     </tr>
 </table>
 
-1. 在"文本分割"部分上传您的文件（支持 PDF、Markdwon、txt、DOCX）；
-2. 查看和调整自动分割的文本片段；
-3. 查看和调整全局领域树
+1. 在"文本分割"部分上傳您的文件（支持 PDF、Markdwon、txt、DOCX）；
+2. 查看和調整自動分割的文本片段；
+3. 查看和調整全局領域樹
 
-### 生成问题
+### 生成問題
 
 <table>
     <tr>
@@ -177,11 +169,11 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
     </tr>
 </table>
 
-2. 基于文本块批量构造问题；
-3. 查看并编辑生成的问题；
-4. 使用标签树组织问题
+2. 基於文本塊批次構造問題；
+3. 查看並編輯生成的問題；
+4. 使用標籤樹組織問題
 
-### 创建数据集
+### 創建數據集
 
 <table>
     <tr>
@@ -190,11 +182,11 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
     </tr>
 </table>
 
-1. 基于问题批量构造数据集；
+1. 基於問題批次構造數據集；
 2. 使用配置的 LLM 生成答案；
-3. 查看、编辑并优化生成的答案
+3. 查看、編輯並最佳化生成的答案
 
-### 导出数据集
+### 導出數據集
 
 <table>
     <tr>
@@ -203,98 +195,73 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
     </tr>
 </table>
 
-1. 在数据集部分点击"导出"按钮；
-2. 选择您喜欢的格式（Alpaca 或 ShareGPT）；
-3. 选择文件格式（JSON 或 JSONL）；
-4. 根据需要添加自定义系统提示；
-5. 导出您的数据集
+1. 在數據集部分點擊"導出"按鈕；
+2. 選擇您喜歡的格式（Alpaca 或 ShareGPT）；
+3. 選擇檔案格式（JSON 或 JSONL）；
+4. 根據需要添加自訂系統提示；
+5. 導出您的數據集
 
-## 项目结构
+## 項目結構
 
 ```
-easy-dataset/
-├── app/                                # Next.js 应用目录
+ai-dataset/
+├── app/                                # Next.js 應用目錄
 │   ├── api/                            # API 路由
 │   │   ├── llm/                        # LLM API 集成
 │   │   │   ├── ollama/                 # Ollama API 集成
 │   │   │   └── openai/                 # OpenAI API 集成
-│   │   ├── projects/                   # 项目管理 API
-│   │   │   ├── [projectId]/            # 项目特定操作
-│   │   │   │   ├── chunks/             # 文本块操作
-│   │   │   │   ├── datasets/           # 数据集生成和管理
-│   │   │   │   ├── generate-questions/ # 批量问题生成
-│   │   │   │   ├── questions/          # 问题管理
+│   │   ├── projects/                   # 項目管理 API
+│   │   │   ├── [projectId]/            # 項目特定操作
+│   │   │   │   ├── chunks/             # 文本塊操作
+│   │   │   │   ├── datasets/           # 數據集生成和管理
+│   │   │   │   ├── generate-questions/ # 批次問題生成
+│   │   │   │   ├── questions/          # 問題管理
 │   │   │   │   └── split/              # 文本分割操作
-│   │   │   └── user/                   # 用户特定项目操作
-│   ├── projects/                       # 前端项目页面
-│   │   └── [projectId]/                # 项目特定页面
-│   │       ├── datasets/               # 数据集管理 UI
-│   │       ├── questions/              # 问题管理 UI
-│   │       ├── settings/               # 项目设置 UI
-│   │       └── text-split/             # 文本处理 UI
-│   └── page.js                         # 主页
-├── components/                         # React 组件
-│   ├── datasets/                       # 数据集相关组件
-│   ├── home/                           # 主页组件
-│   ├── projects/                       # 项目管理组件
-│   ├── questions/                      # 问题管理组件
-│   └── text-split/                     # 文本处理组件
-├── lib/                                # 核心库和工具
-│   ├── db/                             # 数据库操作
-│   ├── i18n/                           # 国际化
+│   │   │   └── user/                   # 用戶特定項目操作
+│   ├── projects/                       # 前端項目頁面
+│   │   └── [projectId]/                # 項目特定頁面
+│   │       ├── datasets/               # 數據集管理 UI
+│   │       ├── questions/              # 問題管理 UI
+│   │       ├── settings/               # 項目設置 UI
+│   │       └── text-split/             # 文本處理 UI
+│   └── page.js                         # 首頁
+├── components/                         # React 組件
+│   ├── datasets/                       # 數據集相關組件
+│   ├── home/                           # 首頁組件
+│   ├── projects/                       # 項目管理組件
+│   ├── questions/                      # 問題管理組件
+│   └── text-split/                     # 文本處理組件
+├── lib/                                # 核心庫和工具
+│   ├── db/                             # 資料庫操作
+│   ├── i18n/                           # 國際化
 │   ├── llm/                            # LLM 集成
 │   │   ├── common/                     # 通用 LLM 工具
-│   │   ├── core/                       # 核心 LLM 客户端
-│   │   └── prompts/                    # 提示词模板
-│   │       ├── answer.js               # 答案生成提示词（中文）
-│   │       ├── answerEn.js             # 答案生成提示词（英文）
-│   │       ├── question.js             # 问题生成提示词（中文）
-│   │       ├── questionEn.js           # 问题生成提示词（英文）
-│   │       └── ... 其他提示词
+│   │   ├── core/                       # 核心 LLM 用戶端
+│   │   └── prompts/                    # 提示詞模板
+│   │       ├── answer.js               # 答案生成提示詞（中文）
+│   │       ├── answerEn.js             # 答案生成提示詞（英文）
+│   │       ├── question.js             # 問題生成提示詞（中文）
+│   │       ├── questionEn.js           # 問題生成提示詞（英文）
+│   │       └── ... 其他提示詞
 │   └── text-splitter/                  # 文本分割工具
-├── locales/                            # 国际化资源
-│   ├── en/                             # 英文翻译
-│   └── zh-CN/                          # 中文翻译
-├── public/                             # 静态资源
-│   └── imgs/                           # 图片资源
-└── local-db/                           # 本地文件数据库
-    └── projects/                       # 项目数据存储
+├── locales/                            # 國際化資源
+│   ├── en/                             # 英文翻譯
+│   ├── zh-CN/                          # 簡體中文翻譯
+│   └── zh-TW/                          # 繁體中文翻譯
+├── public/                             # 靜態資源
+│   └── imgs/                           # 圖片資源
+└── local-db/                           # 本地文件資料庫
+    └── projects/                       # 項目數據儲存
 ```
 
-## 文档
 
-- 查看本项目的演示视频：[Easy Dataset 演示视频](https://www.bilibili.com/video/BV1y8QpYGE57/)
-- 有关所有功能和 API 的详细文档，请访问我们的 [文档站点](https://docs.easy-dataset.com/)
 
-## 社区实践
 
-- [Easy Dataset × LLaMA Factory: 让大模型高效学习领域知识](https://buaa-act.feishu.cn/wiki/KY9xwTGs1iqHrRkjXBwcZP9WnL9)
+## 許可證
 
-## 贡献
-
-我们欢迎社区的贡献！如果您想为 Easy Dataset 做出贡献，请按照以下步骤操作：
-
-1. Fork 仓库
-2. 创建新分支（`git checkout -b feature/amazing-feature`）
-3. 进行更改
-4. 提交更改（`git commit -m '添加一些惊人的功能'`）
-5. 推送到分支（`git push origin feature/amazing-feature`）
-6. 打开 Pull Request（提交至 DEV 分支）
-
-请确保适当更新测试并遵守现有的编码风格。
-
-## 加交流群 & 联系作者
-
-https://docs.easy-dataset.com/geng-duo/lian-xi-wo-men
-
-## 许可证
-
-本项目采用 AGPL 3.0 许可证 - 有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
+本項目採用 AGPL 3.0 許可證 - 有關詳細資訊，請參閱 [LICENSE](LICENSE) 文件。
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ConardLi/easy-dataset&type=Date)](https://www.star-history.com/#ConardLi/easy-dataset&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=ConardLi/ai-dataset&type=Date)](https://www.star-history.com/#ConardLi/ai-dataset&Date)
 
-<div align="center">
-  <sub>由 <a href="https://github.com/ConardLi">ConardLi</a> 用 ❤️ 构建 • 关注我：<a href="./public/imgs/weichat.jpg">公众号</a>｜<a href="https://space.bilibili.com/474921808">B站</a>｜<a href="https://juejin.cn/user/3949101466785709">掘金</a>｜<a href="https://www.zhihu.com/people/wen-ti-chao-ji-duo-de-xiao-qi">知乎</a>｜<a href="https://www.youtube.com/@garden-conard">Youtube</a></sub>
-</div>

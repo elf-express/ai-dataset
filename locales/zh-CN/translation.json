@@ -1,9 +1,11 @@
 {
   "language": {
-    "switchToEnglish": "切换到英文",
-    "switchToChinese": "切换到中文",
+    "switchToEnglish": "切換到英文",
+    "switchToTraditional": "切換到繁體",
+    "switchToSimplified": "切換到簡體",
     "en": "EN",
-    "zh": "中"
+    "zh-TW": "繁",
+    "zh-CN": "簡"  
   },
   "theme": {
     "switchToLight": "切换到亮色模式",
@@ -166,8 +168,8 @@
     "generating": "正在生成..."
   },
   "home": {
-    "title": "Easy Dataset",
-    "subtitle": "一个强大的大型语言模型微调数据集创建工具",
+    "title": "AI Dataset",
+    "subtitle": "由 AI 驱动的端到端微调数据集收集与整理解决方案，专为大型语言模型而设计",
     "createProject": "创建项目",
     "searchDataset": "搜索公开数据集"
   },

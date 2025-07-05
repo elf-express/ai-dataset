@@ -14,7 +14,7 @@ const UpdateChecker = () => {
   const [updateDownloaded, setUpdateDownloaded] = useState(false);
   const [updateError, setUpdateError] = useState(null);
 
-  // 检查更新
+  // 檢查更新
   const checkForUpdates = async () => {
     if (!window.electron?.updater) {
       console.warn('Update feature is not available, possibly running in browser environment');
@@ -28,7 +28,7 @@ const UpdateChecker = () => {
       const result = await window.electron.updater.checkForUpdates();
       console.log('Update check result:', result);
 
-      // 返回当前版本信息
+      // 返回當前版本資訊
       if (result) {
         setUpdateInfo(prev => ({
           ...prev,
@@ -43,7 +43,7 @@ const UpdateChecker = () => {
     }
   };
 
-  // 下载更新
+  // 下載更新
   const downloadUpdate = async () => {
     if (!window.electron?.updater) return;
 
@@ -52,13 +52,13 @@ const UpdateChecker = () => {
       setUpdateError(null);
       await window.electron.updater.downloadUpdate();
     } catch (error) {
-      console.error('下载更新失败:', error);
-      setUpdateError(error.message || '下载更新失败');
+      console.error('下載更新失敗:', error);
+      setUpdateError(error.message || '下載更新失敗');
       setDownloading(false);
     }
   };
 
-  // 安装更新
+  // 安裝更新
   const installUpdate = async () => {
     if (!window.electron?.updater) return;
 
@@ -70,53 +70,53 @@ const UpdateChecker = () => {
     }
   };
 
-  // 设置更新事件监听
+  // 設置更新事件監聽
   useEffect(() => {
     if (!window.electron?.updater) return;
 
     // 有可用更新
     const removeUpdateAvailable = window.electron.updater.onUpdateAvailable(info => {
-      console.log('发现新版本:', info);
+      console.log('發現新版本:', info);
       setUpdateAvailable(true);
       setUpdateInfo(prev => ({
         ...prev,
         ...info,
-        releaseUrl: `https://github.com/ConardLi/easy-dataset/releases`
+        releaseUrl: `https://github.com/ConardLi/ai-dataset/releases`
       }));
       setOpen(true);
     });
 
-    // 没有可用更新
+    // 沒有可用更新
     const removeUpdateNotAvailable = window.electron.updater.onUpdateNotAvailable(() => {
-      console.log('没有可用更新');
+      console.log('沒有可用更新');
       setUpdateAvailable(false);
     });
 
-    // 更新错误
+    // 更新錯誤
     const removeUpdateError = window.electron.updater.onUpdateError(error => {
-      console.error('更新错误:', error);
+      console.error('更新錯誤:', error);
       // setUpdateError(error);
     });
 
-    // 下载进度
+    // 下載進度
     const removeDownloadProgress = window.electron.updater.onDownloadProgress(progress => {
-      console.log('下载进度:', progress);
+      console.log('下載進度:', progress);
       setDownloadProgress(progress.percent || 0);
     });
 
-    // 更新下载完成
+    // 更新下載完成
     const removeUpdateDownloaded = window.electron.updater.onUpdateDownloaded(info => {
-      console.log('更新下载完成:', info);
+      console.log('更新下載完成:', info);
       setDownloading(false);
       setUpdateDownloaded(true);
     });
 
-    // 组件挂载时检查更新
+    // 組件掛載時檢查更新
     const timer = setTimeout(() => {
       checkForUpdates();
     }, 5000);
 
-    // 清理函数
+    // 清理函數
     return () => {
       clearTimeout(timer);
       removeUpdateAvailable();
@@ -127,7 +127,7 @@ const UpdateChecker = () => {
     };
   }, []);
 
-  // 定期检查更新（每小时一次）
+  // 定期檢查更新（每小時一次）
   useEffect(() => {
     if (!window.electron?.updater) return;
 
@@ -145,7 +145,7 @@ const UpdateChecker = () => {
     setOpen(false);
   };
 
-  // 如果没有更新或者不在 Electron 环境中，不显示任何内容
+  // 如果沒有更新或者不在 Electron 環境中，不顯示任何內容
   if (!updateAvailable && !open) return null;
 
   return (

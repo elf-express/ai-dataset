@@ -2,18 +2,18 @@
 
 ![](./public//imgs/bg2.png)
 
-<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/ConardLi/easy-dataset">
-<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/ConardLi/easy-dataset/total">
-<img alt="GitHub Release" src="https://img.shields.io/github/v/release/ConardLi/easy-dataset">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/ConardLi/ai-dataset">
+<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/ConardLi/ai-dataset/total">
+<img alt="GitHub Release" src="https://img.shields.io/github/v/release/ConardLi/ai-dataset">
 <img src="https://img.shields.io/badge/license-AGPL--3.0-green.svg" alt="AGPL 3.0 License"/>
-<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/ConardLi/easy-dataset">
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ConardLi/easy-dataset">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/ConardLi/ai-dataset">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ConardLi/ai-dataset">
 
 **A powerful tool for creating fine-tuning datasets for Large Language Models**
 
-[简体中文](./README.zh-CN.md) | [English](./README.md)
+[簡體中文](./README.zh-CN.md) | [English](./README.md)
 
-[Features](#features) • [Quick Start](#local-run) • [Documentation](https://docs.easy-dataset.com/ed/en) • [Contributing](#contributing) • [License](#license)
+[Features](#features) • [Quick Start](#local-run) • [Documentation](https://docs.ai-dataset.com/ed/en) • [Contributing](#contributing) • [License](#license)
 
 If you like this project, please give it a Star⭐️, or buy the author a coffee => [Donate](./public/imgs/aw.jpg) ❤️!
 
@@ -62,28 +62,28 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
   </tr>
   <tr style="text-align: center">
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/windows.png' style="height:24px; width: 24px" />
         <br />
         <b>Setup.exe</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/mac.png' style="height:24px; width: 24px" />
         <br />
         <b>Intel</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/mac.png' style="height:24px; width: 24px" />
         <br />
         <b>M</b>
       </a>
     </td>
     <td align="center" valign="middle">
-      <a href='https://github.com/ConardLi/easy-dataset/releases/latest'>
+      <a href='https://github.com/ConardLi/ai-dataset/releases/latest'>
         <img src='./public/imgs/linux.png' style="height:24px; width: 24px" />
         <br />
         <b>AppImage</b>
@@ -97,8 +97,8 @@ https://github.com/user-attachments/assets/6ddb1225-3d1b-4695-90cd-aa4cb01376a8
 1. Clone the repository:
 
 ```bash
-   git clone https://github.com/ConardLi/easy-dataset.git
-   cd easy-dataset
+   git clone https://github.com/ConardLi/ai-dataset.git
+   cd ai-dataset
 ```
 
 2. Install dependencies:
@@ -123,17 +123,17 @@ If you want to build the image yourself, you can use the Dockerfile in the proje
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ConardLi/easy-dataset.git
-   cd easy-dataset
+   git clone https://github.com/ConardLi/ai-dataset.git
+   cd ai-dataset
    ```
 2. Build the Docker image:
    ```bash
-   docker build -t easy-dataset .
+   docker build -t ai-dataset .
    ```
 3. Run the container:
 
    ```bash
-   docker run -d -p 1717:1717 -v {YOUR_LOCAL_DB_PATH}:/app/local-db --name easy-dataset easy-dataset
+   docker run -d -p 1717:1717 -v {YOUR_LOCAL_DB_PATH}:/app/local-db --name ai-dataset ai-dataset
    ```
 
    **Note:** Please replace `{YOUR_LOCAL_DB_PATH}` with the actual path where you want to store the local database.
@@ -212,7 +212,7 @@ If you want to build the image yourself, you can use the Dockerfile in the proje
 ## Project Structure
 
 ```
-easy-dataset/
+ai-dataset/
 ├── app/                                # Next.js application directory
 │   ├── api/                            # API routes
 │   │   ├── llm/                        # LLM API integration
@@ -254,7 +254,8 @@ easy-dataset/
 │   └── text-splitter/                  # Text splitting tools
 ├── locales/                            # Internationalization resources
 │   ├── en/                             # English translations
-│   └── zh-CN/                          # Chinese translations
+│   ├── zh-CN/                          # Simplified Chinese translations
+│   └── zh-TW/                          # Traditional Chinese translations
 ├── public/                             # Static resources
 │   └── imgs/                           # Image resources
 └── local-db/                           # Local file database
@@ -264,7 +265,7 @@ easy-dataset/
 ## Documentation
 
 - View the demo video of this project: [Easy Dataset Demo Video](https://www.bilibili.com/video/BV1y8QpYGE57/)
-- For detailed documentation on all features and APIs, visit our [Documentation Site](https://docs.easy-dataset.com/ed/en)
+- For detailed documentation on all features and APIs, visit our [Documentation Site](https://docs.ai-dataset.com/ed/en)
 
 ## Community Practice
 
@@ -285,7 +286,7 @@ Please ensure that tests are appropriately updated and adhere to the existing co
 
 ## Join Discussion Group & Contact the Author
 
-https://docs.easy-dataset.com/geng-duo/lian-xi-wo-men
+https://docs.ai-dataset.com/geng-duo/lian-xi-wo-men
 
 ## License
 
@@ -293,8 +294,5 @@ This project is licensed under the AGPL 3.0 License - see the [LICENSE](LICENSE)
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ConardLi/easy-dataset&type=Date)](https://www.star-history.com/#ConardLi/easy-dataset&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=ConardLi/ai-dataset&type=Date)](https://www.star-history.com/#ConardLi/ai-dataset&Date)
 
-<div align="center">
-  <sub>Built with ❤️ by <a href="https://github.com/ConardLi">ConardLi</a> • Follow me: <a href="./public/imgs/weichat.jpg">WeChat Official Account</a>｜<a href="https://space.bilibili.com/474921808">Bilibili</a>｜<a href="https://juejin.cn/user/3949101466785709">Juejin</a>｜<a href="https://www.zhihu.com/people/wen-ti-chao-ji-duo-de-xiao-qi">Zhihu</a>｜<a href="https://www.youtube.com/@garden-conard">Youtube</a></sub>
-</div>

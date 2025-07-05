@@ -34,11 +34,11 @@ export default function QuestionListView({
   refreshQuestions
 }) {
   const { t } = useTranslation();
-  // 处理状态
+  // 處理狀態
   const [processingQuestions, setProcessingQuestions] = useState({});
   const { generateSingleDataset } = useGenerateDataset();
 
-  // 获取文本块的标题
+  // 獲取文本塊的標題
   const getChunkTitle = content => {
     const firstLine = content.split('\n')[0].trim();
     if (firstLine.startsWith('# ')) {
@@ -49,20 +49,20 @@ export default function QuestionListView({
     return t('chunks.defaultTitle');
   };
 
-  // 检查问题是否被选中
+  // 檢查問題是否被選中
   const isQuestionSelected = questionId => {
     return selectedQuestions.includes(questionId);
   };
 
-  // 处理生成数据集
+  // 處理生成數據集
   const handleGenerateDataset = async (questionId, questionInfo) => {
-    // 设置处理状态
+    // 設置處理狀態
     setProcessingQuestions(prev => ({
       ...prev,
       [questionId]: true
     }));
     await generateSingleDataset({ projectId, questionId, questionInfo });
-    // 重置处理状态
+    // 重設處理狀態
     setProcessingQuestions(prev => ({
       ...prev,
       [questionId]: false
@@ -72,7 +72,7 @@ export default function QuestionListView({
 
   return (
     <Box style={{ padding: '20px' }}>
-      {/* 问题列表 */}
+      {/* 問題列表 */}
       <Paper
         elevation={0}
         sx={{
@@ -228,7 +228,7 @@ export default function QuestionListView({
         })}
       </Paper>
 
-      {/* 分页 */}
+      {/* 分頁 */}
       {totalQuestions > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3, mb: 2 }}>
           <Pagination

@@ -1,4 +1,4 @@
-// 最佳实践配置示例
+// 最佳實踐配置範例
 module.exports = {
   experimental: {
     serverComponentsExternalPackages: ['@opendocsg/pdf2md', 'pdfjs-dist', '@hyzyla/pdfium'],

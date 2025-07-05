@@ -44,7 +44,7 @@ import { modelConfigListAtom, selectedModelInfoAtom } from '@/lib/store';
 export default function ModelSettings({ projectId }) {
   const { t } = useTranslation();
   const router = useRouter();
-  // 模型对话框状态
+  // 模型對話框狀態
   const [openModelDialog, setOpenModelDialog] = useState(false);
   const [editingModel, setEditingModel] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -75,10 +75,10 @@ export default function ModelSettings({ projectId }) {
     getModelConfigList();
   }, []);
 
-  // 获取提供商列表
+  // 獲取提供商列表
   const getProvidersList = () => {
     axios.get('/api/llm/providers').then(response => {
-      console.log('获取的模型列表:', response.data);
+      console.log('獲取的模型列表:', response.data);
       setProviderList(response.data);
       const providerOptions = response.data.map(provider => ({
         id: provider.id,
@@ -90,7 +90,7 @@ export default function ModelSettings({ projectId }) {
     });
   };
 
-  // 获取模型配置列表
+  // 獲取模型配置列表
   const getModelConfigList = () => {
     axios
       .get(`/api/projects/${projectId}/model-config`)
@@ -105,9 +105,9 @@ export default function ModelSettings({ projectId }) {
   };
 
   const onChangeProvider = (event, newValue) => {
-    console.log('选择提供商:', newValue, typeof newValue);
+    console.log('選擇提供商:', newValue, typeof newValue);
     if (typeof newValue === 'string') {
-      // 用户手动输入了自定义提供商
+      // 用戶手動輸入了自訂提供商
       setModelConfigForm(prev => ({
         ...prev,
         providerId: 'custom',
@@ -115,7 +115,7 @@ export default function ModelSettings({ projectId }) {
         providerName: ''
       }));
     } else if (newValue && newValue.id) {
-      // 用户从下拉列表中选择了一个提供商
+      // 用戶從下拉選單中選擇了一個提供商
       const selectedProvider = providerList.find(p => p.id === newValue.id);
       if (selectedProvider) {
         setSelectedProvider(selectedProvider);
@@ -131,7 +131,7 @@ export default function ModelSettings({ projectId }) {
     }
   };
 
-  // 获取提供商的模型列表（DB）
+  // 獲取提供商的模型列表（DB）
   const getProviderModels = providerId => {
     axios
       .get(`/api/llm/model?providerId=${providerId}`)
@@ -162,7 +162,7 @@ export default function ModelSettings({ projectId }) {
     }
   };
 
-  //获取最新模型列表
+  //獲取最新模型列表
   async function getNewModels() {
     try {
       if (!modelConfigForm || !modelConfigForm.endpoint) {
@@ -171,7 +171,7 @@ export default function ModelSettings({ projectId }) {
       const providerId = modelConfigForm.providerId;
       console.log(providerId, 'getNewModels providerId');
 
-      // 使用后端 API 代理请求
+      // 使用後端 API 代理請求
       const res = await axios.post('/api/llm/fetch-models', {
         endpoint: modelConfigForm.endpoint,
         providerId: providerId,
@@ -189,7 +189,7 @@ export default function ModelSettings({ projectId }) {
     }
   }
 
-  // 打开模型对话框
+  // 打開模型對話框
   const handleOpenModelDialog = (model = null) => {
     if (model) {
       console.log('handleOpenModelDialog', model);
@@ -206,12 +206,12 @@ export default function ModelSettings({ projectId }) {
     setOpenModelDialog(true);
   };
 
-  // 关闭模型对话框
+  // 關閉模型對話框
   const handleCloseModelDialog = () => {
     setOpenModelDialog(false);
   };
 
-  // 处理模型表单变更
+  // 處理模型表單變更
   const handleModelFormChange = e => {
     const { name, value } = e.target;
     console.log('handleModelFormChange', name, value);
@@ -239,7 +239,7 @@ export default function ModelSettings({ projectId }) {
       });
   };
 
-  // 删除模型
+  // 刪除模型
   const handleDeleteModel = id => {
     axios
       .delete(`/api/projects/${projectId}/model-config/${id}`)
@@ -252,7 +252,7 @@ export default function ModelSettings({ projectId }) {
       });
   };
 
-  // 获取模型状态图标和颜色
+  // 獲取模型狀態圖示和顏色
   const getModelStatusInfo = model => {
     if (model.providerId.toLowerCase() === 'ollama') {
       return {
@@ -332,14 +332,14 @@ export default function ModelSettings({ projectId }) {
                     </Typography>
                     <Typography
                       variant="body2"
-                      color="primary" // 改为主色调
+                      color="primary" // 改為主色調
                       sx={{
                         fontWeight: 'medium', // 加粗
                         bgcolor: 'primary.50', // 添加背景色
-                        px: 1, // 水平内边距
-                        py: 0.2, // 垂直内边距
-                        borderRadius: 1, // 圆角
-                        display: 'inline-block' // 行内块元素
+                        px: 1, // 水平內邊距
+                        py: 0.2, // 垂直內邊距
+                        borderRadius: 1, // 圓角
+                        display: 'inline-block' // 行內塊元素
                       }}
                     >
                       {model.providerName}
@@ -404,7 +404,7 @@ export default function ModelSettings({ projectId }) {
         </Stack>
       </CardContent>
 
-      {/* 模型表单对话框 */}
+      {/* 模型表單對話框 */}
       <Dialog open={openModelDialog} onClose={handleCloseModelDialog} maxWidth="sm" fullWidth>
         <DialogTitle>{editingModel ? t('models.edit') : t('models.add')}</DialogTitle>
         <DialogContent>
@@ -428,7 +428,7 @@ export default function ModelSettings({ projectId }) {
                       {...params}
                       label={t('models.provider')}
                       onChange={e => {
-                        // 当用户手动输入时，更新 provider 字段
+                        // 當用戶手動輸入時，更新 provider 欄位
                         setModelConfigForm(prev => ({
                           ...prev,
                           providerId: 'custom',
@@ -450,7 +450,7 @@ export default function ModelSettings({ projectId }) {
                 />
               </FormControl>
             </Grid>
-            {/*接口地址*/}
+            {/*介面地址*/}
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -461,7 +461,7 @@ export default function ModelSettings({ projectId }) {
                 placeholder="例如: https://api.openai.com/v1"
               />
             </Grid>
-            {/*api密钥*/}
+            {/*api金鑰*/}
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -513,7 +513,7 @@ export default function ModelSettings({ projectId }) {
                 {t('models.refresh')}
               </Button>
             </Grid>
-            {/* 新增：视觉模型选择项 */}
+            {/* 新增：視覺模型選擇項 */}
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('models.type')}</InputLabel>

@@ -6,9 +6,9 @@ import { I18nextProvider } from 'react-i18next';
 
 export default function I18nProvider({ children }) {
   useEffect(() => {
-    // 确保i18n只在客户端初始化
+    // 確保i18n只在用戶端初始化
     if (typeof window !== 'undefined') {
-      // 这里可以添加任何客户端特定的i18n初始化逻辑
+      // 這裡可以添加任何用戶端特定的i18n初始化邏輯
     }
   }, []);
 

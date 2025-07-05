@@ -7,14 +7,14 @@ import { useAtom, useAtomValue } from 'jotai/index';
 import { modelConfigListAtom, selectedModelInfoAtom } from '@/lib/store';
 import axios from 'axios';
 
-// 获取模型对应的图标路径
+// 獲取模型對應的圖示路徑
 const getModelIcon = modelName => {
   if (!modelName) return '/imgs/models/default.svg';
 
-  // 将模型名称转换为小写以便比较
+  // 將模型名稱轉換為小寫以便比較
   const lowerModelName = modelName.toLowerCase();
 
-  // 定义已知模型前缀映射
+  // 定義已知模型前綴映射
   const modelPrefixes = [
     { prefix: 'doubao', icon: 'doubao.svg' },
     { prefix: 'qwen', icon: 'qwen.svg' },
@@ -30,13 +30,13 @@ const getModelIcon = modelName => {
     { prefix: 'glm', icon: 'glm.svg' },
     { prefix: 'hunyuan', icon: 'hunyuan.svg' }
 
-    // 添加更多模型前缀映射...
+    // 添加更多模型前綴映射...
   ];
 
-  // 查找匹配的模型前缀
+  // 尋找匹配的模型前綴
   const matchedPrefix = modelPrefixes.find(({ prefix }) => lowerModelName.includes(prefix));
 
-  // 返回对应的图标路径，如果没有匹配则返回默认图标
+  // 返回對應的圖示路徑，如果沒有匹配則返回默認圖示
   return `/imgs/models/${matchedPrefix ? matchedPrefix.icon : 'default.svg'}`;
 };
 
@@ -52,7 +52,7 @@ export default function ModelSelect({
   const { t } = useTranslation();
   const models = useAtomValue(modelConfigListAtom);
   const [selectedModelInfo, setSelectedModelInfo] = useAtom(selectedModelInfoAtom);
-  // 确保始终使用字符串值初始化 selectedModel，避免从非受控变为受控
+  // 確保始終使用字串值初始化 selectedModel，避免從非受控變為受控
   const [selectedModel, setSelectedModel] = useState(() => {
     if (selectedModelInfo && selectedModelInfo.id) {
       return selectedModelInfo.id;
@@ -66,17 +66,17 @@ export default function ModelSelect({
     if (!event || !event.target) return;
     const newModelId = event.target.value;
 
-    // 清除错误状态
+    // 清除錯誤狀態
     if (error) {
       setError(false);
       if (onError) onError(false);
     }
 
-    // 找到选中的模型对象
+    // 找到選中的模型對象
     const selectedModelObj = models.find(model => model.id === newModelId);
     if (selectedModelObj) {
       setSelectedModel(newModelId);
-      // 将完整的模型信息存储到 localStorage
+      // 將完整的模型資訊儲存到 localStorage
       setSelectedModelInfo(selectedModelObj);
       updateDefaultModel(newModelId);
     } else {
@@ -93,7 +93,7 @@ export default function ModelSelect({
     }
   };
 
-  // 检查是否选择了模型
+  // 檢查是否選擇了模型
   const validateModel = () => {
     if (required && (!selectedModel || selectedModel === '')) {
       setError(true);
@@ -109,14 +109,14 @@ export default function ModelSelect({
     }
   }, [selectedModelInfo]);
 
-  // 初始检查
+  // 初始檢查
   useEffect(() => {
     if (required) {
       validateModel();
     }
   }, [required]);
 
-  // 获取当前选中模型的显示内容
+  // 獲取當前選中模型的顯示內容
   const renderSelectedValue = value => {
     const selectedModelObj = models.find(model => model.id === value);
     if (!selectedModelObj) return null;
@@ -196,7 +196,7 @@ export default function ModelSelect({
           {error ? t('models.pleaseSelectModel') : t('playground.selectModelFirst')}
         </MenuItem>
         {(() => {
-          // 按 provider 分组
+          // 按 provider 分組
           const filteredModels = models.filter(m => {
             if (m.providerId?.toLowerCase() === 'ollama') {
               return m.modelName && m.endpoint;
@@ -205,7 +205,7 @@ export default function ModelSelect({
             }
           });
 
-          // 获取所有 provider
+          // 獲取所有 provider
           const providers = [...new Set(filteredModels.map(m => m.providerName || 'Other'))];
 
           return providers.map(provider => {

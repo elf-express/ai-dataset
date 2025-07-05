@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import useFileProcessingStatus from '@/hooks/useFileProcessingStatus';
 import axios from 'axios';
 
-// 任务图标组件
+// 任務圖示組件
 export default function TaskIcon({ projectId, theme }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function TaskIcon({ projectId, theme }) {
   const [polling, setPolling] = useState(false);
   const { setTaskFileProcessing, setTask } = useFileProcessingStatus();
 
-  // 获取项目的未完成任务列表
+  // 獲取項目的未完成任務列表
   const fetchPendingTasks = async () => {
     if (!projectId) return;
 
@@ -25,33 +25,33 @@ export default function TaskIcon({ projectId, theme }) {
       if (response.data?.code === 0) {
         const tasks = response.data.data || [];
         setTasks(tasks);
-        // 检查是否有文件处理任务正在进行
+        // 檢查是否有文件處理任務正在進行
         const hasActiveFileTask = tasks.some(
           task => task.projectId === projectId && task.taskType === 'file-processing'
         );
         setTaskFileProcessing(hasActiveFileTask);
-        //存在文件处理任务，将任务信息传递给共享状态
+        //存在文件處理任務，將任務資訊傳遞給共享狀態
         if (hasActiveFileTask) {
           const activeTask = tasks.find(task => task.projectId === projectId && task.taskType === 'file-processing');
-          // 解析任务详情信息
+          // 解析任務詳情資訊
           const detailInfo = JSON.parse(activeTask.detail);
           setTask(detailInfo);
         }
       }
     } catch (error) {
-      console.error('获取任务列表失败:', error);
+      console.error('獲取任務列表失敗:', error);
     }
   };
 
-  // 初始化时获取任务列表
+  // 初始化時獲取任務列表
   useEffect(() => {
     if (projectId) {
       fetchPendingTasks();
 
-      // 启动轮询
+      // 啟動輪詢
       const intervalId = setInterval(() => {
         fetchPendingTasks();
-      }, 10000); // 每10秒轮询一次
+      }, 10000); // 每10秒輪詢一次
 
       setPolling(true);
 
@@ -62,17 +62,17 @@ export default function TaskIcon({ projectId, theme }) {
     }
   }, [projectId]);
 
-  // 打开任务列表页面
+  // 打開任務列表頁面
   const handleOpenTaskList = () => {
     router.push(`/projects/${projectId}/tasks`);
   };
 
-  // 图标渲染逻辑
+  // 圖示渲染邏輯
   const renderTaskIcon = () => {
     const pendingTasks = tasks.filter(task => task.status === 0);
 
     if (pendingTasks.length > 0) {
-      // 当有任务处理中时，显示 loading 状态同时保留徽标
+      // 當有任務處理中時，顯示 loading 狀態同時保留徽標
       return (
         <Badge badgeContent={pendingTasks.length} color="error">
           <CircularProgress size={20} color="inherit" />
@@ -80,11 +80,11 @@ export default function TaskIcon({ projectId, theme }) {
       );
     }
 
-    // 没有处理中的任务时，显示完成图标
+    // 沒有處理中的任務時，顯示完成圖示
     return <TaskAltIcon fontSize="small" />;
   };
 
-  // 悬停提示文本
+  // 懸停提示文本
   const getTooltipText = () => {
     const pendingTasks = tasks.filter(task => task.status === 0);
 

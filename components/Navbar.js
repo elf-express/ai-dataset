@@ -29,7 +29,7 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-// 图标
+// 圖示
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import StorageIcon from '@mui/icons-material/Storage';
@@ -54,28 +54,28 @@ export default function Navbar({ projects = [], currentProject }) {
   const { resolvedTheme, setTheme } = useTheme();
   const setConfigList = useSetAtom(modelConfigListAtom);
   const setSelectedModelInfo = useSetAtom(selectedModelInfoAtom);
-  // 只在项目详情页显示模块选项卡
+  // 只在項目詳情頁顯示模組選項卡
   const isProjectDetail = pathname.includes('/projects/') && pathname.split('/').length > 3;
-  // 更多菜单状态
+  // 更多菜單狀態
   const [moreMenuAnchor, setMoreMenuAnchor] = useState(null);
   const isMoreMenuOpen = Boolean(moreMenuAnchor);
 
-  // 处理更多菜单打开
+  // 處理更多菜單打開
   const handleMoreMenuOpen = event => {
     setMoreMenuAnchor(event.currentTarget);
   };
 
-  // 处理更多菜单悬浮打开
+  // 處理更多菜單懸浮打開
   const handleMoreMenuHover = event => {
     setMoreMenuAnchor(event.currentTarget);
   };
 
-  // 关闭更多菜单
+  // 關閉更多菜單
   const handleMoreMenuClose = () => {
     setMoreMenuAnchor(null);
   };
 
-  // 处理菜单区域的鼠标离开
+  // 處理菜單區域的滑鼠離開
   const handleMenuMouseLeave = () => {
     setMoreMenuAnchor(null);
   };
@@ -96,7 +96,7 @@ export default function Navbar({ projects = [], currentProject }) {
       .catch(error => {
         toast.error('get model list error');
       });
-    // 跳转到新选择的项目页面
+    // 跳轉到新選擇的項目頁面
     window.location.href = `/projects/${newProjectId}/text-split`;
   };
 
@@ -125,7 +125,7 @@ export default function Navbar({ projects = [], currentProject }) {
         }}
         style={{ zIndex: 99000 }}
       >
-        {/* 左侧Logo和项目选择 */}
+        {/* 左側Logo和項目選擇 */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 0 }}>
           <Box
             sx={{
@@ -142,7 +142,7 @@ export default function Navbar({ projects = [], currentProject }) {
             <Box
               component="img"
               src="/imgs/logo.svg"
-              alt="Easy Dataset Logo"
+              alt="AI Dataset Logo"
               sx={{
                 width: 28,
                 height: 28,
@@ -160,7 +160,7 @@ export default function Navbar({ projects = [], currentProject }) {
               className={theme.palette.mode === 'dark' ? 'gradient-text' : ''}
               color={theme.palette.mode === 'dark' ? 'inherit' : 'white'}
             >
-              Easy DataSet
+              AI Dataset
             </Typography>
           </Box>
 
@@ -208,7 +208,7 @@ export default function Navbar({ projects = [], currentProject }) {
           )}
         </Box>
 
-        {/* 中间的功能模块导航 - 使用Flex布局居中 */}
+        {/* 中間的功能模組導航 - 使用Flex布局居中 */}
         {isProjectDetail && (
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', ml: 2, mr: 2 }}>
             <Tabs
@@ -306,7 +306,7 @@ export default function Navbar({ projects = [], currentProject }) {
           </Box>
         )}
 
-        {/* 更多菜单 */}
+        {/* 更多菜單 */}
         <Menu
           anchorEl={moreMenuAnchor}
           open={isMoreMenuOpen}
@@ -360,18 +360,18 @@ export default function Navbar({ projects = [], currentProject }) {
           </MenuItem>
         </Menu>
 
-        {/* 右侧操作区 - 使用Flex布局 */}
+        {/* 右側操作區 - 使用Flex布局 */}
         <Box sx={{ display: 'flex', flexGrow: 0, alignItems: 'center', gap: 1.5 }}>
-          {/* 模型选择 */}
+          {/* 模型選擇 */}
           {location.pathname.includes('/projects/') && <ModelSelect projectId={selectedProject} />}
-          {/* 任务图标 - 仅在项目页面显示 */}
+          {/* 任務圖示 - 僅在項目頁面顯示 */}
           {location.pathname.includes('/projects/') && <TaskIcon theme={theme} projectId={selectedProject} />}
 
-          {/* 语言切换器 */}
+          {/* 語言切換器 */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <LanguageSwitcher />
           </Box>
-          {/* 主题切换按钮 */}
+          {/* 主題切換按鈕 */}
           <Tooltip title={resolvedTheme === 'dark' ? t('theme.switchToLight') : t('theme.switchToDark')}>
             <IconButton
               onClick={toggleTheme}
@@ -394,11 +394,11 @@ export default function Navbar({ projects = [], currentProject }) {
             </IconButton>
           </Tooltip>
 
-          {/* 文档链接 */}
+          {/* 文件連結 
           <Tooltip title={t('documentation')}>
             <IconButton
               href={
-                i18n.language === 'zh-CN' ? 'https://docs.easy-dataset.com/' : 'https://docs.easy-dataset.com/ed/en'
+                i18n.language === 'zh-CN' ? 'https://docs.ai-dataset.com/' : 'https://docs.ai-dataset.com/ed/en'
               }
               target="_blank"
               rel="noopener noreferrer"
@@ -418,11 +418,12 @@ export default function Navbar({ projects = [], currentProject }) {
               <HelpOutlineIcon fontSize="small" />
             </IconButton>
           </Tooltip>
+          */}
 
-          {/* GitHub链接 */}
+          {/* GitHub連結 
           <Tooltip title={t('common.visitGitHub')}>
             <IconButton
-              onClick={() => window.open('https://github.com/ConardLi/easy-dataset', '_blank')}
+              onClick={() => window.open('https://github.com/ConardLi/ai-dataset', '_blank')}
               size="small"
               sx={{
                 bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.15)',
@@ -437,8 +438,9 @@ export default function Navbar({ projects = [], currentProject }) {
               <GitHubIcon fontSize="small" />
             </IconButton>
           </Tooltip>
+          */}
 
-          {/* 更新检查器 */}
+          {/* 更新檢查器 */}
           <UpdateChecker />
         </Box>
       </Toolbar>

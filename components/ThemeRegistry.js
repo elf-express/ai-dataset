@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as NextThemeProvider, useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-// 导入字体
+// 導入字體
 import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
@@ -14,31 +14,31 @@ import '@fontsource/inter/700.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 
-// 创建主题配置
+// 創建主題配置
 const getTheme = mode => {
-  // 主色调
+  // 主色調
   const mainBlue = '#2A5CAA';
   const darkGray = '#2D2D2D';
 
-  // 辅助色 - 数据可视化色谱
+  // 輔助色 - 數據可視化色譜
   const dataVizColors = [
-    '#6366F1', // 紫蓝色
-    '#10B981', // 绿色
+    '#6366F1', // 紫藍色
+    '#10B981', // 綠色
     '#F59E0B', // 琥珀色
     '#EC4899', // 粉色
     '#8B5CF6', // 紫色
-    '#3B82F6' // 蓝色
+    '#3B82F6' // 藍色
   ];
 
-  // 状态色
-  const successColor = '#10B981'; // 翡翠绿
+  // 狀態色
+  const successColor = '#10B981'; // 翡翠綠
   const warningColor = '#F59E0B'; // 琥珀色
-  const errorColor = '#EF4444'; // 珊瑚红
+  const errorColor = '#EF4444'; // 珊瑚紅
 
-  // 渐变色
+  // 漸變色
   const gradientPrimary = 'linear-gradient(90deg, #2A5CAA 0%, #8B5CF6 100%)';
 
-  // 根据模式调整颜色
+  // 根據模式調整顏色
   return createTheme({
     palette: {
       mode,
@@ -145,7 +145,7 @@ const getTheme = mode => {
     shape: {
       borderRadius: 8
     },
-    spacing: 8, // 基础间距单位为8px
+    spacing: 8, // 基礎間距單位為8px
     components: {
       MuiCssBaseline: {
         styleOverrides: {
@@ -164,11 +164,11 @@ const getTheme = mode => {
               borderRadius: '4px'
             }
           },
-          // 确保代码块使用 JetBrains Mono 字体
+          // 確保代碼塊使用 JetBrains Mono 字體
           'code, pre': {
             fontFamily: '"JetBrains Mono", monospace'
           },
-          // 自定义渐变文本的通用样式
+          // 自訂漸變文本的通用樣式
           '.gradient-text': {
             background: gradientPrimary,
             WebkitBackgroundClip: 'text',

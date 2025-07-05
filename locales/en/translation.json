@@ -1,9 +1,11 @@
 {
   "language": {
     "switchToEnglish": "Switch to English",
-    "switchToChinese": "Switch to Chinese",
+    "switchToTraditional": "Switch to Traditional",
+    "switchToSimplified": "Switch to Simplified",
     "en": "EN",
-    "zh": "中"
+    "zh-TW": "TW",
+    "zh-CN": "CN"  
   },
   "theme": {
     "switchToLight": "Switch to Light Mode",
@@ -166,8 +168,8 @@
     "generating": "Generating..."
   },
   "home": {
-    "title": "Easy Dataset",
-    "subtitle": "A powerful tool for creating fine-tuning datasets for Large Language Models",
+    "title": "AI Dataset",
+    "subtitle": "An advanced AI-driven solution for end-to-end collection and curation of fine-tuning datasets for Large Language Models.",
     "createProject": "Create Project",
     "searchDataset": "Search Public Datasets"
   },

@@ -29,7 +29,7 @@ export default function BasicSettings({ projectId }) {
         const data = await response.json();
         setProjectInfo(data);
       } catch (error) {
-        console.error('获取项目信息出错:', error);
+        console.error('獲取項目資訊出錯:', error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -39,7 +39,7 @@ export default function BasicSettings({ projectId }) {
     fetchProjectInfo();
   }, [projectId, t]);
 
-  // 处理项目信息变更
+  // 處理項目資訊變更
   const handleProjectInfoChange = e => {
     const { name, value } = e.target;
     setProjectInfo(prev => ({
@@ -48,7 +48,7 @@ export default function BasicSettings({ projectId }) {
     }));
   };
 
-  // 保存项目信息
+  // 保存項目資訊
   const handleSaveProjectInfo = async () => {
     try {
       const response = await fetch(`/api/projects/${projectId}`, {
@@ -68,7 +68,7 @@ export default function BasicSettings({ projectId }) {
 
       setSuccess(true);
     } catch (error) {
-      console.error('保存项目信息出错:', error);
+      console.error('保存項目資訊出錯:', error);
       setError(error.message);
     }
   };

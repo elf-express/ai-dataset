@@ -1,7 +1,7 @@
 services:
-  easy-dataset:
-    image: ghcr.io/conardli/easy-dataset
-    container_name: easy-dataset
+  ai-dataset:
+    image: ghcr.io/conardli/ai-dataset
+    container_name: ai-dataset
     ports:
       - '1717:1717'
     volumes:

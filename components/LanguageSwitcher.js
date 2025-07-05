@@ -8,12 +8,32 @@ export default function LanguageSwitcher() {
   const theme = useTheme();
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'zh-CN' ? 'en' : 'zh-CN';
+    let newLang;
+    if (i18n.language === 'zh-CN') {
+      newLang = 'zh-TW';
+    } else if (i18n.language === 'zh-TW') {
+      newLang = 'en';
+    } else {
+      newLang = 'zh-CN';
+    }
     i18n.changeLanguage(newLang);
   };
 
+  // 依據下一個語言動態顯示提示與按鈕文字
+  let tooltipText, buttonText;
+  if (i18n.language === 'zh-CN') {
+    tooltipText = '切換到繁體';
+    buttonText = '简';
+  } else if (i18n.language === 'zh-TW') {
+    tooltipText = 'Switch to English';
+    buttonText = '繁';
+  } else {
+    tooltipText = '切换到简体';
+    buttonText = 'EN';
+  }
+
   return (
-    <Tooltip title={i18n.language === 'zh-CN' ? 'Switch to English' : '切换到中文'}>
+    <Tooltip title={tooltipText}>
       <IconButton
         onClick={toggleLanguage}
         size="small"
@@ -28,7 +48,7 @@ export default function LanguageSwitcher() {
         }}
       >
         <Typography variant="body2" fontWeight="medium">
-          {i18n.language === 'zh-CN' ? 'EN' : '中'}
+          {buttonText}
         </Typography>
       </IconButton>
     </Tooltip>
