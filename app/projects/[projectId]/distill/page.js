@@ -327,8 +327,8 @@ export default function DistillPage() {
                 onClick={() => {
                   const helpUrl =
                     i18n.language === 'en'
-                      ? 'https://docs.ai-dataset.com/ed/en/advanced/images-and-media'
-                      : 'https://docs.ai-dataset.com/jin-jie-shi-yong/images-and-media';
+                      ? 'https://docs.easy-dataset.com/ed/en/advanced/images-and-media'
+                      : 'https://docs.easy-dataset.com/jin-jie-shi-yong/images-and-media';
                   window.open(helpUrl, '_blank');
                 }}
                 sx={{ color: 'text.secondary' }}

@@ -8,13 +8,13 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useTheme } from '@mui/material/styles';
 
 /**
- * 目錄結構組件
+ * 目录结构组件
  * @param {Object} props
- * @param {Array} props.items - 目錄項數組
- * @param {Object} props.expandedItems - 展開狀態對象
- * @param {Function} props.onToggleItem - 展開/摺疊回調
- * @param {number} props.level - 當前層級
- * @param {string} props.parentId - 父級ID
+ * @param {Array} props.items - 目录项数组
+ * @param {Object} props.expandedItems - 展开状态对象
+ * @param {Function} props.onToggleItem - 展开/折叠回调
+ * @param {number} props.level - 当前层级
+ * @param {string} props.parentId - 父级ID
  */
 export default function DirectoryView({ items, expandedItems, onToggleItem, level = 0, parentId = '' }) {
   const theme = useTheme();

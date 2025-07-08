@@ -1,11 +1,9 @@
 {
   "language": {
     "switchToEnglish": "切換到英文",
-    "switchToTraditional": "切換到繁體",
-    "switchToSimplified": "切換到簡體",
+    "switchToChinese": "切換到中文",
     "en": "EN",
-    "zh-TW": "繁",
-    "zh-CN": "簡"  
+    "zh": "中"
   },
   "theme": {
     "switchToLight": "切換到亮色模式",
@@ -169,7 +167,7 @@
   },
   "home": {
     "title": "AI Dataset",
-    "subtitle": "由 AI 驅動的端到端微調數據集收集與整理解決方案，專為大型語言模型而設計",
+    "subtitle": "一個強大的大型語言模型微調數據集創建工具",
     "createProject": "創建項目",
     "searchDataset": "搜索公開數據集"
   },
@@ -204,6 +202,7 @@
     "openDirectory": "打開項目目錄"
   },
   "textSplit": {
+    "dragToUpload": "拖拽文件到此處上傳",
     "fileList": "文獻列表",
     "autoGenerateQuestions": "自動提取問題",
     "autoGenerateQuestionsTip": "創建後台批次處理任務：自動查詢待生成問題的文本塊並提取問題",
@@ -459,6 +458,18 @@
     "batchDeleteProgress": "已完成: {{completed}}/{{total}}",
     "batchDeleteCount": "已生成: {{count}}",
     "searchPlaceholder": "搜索數據集...",
+    "fieldQuestion": "問題",
+    "fieldAnswer": "回答",
+    "fieldCOT": "思維鏈",
+    "fieldLabel": "領域標籤",
+    "moreFilters": "更多篩選",
+    "filtersTitle": "篩選條件",
+    "filterConfirmationStatus": "確認狀態",
+    "filterCotStatus": "思維鏈狀態",
+    "filterHasCot": "包含思維鏈",
+    "filterNoCot": "不包含思維鏈",
+    "resetFilters": "重設",
+    "applyFilters": "應用篩選",
     "viewDetails": "查看詳情",
     "datasetDetail": "數據集詳情",
     "metadata": "元數據",

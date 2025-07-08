@@ -6,9 +6,9 @@ import { Provider } from 'jotai';
 
 export const metadata = {
   title: 'Easy Dataset',
-  description: '一個強大的 LLM 數據集生成工具',
+  description: '一个强大的 LLM 数据集生成工具',
   icons: {
-    icon: '/imgs/logo.ico' // 更新為正確的檔案名
+    icon: '/imgs/logo.ico' // 更新为正确的文件名
   }
 };
 

@@ -25,12 +25,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
-// 編輯文本塊對話框組件
+// 编辑文本块对话框组件
 const EditChunkDialog = ({ open, chunk, onClose, onSave }) => {
   const [content, setContent] = useState(chunk?.content || '');
   const { t } = useTranslation();
 
-  // 當文本塊變化時更新內容
+  // 当文本块变化时更新内容
   useEffect(() => {
     if (chunk?.content) {
       setContent(chunk.content);
@@ -75,30 +75,30 @@ export default function ChunkCard({
   onGenerateQuestions,
   onEdit,
   projectId,
-  selectedModel // 添加selectedModel參數
+  selectedModel // 添加selectedModel参数
 }) {
   const theme = useTheme();
   const { t } = useTranslation();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [chunkForEdit, setChunkForEdit] = useState(null);
 
-  // 獲取文本預覽
+  // 获取文本预览
   const getTextPreview = (content, maxLength = 150) => {
     if (!content) return '';
     return content.length > maxLength ? `${content.substring(0, maxLength)}...` : content;
   };
 
-  // 檢查是否有已生成的問題
+  // 检查是否有已生成的问题
   const hasQuestions = chunk.questions && chunk.questions.length > 0;
 
-  // 處理編輯按鈕點擊
+  // 处理编辑按钮点击
   const handleEditClick = async () => {
     try {
-      // 顯示載入狀態
-      console.log('正在獲取文本塊完整內容...');
+      // 显示加载状态
+      console.log('正在获取文本块完整内容...');
       console.log('projectId:', projectId, 'chunkId:', chunk.id);
 
-      // 先獲取完整的文本塊內容，使用從外部傳入的 projectId
+      // 先获取完整的文本块内容，使用从外部传入的 projectId
       const response = await fetch(`/api/projects/${projectId}/chunks/${encodeURIComponent(chunk.id)}`);
 
       if (!response.ok) {
@@ -106,19 +106,19 @@ export default function ChunkCard({
       }
 
       const data = await response.json();
-      console.log('獲取文本塊完整內容成功:', data);
+      console.log('获取文本块完整内容成功:', data);
 
-      // 先設置完整數據，再打開對話框（與 ChunkList.js 中的實現一致）
+      // 先设置完整数据，再打开对话框（与 ChunkList.js 中的实现一致）
       setChunkForEdit(data);
       setEditDialogOpen(true);
     } catch (error) {
       console.error(t('textSplit.fetchChunkError'), error);
-      // 如果出錯，使用原始預覽數據
+      // 如果出错，使用原始预览数据
       alert(t('textSplit.fetchChunkError'));
     }
   };
 
-  // 處理保存編輯內容
+  // 处理保存编辑内容
   const handleSaveEdit = newContent => {
     if (onEdit) {
       onEdit(chunk.id, newContent);
@@ -274,7 +274,7 @@ export default function ChunkCard({
             title={
               selectedModel?.id
                 ? t('textSplit.generateQuestions')
-                : t('textSplit.selectModelFirst', { defaultValue: '請先在右上角選擇模型' })
+                : t('textSplit.selectModelFirst', { defaultValue: '请先在右上角选择模型' })
             }
           >
             <span>
@@ -287,7 +287,7 @@ export default function ChunkCard({
                   bgcolor: theme.palette.mode === 'dark' ? 'rgba(41, 182, 246, 0.08)' : 'rgba(2, 136, 209, 0.08)',
                   '&.Mui-disabled': {
                     opacity: 0.6,
-                    pointerEvents: 'auto' // 允許滑鼠懸停顯示tooltip
+                    pointerEvents: 'auto' // 允许鼠标悬停显示tooltip
                   }
                 }}
               >
@@ -324,7 +324,7 @@ export default function ChunkCard({
         </CardActions>
       </Card>
 
-      {/* 編輯文本塊對話框 */}
+      {/* 编辑文本块对话框 */}
       <EditChunkDialog
         open={editDialogOpen}
         chunk={chunkForEdit || chunk}

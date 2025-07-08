@@ -21,14 +21,14 @@ import {
 import { useTranslation } from 'react-i18next';
 
 /**
- * 批次編輯文本塊對話框
+ * 批量编辑文本块对话框
  * @param {Object} props
- * @param {boolean} props.open - 對話框是否打開
- * @param {Function} props.onClose - 關閉對話框的回調
- * @param {Function} props.onConfirm - 確認編輯的回調
- * @param {Array} props.selectedChunks - 選中的文本塊ID數組
- * @param {number} props.totalChunks - 文本塊總數
- * @param {boolean} props.loading - 是否正在處理
+ * @param {boolean} props.open - 对话框是否打开
+ * @param {Function} props.onClose - 关闭对话框的回调
+ * @param {Function} props.onConfirm - 确认编辑的回调
+ * @param {Array} props.selectedChunks - 选中的文本块ID数组
+ * @param {number} props.totalChunks - 文本块总数
+ * @param {boolean} props.loading - 是否正在处理
  */
 export default function BatchEditChunksDialog({
   open,
@@ -43,18 +43,18 @@ export default function BatchEditChunksDialog({
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
 
-  // 處理位置變更
+  // 处理位置变更
   const handlePositionChange = event => {
     setPosition(event.target.value);
   };
 
-  // 處理內容變更
+  // 处理内容变更
   const handleContentChange = event => {
     setContent(event.target.value);
     if (error) setError('');
   };
 
-  // 處理確認
+  // 处理确认
   const handleConfirm = () => {
     if (!content.trim()) {
       setError(t('batchEdit.contentRequired'));
@@ -68,7 +68,7 @@ export default function BatchEditChunksDialog({
     });
   };
 
-  // 處理關閉
+  // 处理关闭
   const handleClose = () => {
     if (!loading) {
       setContent('');
@@ -84,7 +84,7 @@ export default function BatchEditChunksDialog({
 
       <DialogContent>
         <Box sx={{ py: 1 }}>
-          {/* 選擇提示 */}
+          {/* 选择提示 */}
           <Alert severity="info" sx={{ mb: 3 }}>
             <Typography variant="body2">
               {selectedChunks.length === totalChunks
@@ -96,7 +96,7 @@ export default function BatchEditChunksDialog({
             </Typography>
           </Alert>
 
-          {/* 位置選擇 */}
+          {/* 位置选择 */}
           <FormControl component="fieldset" sx={{ mb: 3, width: '100%' }}>
             <FormLabel component="legend" sx={{ mb: 1 }}>
               {t('batchEdit.position')}
@@ -107,7 +107,7 @@ export default function BatchEditChunksDialog({
             </RadioGroup>
           </FormControl>
 
-          {/* 內容輸入 */}
+          {/* 内容输入 */}
           <TextField
             fullWidth
             label={t('batchEdit.contentToAdd')}
@@ -122,7 +122,7 @@ export default function BatchEditChunksDialog({
             sx={{ mb: 2 }}
           />
 
-          {/* 預覽範例 */}
+          {/* 预览示例 */}
           {content.trim() && (
             <Box
               sx={{
@@ -148,11 +148,11 @@ export default function BatchEditChunksDialog({
                 {position === 'start' ? (
                   <>
                     <span style={{ backgroundColor: '#e3f2fd', padding: '2px 4px' }}>{content}</span>
-                    {'\n\n[原始文本塊內容...]'}
+                    {'\n\n[原始文本块内容...]'}
                   </>
                 ) : (
                   <>
-                    {'[原始文本塊內容...]\n\n'}
+                    {'[原始文本块内容...]\n\n'}
                     <span style={{ backgroundColor: '#e3f2fd', padding: '2px 4px' }}>{content}</span>
                   </>
                 )}

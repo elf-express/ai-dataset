@@ -1,9 +1,9 @@
-// ExportDatasetDialog.js 组件
+// ExportDatasetDialog.js 組件
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, Tabs, Tab } from '@mui/material';
 
-// 导入拆分后的组件
+// 導入拆分後的組件
 import LocalExportTab from './export/LocalExportTab';
 import LlamaFactoryTab from './export/LlamaFactoryTab';
 import HuggingFaceTab from './export/HuggingFaceTab';
@@ -16,15 +16,15 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
   const [fileFormat, setFileFormat] = useState('json');
   const [includeCOT, setIncludeCOT] = useState(true);
   const [currentTab, setCurrentTab] = useState(0);
-  // alpaca 格式特有的设置
+  // alpaca 格式特有的設置
   const [alpacaFieldType, setAlpacaFieldType] = useState('instruction'); // 'instruction' 或 'input'
-  const [customInstruction, setCustomInstruction] = useState(''); // 当选择 input 时使用的自定义 instruction
+  const [customInstruction, setCustomInstruction] = useState(''); // 當選擇 input 時使用的自訂 instruction
   const [customFields, setCustomFields] = useState({
     questionField: 'instruction',
     answerField: 'output',
-    cotField: 'complexCOT', // 添加思维链字段名
+    cotField: 'complexCOT', // 添加思維鏈欄位名
     includeLabels: false,
-    includeChunk: false // 添加是否包含chunk字段
+    includeChunk: false // 添加是否包含chunk欄位
   });
 
   const handleFileFormatChange = event => {
@@ -33,7 +33,7 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
 
   const handleFormatChange = event => {
     setFormatType(event.target.value);
-    // 根据格式类型设置默认字段名
+    // 根據格式類型設置默認欄位名
     if (event.target.value === 'alpaca') {
       setCustomFields({
         ...customFields,
@@ -47,7 +47,7 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
         answerField: 'content'
       });
     } else if (event.target.value === 'custom') {
-      // 自定义格式保持当前值
+      // 自訂格式保持當前值
     }
   };
 
@@ -59,7 +59,7 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
     setConfirmedOnly(event.target.checked);
   };
 
-  // 新增处理函数
+  // 新增處理函數
   const handleIncludeCOTChange = event => {
     setIncludeCOT(event.target.checked);
   };
@@ -85,12 +85,12 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
     });
   };
 
-  // 处理 Alpaca 字段类型变更
+  // 處理 Alpaca 欄位類型變更
   const handleAlpacaFieldTypeChange = event => {
     setAlpacaFieldType(event.target.value);
   };
 
-  // 处理自定义 instruction 变更
+  // 處理自訂 instruction 變更
   const handleCustomInstructionChange = event => {
     setCustomInstruction(event.target.value);
   };
@@ -102,8 +102,8 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
       confirmedOnly,
       fileFormat,
       includeCOT,
-      alpacaFieldType, // 添加 alpaca 字段类型
-      customInstruction, // 添加自定义 instruction
+      alpacaFieldType, // 添加 alpaca 欄位類型
+      customInstruction, // 添加自訂 instruction
       customFields: formatType === 'custom' ? customFields : undefined
     });
   };
@@ -130,7 +130,7 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
           </Tabs>
         </Box>
 
-        {/* 第一个标签页：本地导出 */}
+        {/* 第一個標籤頁：本地導出 */}
         {currentTab === 0 && (
           <LocalExportTab
             fileFormat={fileFormat}
@@ -155,7 +155,7 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
           />
         )}
 
-        {/* 第二个标签页：Llama Factory */}
+        {/* 第二個標籤頁：Llama Factory */}
         {currentTab === 1 && (
           <LlamaFactoryTab
             projectId={projectId}
@@ -169,7 +169,7 @@ const ExportDatasetDialog = ({ open, onClose, onExport, projectId }) => {
           />
         )}
 
-        {/* 第三个标签页：HuggingFace */}
+        {/* 第三個標籤頁：HuggingFace */}
         {currentTab === 2 && (
           <HuggingFaceTab
             projectId={projectId}
