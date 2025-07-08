@@ -21,9 +21,9 @@ If you like this project, please give it a Star⭐️, or buy the author a coffe
 
 ## Overview
 
-Easy Dataset is an application specifically designed for creating fine-tuning datasets for Large Language Models (LLMs). It provides an intuitive interface for uploading domain-specific files, intelligently splitting content, generating questions, and producing high-quality training data for model fine-tuning.
+AI Dataset is an application specifically designed for creating fine-tuning datasets for Large Language Models (LLMs). It provides an intuitive interface for uploading domain-specific files, intelligently splitting content, generating questions, and producing high-quality training data for model fine-tuning.
 
-With Easy Dataset, you can transform domain knowledge into structured datasets, compatible with all LLM APIs that follow the OpenAI format, making the fine-tuning process simple and efficient.
+With AI Dataset, you can transform domain knowledge into structured datasets, compatible with all LLM APIs that follow the OpenAI format, making the fine-tuning process simple and efficient.
 
 ![](./public/imgs/en-arc.png)
 
@@ -264,16 +264,16 @@ ai-dataset/
 
 ## Documentation
 
-- View the demo video of this project: [Easy Dataset Demo Video](https://www.bilibili.com/video/BV1y8QpYGE57/)
+- View the demo video of this project: [AI Dataset Demo Video](https://www.bilibili.com/video/BV1y8QpYGE57/)
 - For detailed documentation on all features and APIs, visit our [Documentation Site](https://docs.ai-dataset.com/ed/en)
 
 ## Community Practice
 
-[Easy Dataset × LLaMA Factory: Enabling LLMs to Efficiently Learn Domain Knowledge](https://buaa-act.feishu.cn/wiki/GVzlwYcRFiR8OLkHbL6cQpYin7g)
+[AI Dataset × LLaMA Factory: Enabling LLMs to Efficiently Learn Domain Knowledge](https://buaa-act.feishu.cn/wiki/GVzlwYcRFiR8OLkHbL6cQpYin7g)
 
 ## Contributing
 
-We welcome contributions from the community! If you'd like to contribute to Easy Dataset, please follow these steps:
+We welcome contributions from the community! If you'd like to contribute to AI Dataset, please follow these steps:
 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/amazing-feature`)

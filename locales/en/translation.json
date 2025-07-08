@@ -166,7 +166,7 @@
     "generating": "Generating..."
   },
   "home": {
-    "title": "Easy Dataset",
+    "title": "AI Dataset",
     "subtitle": "A powerful tool for creating fine-tuning datasets for Large Language Models",
     "createProject": "Create Project",
     "searchDataset": "Search Public Datasets"

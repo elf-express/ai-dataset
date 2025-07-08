@@ -6,7 +6,7 @@ import path from 'path';
 import os from 'os';
 import { uploadFiles, createRepo, checkRepoAccess } from '@huggingface/hub';
 
-// 上传数据集到 HuggingFace
+// 上傳數據集到 HuggingFace
 export async function POST(request, { params }) {
   try {
     const projectId = params.projectId;
@@ -22,26 +22,26 @@ export async function POST(request, { params }) {
       customFields
     } = await request.json();
 
-    // 获取项目信息
+    // 獲取項目資訊
     const project = await getProject(projectId);
     if (!project) {
-      return NextResponse.json({ error: '项目不存在' }, { status: 404 });
+      return NextResponse.json({ error: '項目不存在' }, { status: 404 });
     }
 
-    // 获取数据集问题
+    // 獲取數據集問題
     const questions = await getDatasets(projectId, confirmedOnly);
     if (!questions || questions.length === 0) {
-      return NextResponse.json({ error: '没有可用的数据集问题' }, { status: 400 });
+      return NextResponse.json({ error: '沒有可用的數據集問題' }, { status: 400 });
     }
 
-    // 格式化数据集
+    // 格式化數據集
     const formattedData = formatDataset(questions, formatType, systemPrompt, includeCOT, customFields);
 
-    // 创建临时目录
+    // 創建臨時目錄
     const tempDir = path.join(os.tmpdir(), `hf-upload-${projectId}-${Date.now()}`);
     fs.mkdirSync(tempDir, { recursive: true });
 
-    // 创建数据集文件
+    // 創建數據集文件
     const datasetFilePath = path.join(tempDir, `dataset.${fileFormat}`);
     if (fileFormat === 'json') {
       fs.writeFileSync(datasetFilePath, JSON.stringify(formattedData, null, 2));
@@ -53,19 +53,19 @@ export async function POST(request, { params }) {
       fs.writeFileSync(datasetFilePath, csvContent);
     }
 
-    // 创建 README.md 文件
+    // 創建 README.md 文件
     const readmePath = path.join(tempDir, 'README.md');
     const readmeContent = generateReadme(project.name, project.description, formatType);
     fs.writeFileSync(readmePath, readmeContent);
 
-    // 使用 Hugging Face REST API 上传数据集
+    // 使用 Hugging Face REST API 上傳數據集
     const visibility = isPrivate ? 'private' : 'public';
 
     try {
-      // 准备仓库配置
+      // 準備倉庫配置
       const repo = { type: 'dataset', name: datasetName };
 
-      // 检查仓库是否存在
+      // 檢查倉庫是否存在
       let repoExists = true;
       try {
         await checkRepoAccess({ repo, accessToken: token });
@@ -89,7 +89,7 @@ export async function POST(request, { params }) {
             accessToken: token,
             private: isPrivate,
             license: 'mit',
-            description: project.description || 'Dataset created with Easy Dataset'
+            description: project.description || 'Dataset created with AI Dataset'
           });
           console.log(`Successfully created dataset repository: ${datasetName}`);
         } catch (error) {
@@ -97,20 +97,20 @@ export async function POST(request, { params }) {
         }
       }
 
-      // 2. 上传数据集文件
+      // 2. 上傳數據集文件
       await uploadFile(token, datasetName, datasetFilePath, `dataset.${fileFormat}`);
 
-      // 3. 上传 README.md
+      // 3. 上傳 README.md
       await uploadFile(token, datasetName, readmePath, 'README.md');
     } catch (error) {
       console.error('Upload to HuggingFace Failed:', String(error));
       return NextResponse.json({ error: `Upload Error: ${error.message}` }, { status: 500 });
     }
 
-    // 清理临时目录
+    // 清理臨時目錄
     fs.rmSync(tempDir, { recursive: true, force: true });
 
-    // 返回成功信息
+    // 返回成功資訊
     const datasetUrl = `https://huggingface.co/datasets/${datasetName}`;
     return NextResponse.json({
       success: true,
@@ -123,7 +123,7 @@ export async function POST(request, { params }) {
   }
 }
 
-// 格式化数据集
+// 格式化數據集
 function formatDataset(questions, formatType, systemPrompt, includeCOT, customFields) {
   if (formatType === 'alpaca') {
     return questions.map(q => {
@@ -185,14 +185,14 @@ function formatDataset(questions, formatType, systemPrompt, includeCOT, customFi
     });
   }
 
-  // 默认返回 alpaca 格式
+  // 默認返回 alpaca 格式
   return questions.map(q => ({
     instruction: q.question,
     output: includeCOT && q.cot ? `${q.cot}\n\n${q.answer}` : q.answer
   }));
 }
 
-// 将数据转换为 CSV 格式
+// 將數據轉換為 CSV 格式
 function convertToCSV(data) {
   if (!data || data.length === 0) return '';
 
@@ -204,7 +204,7 @@ function convertToCSV(data) {
       .map(header => {
         const value = item[header];
         if (typeof value === 'string') {
-          // 处理字符串中的逗号和引号
+          // 處理字串中的逗號和引號
           return `"${value.replace(/"/g, '""')}"`;
         } else if (Array.isArray(value)) {
           return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
@@ -219,16 +219,16 @@ function convertToCSV(data) {
   return [headerRow, ...rows].join('\n');
 }
 
-// 使用 @huggingface/hub 包上传文件到 HuggingFace
+// 使用 @huggingface/hub 包上傳文件到 HuggingFace
 async function uploadFile(token, datasetName, filePath, destFileName) {
   try {
-    // 准备仓库配置
+    // 準備倉庫配置
     const repo = { type: 'dataset', name: datasetName };
 
-    // 创建文件 URL
+    // 創建文件 URL
     const fileUrl = new URL(`file://${filePath}`);
 
-    // 使用 @huggingface/hub 包上传文件
+    // 使用 @huggingface/hub 包上傳文件
     await uploadFiles({
       repo,
       accessToken: token,
@@ -239,7 +239,7 @@ async function uploadFile(token, datasetName, filePath, destFileName) {
         }
       ],
       commitTitle: `Upload ${destFileName}`,
-      commitDescription: `Files uploaded using Easy Dataset`
+      commitDescription: `Files uploaded using AI Dataset`
     });
 
     return { success: true };
@@ -254,15 +254,15 @@ function generateReadme(projectName, projectDescription, formatType) {
   return `# ${projectName}
 
 ## Description
-${projectDescription || 'This dataset was created using the Easy Dataset tool.'}
+${projectDescription || 'This dataset was created using the AI Dataset tool.'}
 
 ## Format
 This dataset is in ${formatType} format.
 
 ## Creation Method
-This dataset was created using the [Easy Dataset](https://github.com/ConardLi/easy-dataset) tool.
+This dataset was created using the [AI Dataset](https://github.com/elf-express/ai-dataset) tool.
 
-> Easy Dataset is a specialized application designed to streamline the creation of fine-tuning datasets for Large Language Models (LLMs). It offers an intuitive interface for uploading domain-specific files, intelligently splitting content, generating questions, and producing high-quality training data for model fine-tuning.
+> AI Dataset is a specialized application designed to streamline the creation of fine-tuning datasets for Large Language Models (LLMs). It offers an intuitive interface for uploading domain-specific files, intelligently splitting content, generating questions, and producing high-quality training data for model fine-tuning.
 
 `;
 }

@@ -105,7 +105,7 @@
   "description": "AI微調數據集的應用程式",
   "build": {
     "appId": "com.aidataset.app",
-    "productName": "Easy Dataset",
+    "productName": "AI Dataset",
     "files": [
       ".next/**/*",
       "!.next/cache/**/*",

@@ -26,7 +26,7 @@ function createWindow(isDev, port) {
   });
 
   // 設置窗口標題
-  mainWindow.setTitle(`Easy Dataset v${getAppVersion()}`);
+  mainWindow.setTitle(`AI Dataset v${getAppVersion()}`);
   const loadingPath = url.format({
     pathname: path.join(__dirname, '..', 'loading.html'),
     protocol: 'file:',

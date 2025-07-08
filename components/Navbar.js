@@ -144,8 +144,8 @@ export default function Navbar({ projects = [], currentProject }) {
               src="/imgs/logo.svg"
               alt="AI Dataset Logo"
               sx={{
-                width: 28,
-                height: 28,
+                width: 40,
+                height: 40,
                 mr: 1.5
               }}
             />
